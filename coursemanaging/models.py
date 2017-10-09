@@ -20,7 +20,7 @@ class Course(models.Model):
     description = models.TextField()
 
 
-class Session(models.model):
+class Session(models.Model):
     subscribed_users = models.ForeignKey(User, related_name='Sessions')
     start_datetime = models.DateTimeField(null=False, blank=False)
     duration = models.DurationField(null=False, blank=False)
