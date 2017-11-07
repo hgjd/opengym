@@ -15,8 +15,12 @@ Including another URLconf
 """
 from django.conf.urls import include, url
 from django.contrib import admin
+from . import views
 
+app_name = "opengym"
 urlpatterns = [
     url(r'^', include('coursemanaging.urls')),
     url(r'^admin/', admin.site.urls),
+    url(r'^landing/', views.LandingView.as_view(), name='landing'),
+
 ]

@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block content %}
+{% load static %}
+<div class="container">
+
+    <div class="card text-center">
+        <img class="card-img-top" src="{% static 'opengym/img/placeholder4.jpg' %}" alt="Card image cap">
+        <div class="card-header">
+            <time> Sessie op {{session.start_datetime|date:" o/g/d"}} om {{session.start_datetime|time:"H:i"}}</time>
+        </div>
+        <div class="card-body">
+            <h4 class=card-title"><a class="list-group-item-text"
+                                     href="{% url 'coursemanaging:course-detail' session.course.id %}">{{session.course.course_name}}</a>
+            </h4>
+            <p class="card-text">{{session.course.description}}</p>
+            <p class="card-text"> {{session.course.get_course_level_display}} </p>
+            <a href="#" class="btn btn-primary">Inschrijven</a>
+        </div>
+        <div class="card-footer text-muted">
+            2 days ago
+        </div>
+    </div>
+
+</div>
+
+
+{% endblock %}

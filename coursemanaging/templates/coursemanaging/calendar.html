@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block page-title %}
+Calendar
+{% endblock %}
+
+
+{% block content %}
+{% for course in course_list %}
+<p> {{course.course_name}} {{course.start_datetime}}</p>
+{% endfor %}
+
+{{calendar}}
+
+{% endblock %}
