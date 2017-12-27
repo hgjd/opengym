@@ -1,21 +1,62 @@
 import pytz
 import datetime
 
+from django.shortcuts import redirect, render
 from django.urls import reverse_lazy
+from django.utils.encoding import force_text
+from django.utils.http import urlsafe_base64_decode
 from django.utils.safestring import mark_safe
 from django.views import generic
 
+from coursemanaging.forms import UserRegisterForm
 from coursemanaging.session_calendar import SessionCalendar
-from .models import Course, Session
+from coursemanaging.tokens import account_activation_token
+from .models import Course, Session, User
+from django.contrib.auth import login
 
 utc = pytz.UTC
 
 """
+USER VIEWS
+"""
 
 
+class UserCreateView(generic.CreateView):
+    """Register view for user"""
+    template_name = 'coursemanaging/user-create.html'
+    model = User
+    form_class = UserRegisterForm
+    success_url = reverse_lazy('coursemanaging:account-activation-sent')
+
+    def get_form_kwargs(self):
+        kwargs = super(UserCreateView, self).get_form_kwargs()
+        kwargs.update({'request': self.request})
+        return kwargs
+
+
+class AccountActivationSentView(generic.TemplateView):
+    template_name = 'coursemanaging/account-activation-sent.html'
+
+
+def activate(request, uidb64, token):
+    try:
+        uid = force_text(urlsafe_base64_decode(uidb64))
+        user = User.objects.get(pk=uid)
+    except (TypeError, ValueError, OverflowError, User.DoesNotExist):
+        user = None
+
+    if user is not None and account_activation_token.check_token(user, token):
+        user.is_active = True
+        user.email_confirmed = True
+        user.save()
+        login(request, user)
+        return redirect('coursemanaging:index')
+    else:
+        return render(request, 'coursemanaging/account-activation-invalid.html')
+
+
+"""
 COURSE VIEWS
-
-
 """
 
 

@@ -4,11 +4,16 @@ list-style-type: none;
 
 body {
 font-family: Verdana, sans-serif;
-  align-items:center;
+    align-items:center;
+    margin: 0;
+    padding: 0;
+    padding-top: 5rem;
 }
 
 .navbar {
   margin-bottom: 0;
+  background-color: #969696;
+  border-bottom : 3px solid white;
 }
 
 .jumbotron {

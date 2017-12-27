@@ -4,11 +4,11 @@
     {% load static %}
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css"
           integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
-   <!-- <link rel="stylesheet" type="text/css" href="{% static 'opengym/style.css' %}" />-->
+    <link rel="stylesheet" type="text/css" href="{% static 'opengym/style.css' %}"/>
 
 
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
-            integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+    <script src="https://code.jquery.com/jquery-3.2.1.js"
+            integrity="sha256-DZAnKJ/6XZ9si04Hgrsxu/8s717jcIzLy3oi35EouyE="
             crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"
             integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4"
@@ -16,39 +16,48 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js"
             integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1"
             crossorigin="anonymous"></script>
+    {% block extra_head %}
+
+    {% endblock %}
 
     <meta charset="UTF-8">
     <title>{% block page-title %}{% endblock %}</title>
 </head>
 <body>
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExample08" aria-controls="navbarsExample08" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
+<nav class="navbar navbar-expand-md fixed-top">
+    <a class="navbar-brand" href="/"> <img width="40" src="{% static 'opengym/img/logo.jpg' %}"></a>
+    <ul class="navbar-nav mr-auto ml-5">
+        {% if user.is_authenticated %}
+        <li>
+            <a class="nav-link" href="#">FLOP</a>
+        </li>
+        <li>
+            <a class="nav-link" href="#">FLEP</a>
+        </li>
+        {% else %}
+        <li>
+            <a class="nav-link" href="#">Login</a>
+        </li>
+        <li>
+            <a class="nav-link" href="#">Register</a>
+        </li>
+        {% endif %}
 
-      <div class="collapse navbar-collapse justify-content-md-center" id="navbarsExample08">
-        <ul class="navbar-nav">
-          <li class="nav-item active">
-            <a class="nav-link" href="#">Centered nav only <span class="sr-only">(current)</span></a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">Link</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link disabled" href="#">Disabled</a>
-          </li>
-          <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="http://example.com" id="dropdown08" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Dropdown</a>
-            <div class="dropdown-menu" aria-labelledby="dropdown08">
-              <a class="dropdown-item" href="#">Action</a>
-              <a class="dropdown-item" href="#">Another action</a>
-              <a class="dropdown-item" href="#">Something else here</a>
-            </div>
-          </li>
-        </ul>
-      </div>
-    </nav>
-{% block content %}
-{% endblock %}
+    </ul>
+    <ul class="nav navbar-nav navbar-right mr-5">
+        {% if user.is_authenticated %}
+        <li class="nav-item dropdown ml-5">
+            <a class="nav-link dropdown-toggle btn-lg" id="dropdown01" data-toggle="dropdown"
+               aria-haspopup="true" aria-expanded="false">{{user}}</a>
+            <div class="dropdown-menu" aria-labelledby="dropdown01"></div>
+        </li>
+        {% endif %}
+    </ul>
+</nav>
+<div class="base container">
+    {% block content %}
+    {% endblock %}
+
+</div>
 </body>
 </html>
