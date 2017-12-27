@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% load static %}
+{% load crispy_forms_tags %}
 {% block extra_head %}
 <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
@@ -10,7 +11,7 @@
 </script>
 {% endblock %}
 
-{% load crispy_forms_tags %}
+
 {% block content %}
 <h1>Registratie</h1>
 <form method="POST">
