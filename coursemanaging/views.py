@@ -8,7 +8,7 @@ from django.utils.http import urlsafe_base64_decode
 from django.utils.safestring import mark_safe
 from django.views import generic
 
-from coursemanaging.forms import UserRegisterForm
+from coursemanaging.forms import UserRegisterForm, CourseCreateForm
 from coursemanaging.session_calendar import SessionCalendar
 from coursemanaging.tokens import account_activation_token
 from .models import Course, Session, User
@@ -69,8 +69,13 @@ class CourseCreateView(generic.CreateView):
     """create view for a course"""
     template_name = 'coursemanaging/course-create.html'
     model = Course
-    fields = ['course_name', 'course_level', 'single_session_possible', 'description']
     success_url = reverse_lazy('coursemanaging:index')
+    form_class = CourseCreateForm
+
+    def get_form_kwargs(self):
+        kwargs = super(CourseCreateView, self).get_form_kwargs()
+        kwargs.update({'user': self.request.user})
+        return kwargs
 
 
 class CourseDetailView(generic.DetailView):
@@ -93,7 +98,7 @@ class CourseUpdateView(generic.UpdateView):
     """Update view of a course"""
     template_name = 'coursemanaging/course-update.html'
     model = Course
-    fields = ['course_name', 'course_level', 'single_session_possible', 'description']
+    fields = ['course_name', 'course_level', 'build_up_sessions', 'description']
     success_url = reverse_lazy('coursemanaging:index')
 
 
@@ -101,6 +106,14 @@ class CourseDeleteView(generic.DeleteView):
     """Delete view of a course"""
     template_name = "coursemanaging/course-delete.html"
     model = Course
+
+
+class CoursesUserListView(generic.ListView):
+    template_name = 'coursemanaging/courses-user.html'
+    context_object_name = 'courses_teacher'
+
+    def get_queryset(self):
+        return Course.objects.filter(teachers=self.request.user)
 
 
 """

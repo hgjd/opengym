@@ -93,7 +93,7 @@ class Course(models.Model):
     course_level = models.SmallIntegerField(null=False, blank=False, choices=LEVEL_CHOICES)
     teachers = models.ManyToManyField(User, related_name='courses_teacher', blank=True)
     students = models.ManyToManyField(User, related_name='courses_student', blank=True)
-    single_session_possible = models.BooleanField(null=False, blank=False)
+    build_up_sessions = models.BooleanField(null=False, blank=False)
     description = models.TextField()
 
     def __str__(self):

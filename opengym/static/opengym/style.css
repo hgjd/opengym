@@ -177,3 +177,8 @@ color : var(--compl-color-darkest)
   min-width: 100%;
   height: 32rem;
 }
+
+/* Timeslots */
+.course-create {
+    float : right;
+}

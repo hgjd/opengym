@@ -1,4 +1,4 @@
-from django.conf.urls import url, include
+from django.conf.urls import url
 from django.contrib.auth import views as auth_views
 
 from . import views
@@ -17,6 +17,8 @@ urlpatterns = [
         name='course-update'),
     url(r'^course/delete/(?P<pk>[0-9]+)/$', views.CourseDeleteView.as_view(),
         name='course-delete'),
+    url(r'^courses$', views.CoursesUserListView.as_view(),
+        name='courses-user'),
     url(r'^session/(?P<pk>[0-9]+)$', views.SessionDetailView.as_view(),
         name='session-detail'),
     url(r'^register/$', views.UserCreateView.as_view(),

@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% block content %}
+
+{% if user.teacher %}
+{% if courses_teacher %}
+
+<div class="row">
+    <h2 class="col-md-8">uw lessen als leerkracht</h2>
+    <div class="col-md-4">
+        <a href="{% url 'coursemanaging:course-create' %}"
+           class="btn btn-outline-warning course-create">
+            <span class="fa fa-plus" aria-hidden="true"></span> Create
+        </a>
+    </div>
+</div>
+<table class="table table-striped">
+    <thead>
+    <tr>
+        <th>Naam</th>
+        <th>Level</th>
+        <th>Aantal leerkrachten</th>
+        <th>Aantal studenten</th>
+        <th>Opbouwende lessen</th>
+        <th>Sessies</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for course in courses_teacher %}
+    <tr>
+        <td><a href="{% url 'coursemanaging:course-detail' course.id %}"> {{course.course_name}} </a></td>
+        <td>{{course.get_course_level_display}}</td>
+        <td>{{course.teachers.count}}</td>
+        <td>{{course.students.count}}</td>
+        <td>{{course.build_up_sessions}}</td>
+        <td>{{course.sessions.count}}</td>
+    </tr>
+    {% endfor %}
+    </tbody>
+</table>
+{% else %}
+<h3>U bent nog geen leerkracht voor een les klik <a href="{% url 'coursemanaging:course-create' %}"> hier</a>
+    om één aan te maken</h3>
+
+{% endif %}
+{% else %}
+<p>U bent geen leerkracht</p>
+{% endif %}
+{% endblock %}

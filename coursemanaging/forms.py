@@ -5,7 +5,7 @@ from django.template.loader import render_to_string
 from django.utils.encoding import force_bytes
 from django.utils.http import urlsafe_base64_encode
 
-from coursemanaging.models import User
+from coursemanaging.models import User, Course
 from coursemanaging.tokens import account_activation_token
 
 
@@ -39,3 +39,19 @@ class UserRegisterForm(UserCreationForm):
             })
             user.email_user(subject, message)
         return user
+
+
+class CourseCreateForm(forms.ModelForm):
+    class Meta:
+        model = Course
+        fields = {'course_name', 'course_level', 'build_up_sessions', 'description'}
+
+    def __init__(self, *args, **kwargs):
+        self.user = kwargs.pop("user")
+        super(CourseCreateForm, self).__init__(*args, **kwargs)
+
+    def save(self, commit=True):
+        course = super(CourseCreateForm, self).save()
+        course.teachers.add(self.user)
+        course.save()
+        return course
