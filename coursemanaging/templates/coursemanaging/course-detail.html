@@ -1,4 +1,75 @@
 {% extends "base.html" %}
 {% block content %}
-{{course}}
+<h1>{{course.course_name}}</h1>
+<p>{{course.get_course_level_display}}</p>
+
+{% if build_up_sessions %}
+<p> De sessies bouwen op</p>
+{% else %}
+<p> De sessies zijn makkelijk appart te volgen</p>
+{% endif %}
+
+<h2>Leerkrachten</h2>
+<table class="table">
+    <thead>
+    <tr>
+        <th>Voornaam</th>
+        <th>Naam</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for user in course.teachers.all %}
+    <tr>
+        <td>{{user.first_name}}</td>
+        <td>{{user.last_name}}</td>
+    </tr>
+    {% endfor %}
+    </tbody>
+</table>
+
+<h2>Studenten</h2>
+<table class="table">
+    <thead>
+    <tr>
+        <th>Voornaam</th>
+        <th>Naam</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for user in course.students.all %}
+    <tr>
+        <td>{{user.first_name}}</td>
+        <td>{{user.last_name}}</td>
+    </tr>
+    {% endfor %}
+    </tbody>
+</table>
+
+<div class="row">
+    <h2 class="col-md-8">Sessies</h2>
+    <div class="col-md-4">
+        <a href="{% url 'coursemanaging:session-create' course.id %}"
+           class="btn btn-outline-warning course-create">
+            <span class="fa fa-plus" aria-hidden="true"></span> Create
+        </a>
+    </div>
+</div>
+<table class="table">
+    <thead>
+    <tr>
+        <th>Tijdstip</th>
+        <th>Duur</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for session in course.sessions.all %}
+    <tr>
+        <td><a href="{% url 'coursemanaging:session-detail' session.id %}">{{session.start_datetime}}</a></td>
+        <td>{{session.duration}}</td>
+    </tr>
+    {% endfor %}
+    </tbody>
+</table>
 {% endblock %}
+
+<td>{{course.sessions.count}}</td>

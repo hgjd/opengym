@@ -1,14 +1,14 @@
 import pytz
 import datetime
 
-from django.shortcuts import redirect, render
+from django.shortcuts import redirect, render, get_object_or_404
 from django.urls import reverse_lazy
 from django.utils.encoding import force_text
 from django.utils.http import urlsafe_base64_decode
 from django.utils.safestring import mark_safe
 from django.views import generic
 
-from coursemanaging.forms import UserRegisterForm, CourseCreateForm
+from coursemanaging.forms import UserRegisterForm, CourseCreateForm, SessionCreateForm
 from coursemanaging.session_calendar import SessionCalendar
 from coursemanaging.tokens import account_activation_token
 from .models import Course, Session, User
@@ -127,6 +127,23 @@ class SessionDetailView(generic.DetailView):
     """Detailview for a session"""
     template_name = "coursemanaging/session-detail.html"
     model = Session
+
+
+class SessionCreateView(generic.CreateView):
+    """create view for a Session"""
+    template_name = 'coursemanaging/session-create.html'
+    model = Session
+    success_url = reverse_lazy('coursemanaging:index')
+    form_class = SessionCreateForm
+
+    def get_form_kwargs(self):
+        kwargs = super(SessionCreateView, self).get_form_kwargs()
+        course = get_object_or_404(Course, id=self.kwargs['pk'])
+        kwargs.update({'course': course})
+        return kwargs
+
+    def get_success_url(self):
+        return reverse_lazy('coursemanaging:course-detail', kwargs={'pk': self.kwargs['pk']})
 
 
 class CalendarView(generic.TemplateView):

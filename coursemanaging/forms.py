@@ -5,7 +5,7 @@ from django.template.loader import render_to_string
 from django.utils.encoding import force_bytes
 from django.utils.http import urlsafe_base64_encode
 
-from coursemanaging.models import User, Course
+from coursemanaging.models import User, Course, Session
 from coursemanaging.tokens import account_activation_token
 
 
@@ -53,5 +53,28 @@ class CourseCreateForm(forms.ModelForm):
     def save(self, commit=True):
         course = super(CourseCreateForm, self).save()
         course.teachers.add(self.user)
-        course.save()
+        if commit:
+            course.save()
         return course
+
+
+class SessionCreateForm(forms.ModelForm):
+    class Meta:
+        model = Session
+        fields = {'start_datetime', 'duration', 'extra_info'}
+
+        widgets = {
+            'start_datetime': forms.DateTimeInput(attrs={'class': 'datepicker', 'autocomplete': 'off'}),
+        }
+
+    def __init__(self, *args, **kwargs):
+        self.course = kwargs.pop("course")
+        super(SessionCreateForm, self).__init__(*args, **kwargs)
+
+    def save(self, commit=True):
+        session = super(SessionCreateForm, self).save()
+        session.course = self.course
+        if commit:
+            session.save()
+        return session
+

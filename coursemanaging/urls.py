@@ -21,6 +21,8 @@ urlpatterns = [
         name='courses-user'),
     url(r'^session/(?P<pk>[0-9]+)$', views.SessionDetailView.as_view(),
         name='session-detail'),
+    url(r'^course/(?P<pk>[0-9]+)/session-create$', views.SessionCreateView.as_view(),
+        name='session-create'),
     url(r'^register/$', views.UserCreateView.as_view(),
         name='user-register'),
     url(r'^activate/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,20})/$', views.activate,
