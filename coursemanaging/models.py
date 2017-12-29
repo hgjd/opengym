@@ -103,7 +103,7 @@ class Course(models.Model):
 class Session(models.Model):
     course = models.ForeignKey(Course, related_name='sessions', default=1, null=True, blank=True)
 
-    subscribed_users = models.ForeignKey(User, related_name='sessions', null=True, blank=True)
+    subscribed_users = models.ManyToManyField(User, related_name='sessions', null=True, blank=True)
     start_datetime = models.DateTimeField(null=False, blank=False)
     duration = models.DurationField(null=False, blank=False)
     extra_info = models.TextField(null=True, blank=True)

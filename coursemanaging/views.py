@@ -85,19 +85,31 @@ class CourseDetailView(generic.DetailView):
 
     def get_context_data(self, **kwargs):
         context = super(CourseDetailView, self).get_context_data(**kwargs)
-        context['isTeacher'] = self.object.teachers.filter(pk=self.request.user.id).exists()
-        context['isStudent'] =self.object.students.filter(pk=self.request.user.id).exists()
-
+        context['is_teacher'] = self.object.teachers.filter(pk=self.request.user.id).exists()
+        context['is_student'] = self.object.students.filter(pk=self.request.user.id).exists()
+        sessions_subscribed = dict()
+        for session in self.object.sessions.all():
+            sessions_subscribed[session.id] = session.subscribed_users.filter(id=self.request.user.id).exists()
+        context['sessions_subscribed'] = sessions_subscribed
         return context
 
     def post(self, request, *args, **kwargs):
-        join = request.POST.get("join")
+        join_session = request.POST.get("join_session")
+        join_course = request.POST.get("join_course")
         course = get_object_or_404(Course, pk=self.kwargs['pk'])
-        course.students.add(self.request.user)
-        if join:
+
+        if join_course:
             if course.students.filter(pk=request.user.id).exists():
                 return redirect('coursemanaging:impossible')
+            course.students.add(self.request.user)
             return redirect('coursemanaging:course-detail', pk=course.id)
+        if join_session:
+            session = get_object_or_404(Session,pk=join_session)
+            if  session.subscribed_users.filter(pk=request.user.id).exists():
+                return redirect('coursemanaging:impossible')
+            session.subscribed_users.add(self.request.user)
+            return redirect('coursemanaging:course-detail', pk=course.id)
+
 
 
 class CourseListView(generic.ListView):
@@ -181,5 +193,3 @@ class CalendarView(generic.TemplateView):
 class ImpossibleView(generic.TemplateView):
     """View where the user ends when he does something wrong"""
     template_name = "coursemanaging/impossible.html"
-
-

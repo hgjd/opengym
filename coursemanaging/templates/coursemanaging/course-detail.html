@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load coursemanaging_extras %}
 {% block content %}
 <h1>{{course.course_name}}</h1>
 <p>{{course.get_course_level_display}}</p>
@@ -9,10 +10,10 @@
 <p> De sessies zijn makkelijk appart te volgen</p>
 {% endif %}
 
-{% if not isTeacher and not isStudent%}
+{% if not is_teacher and not is_student%}
 <form method="post">
     {% csrf_token %}
-    <input type="hidden" name="join" value="true">
+    <input type="hidden" name="join_course" value="true">
     <button type="submit" class="btn btn-primary">Shrijf je in</button>
 </form>
 {% endif %}
@@ -34,7 +35,7 @@
     {% endfor %}
     </tbody>
 </table>
-{% if isTeacher %}
+{% if is_teacher %}
 <h2>Studenten</h2>
 <table class="table">
     <thead>
@@ -53,17 +54,20 @@
     {% endfor %}
     </tbody>
 </table>
-{% elif isStudent %}
+{% elif is_student %}
 <h2>{{course.students.all.count}} andere student(en)</h2>
 {% endif %}
 
 <div class="row">
     <h2 class="col-md-8">Sessies</h2>
+
     <div class="col-md-4">
+        {% if is_teacher %}
         <a href="{% url 'coursemanaging:session-create' course.id %}"
            class="btn btn-outline-warning course-create">
             <span class="fa fa-plus" aria-hidden="true"></span> Create
         </a>
+        {% endif %}
     </div>
 </div>
 <table class="table">
@@ -71,6 +75,7 @@
     <tr>
         <th>Tijdstip</th>
         <th>Duur</th>
+        <th></th>
     </tr>
     </thead>
     <tbody>
@@ -78,6 +83,22 @@
     <tr>
         <td><a href="{% url 'coursemanaging:session-detail' session.id %}">{{session.start_datetime}}</a></td>
         <td>{{session.duration}}</td>
+        <td>
+            {% if is_teacher %}
+            {{session.subscribed_users.all.count}} inschrijving(en)
+            {%else%}
+            {% if not sessions_subscribed|get_item:session.id %}
+            <form method="post">
+                {% csrf_token %}
+                <input type="hidden" name="join_session" value="{{session.id}}">
+                <button type="submit" class="btn btn-primary">Shrijf je in</button>
+            </form>
+            {% else %}
+            <button class="btn btn-primary disabled">Ingeschreven</button>
+            {% endif %}
+            {% endif %}
+
+        </td>
     </tr>
     {% endfor %}
     </tbody>
