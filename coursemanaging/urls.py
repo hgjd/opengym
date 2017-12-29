@@ -35,4 +35,6 @@ urlpatterns = [
         name='account-activation-sent'),
     url(r'^calendar/$', views.CalendarView.as_view(),
         name='calendar'),
+    url(r'^impossible/$', views.ImpossibleView.as_view(),
+        name='impossible'),
 ]

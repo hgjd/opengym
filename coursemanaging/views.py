@@ -83,6 +83,22 @@ class CourseDetailView(generic.DetailView):
     template_name = 'coursemanaging/course-detail.html'
     model = Course
 
+    def get_context_data(self, **kwargs):
+        context = super(CourseDetailView, self).get_context_data(**kwargs)
+        context['isTeacher'] = self.object.teachers.filter(pk=self.request.user.id).exists()
+        context['isStudent'] =self.object.students.filter(pk=self.request.user.id).exists()
+
+        return context
+
+    def post(self, request, *args, **kwargs):
+        join = request.POST.get("join")
+        course = get_object_or_404(Course, pk=self.kwargs['pk'])
+        course.students.add(self.request.user)
+        if join:
+            if course.students.filter(pk=request.user.id).exists():
+                return redirect('coursemanaging:impossible')
+            return redirect('coursemanaging:course-detail', pk=course.id)
+
 
 class CourseListView(generic.ListView):
     """List view of a course"""
@@ -160,3 +176,10 @@ class CalendarView(generic.TemplateView):
         calendar = SessionCalendar(sessions).formatmonth(2017, 11)
         context['calendar'] = mark_safe(calendar)
         return context
+
+
+class ImpossibleView(generic.TemplateView):
+    """View where the user ends when he does something wrong"""
+    template_name = "coursemanaging/impossible.html"
+
+

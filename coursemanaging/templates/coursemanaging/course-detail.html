@@ -9,6 +9,14 @@
 <p> De sessies zijn makkelijk appart te volgen</p>
 {% endif %}
 
+{% if not isTeacher and not isStudent%}
+<form method="post">
+    {% csrf_token %}
+    <input type="hidden" name="join" value="true">
+    <button type="submit" class="btn btn-primary">Shrijf je in</button>
+</form>
+{% endif %}
+
 <h2>Leerkrachten</h2>
 <table class="table">
     <thead>
@@ -26,7 +34,7 @@
     {% endfor %}
     </tbody>
 </table>
-
+{% if isTeacher %}
 <h2>Studenten</h2>
 <table class="table">
     <thead>
@@ -35,15 +43,19 @@
         <th>Naam</th>
     </tr>
     </thead>
+
     <tbody>
     {% for user in course.students.all %}
     <tr>
-        <td>{{user.first_name}}</td>
+        <td> {{user.first_name}}</td>
         <td>{{user.last_name}}</td>
     </tr>
     {% endfor %}
     </tbody>
 </table>
+{% elif isStudent %}
+<h2>{{course.students.all.count}} andere student(en)</h2>
+{% endif %}
 
 <div class="row">
     <h2 class="col-md-8">Sessies</h2>
