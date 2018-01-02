@@ -137,8 +137,8 @@ color:#545454;
 
 
 .day-today{
-color : green;
-padding : 2em;
+padding : 1em;
+background : gold;
 border:1px solid black;
 }
 
@@ -169,6 +169,14 @@ padding:2em;
 .month-nav:hover{
   -webkit-transform: scale(1.5);
           transform: scale(1.5);
+}
+
+.session-subscribed{
+background : green;
+}
+
+.course-subscribed{
+background : yellow;
 }
 
 

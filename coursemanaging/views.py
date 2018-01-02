@@ -32,7 +32,7 @@ class LandingView(generic.TemplateView):
         sessions = Session.objects.filter(start_datetime__lte=end_calendar_period,
                                           start_datetime__gte=start_calendar_period)
         bulletins = NewsBulletin.objects.all().order_by('-bulletin_level')
-        cal = SessionCalendar(sessions).formatmonth(today.year, today.month)
+        cal = SessionCalendar(sessions, self.request.user).formatmonth(today.year, today.month)
         context['calendar'] = mark_safe(cal)
         context['bulletins'] = bulletins
         return context
@@ -211,7 +211,7 @@ def get_calendar(request):
         sessions = Session.objects.filter(start_datetime__lte=end_calendar_period,
                                           start_datetime__gte=start_calendar_period)
 
-        cal = SessionCalendar(sessions).formatmonth(year, month)
+        cal = SessionCalendar(sessions, request.user).formatmonth(year, month)
         return render_to_response('coursemanaging/calendar.html', {'calendar': mark_safe(cal)})
 
 

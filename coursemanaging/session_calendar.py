@@ -9,9 +9,10 @@ from django.utils.html import conditional_escape as esc
 
 
 class SessionCalendar(HTMLCalendar):
-    def __init__(self, session_list):
+    def __init__(self, session_list, user):
         super(SessionCalendar, self).__init__()
         self.session_list = self.group_by_day(session_list)
+        self.user = user
 
     def formatday(self, day, weekday):
         if day != 0:
@@ -22,10 +23,21 @@ class SessionCalendar(HTMLCalendar):
                 cssclass += '-filled'
                 body = ['<ul class="calendar-day-events">']
                 for session in self.session_list[day]:
-                    body.append('<li>')
+
+                    li_cssclass = None
+                    if session.course.user_is_subscribed(self.user):
+                        li_cssclass = 'course-subscribed'
+
+                    if session.user_is_subscribed(self.user):
+                        li_cssclass = 'session-subscribed'
+
+                    if li_cssclass:
+                        body.append('<li class="'+li_cssclass+'">')
+                    else:
+                        body.append('<li>')
 
                     body.append('<time>%s</time>-' % (
-                                str(session.start_datetime.hour) + "h" + str(session.start_datetime.minute)))
+                        str(session.start_datetime.hour) + "h" + str(session.start_datetime.minute)))
                     body.append('<a href="%s">' % reverse('coursemanaging:session-detail', args=[session.id]))
                     body.append(session.course.course_name + "</a>")
                     body.append('</li>')
@@ -65,7 +77,6 @@ class SessionCalendar(HTMLCalendar):
         return '<tr><th colspan="1"><span class="fa fa-angle-left fa-2x month-nav month-prev"></span></th>' + \
                '<th colspan="5" class="calendar-month-title">%s</th>' % s + \
                '<th colspan="1"><span class="fa fa-angle-right fa-2x month-nav month-next"></span></th></tr>'
-
 
     def group_by_day(self, session_list):
         result = defaultdict()

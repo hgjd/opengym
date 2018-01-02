@@ -103,6 +103,9 @@ class Course(models.Model):
     def get_next_session(self):
         return Session.objects.filter(course=self).order_by('-start_datetime')[0]
 
+    def user_is_subscribed(self, user):
+        return self.students.filter(id=user.id).exists()
+
 
 class Session(models.Model):
     course = models.ForeignKey(Course, related_name='sessions', default=1, blank=True)
@@ -111,6 +114,9 @@ class Session(models.Model):
     start_datetime = models.DateTimeField(null=False, blank=False)
     duration = models.DurationField(null=False, blank=False)
     extra_info = models.TextField(null=True, blank=True)
+
+    def user_is_subscribed(self, user):
+        return self.subscribed_users.filter(id=user.id).exists()
 
     def __str__(self):
         return str(self.course) + ' ' + str(self.start_datetime.date())
