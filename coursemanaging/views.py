@@ -1,7 +1,8 @@
 import pytz
 import datetime
+import calendar
 
-from django.shortcuts import redirect, render, get_object_or_404
+from django.shortcuts import redirect, render, get_object_or_404, render_to_response
 from django.urls import reverse_lazy
 from django.utils.encoding import force_text
 from django.utils.http import urlsafe_base64_decode
@@ -11,10 +12,31 @@ from django.views import generic
 from coursemanaging.forms import UserRegisterForm, CourseCreateForm, SessionCreateForm
 from coursemanaging.session_calendar import SessionCalendar
 from coursemanaging.tokens import account_activation_token
-from .models import Course, Session, User
+from .models import Course, Session, User, NewsBulletin
 from django.contrib.auth import login
 
 utc = pytz.UTC
+
+
+class LandingView(generic.TemplateView):
+    """home page of the opengym platform"""
+    template_name = 'opengym/landing.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(LandingView, self).get_context_data(**kwargs)
+        today = datetime.datetime.today()
+        monthrange = calendar.monthrange(today.year, today.month)
+        start_calendar_period = utc.localize(datetime.datetime(today.year, today.month, 1))
+        end_calendar_period = utc.localize(datetime.datetime(today.year, today.month, monthrange[1]))
+
+        sessions = Session.objects.filter(start_datetime__lte=end_calendar_period,
+                                          start_datetime__gte=start_calendar_period)
+        bulletins = NewsBulletin.objects.all().order_by('-bulletin_level')
+        cal = SessionCalendar(sessions).formatmonth(today.year, today.month)
+        context['calendar'] = mark_safe(cal)
+        context['bulletins'] = bulletins
+        return context
+
 
 """
 USER VIEWS
@@ -178,20 +200,19 @@ class SessionCreateView(generic.CreateView):
         return reverse_lazy('coursemanaging:course-detail', kwargs={'pk': self.kwargs['pk']})
 
 
-class CalendarView(generic.TemplateView):
-    """View that shows a calendar containing all sessions for this month"""
-    template_name = "coursemanaging/calendar.html"
-
-    def get_context_data(self, **kwargs):
-        context = super(CalendarView, self).get_context_data(**kwargs)
-        start_calendar_period = utc.localize(datetime.datetime(2017, 11, 1))
-        end_calendar_period = utc.localize(datetime.datetime(2017, 11, 30))
+def get_calendar(request):
+    if request.is_ajax():
+        month = int(request.GET.get('month'))
+        year = int(request.GET.get('year'))
+        monthrange = calendar.monthrange(year, month)
+        start_calendar_period = utc.localize(datetime.datetime(year, month, 1))
+        end_calendar_period = utc.localize(datetime.datetime(year, month, monthrange[1]))
 
         sessions = Session.objects.filter(start_datetime__lte=end_calendar_period,
                                           start_datetime__gte=start_calendar_period)
-        calendar = SessionCalendar(sessions).formatmonth(2017, 11)
-        context['calendar'] = mark_safe(calendar)
-        return context
+
+        cal = SessionCalendar(sessions).formatmonth(year, month)
+        return render_to_response('coursemanaging/calendar.html', {'calendar': mark_safe(cal)})
 
 
 class ImpossibleView(generic.TemplateView):

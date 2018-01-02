@@ -24,7 +24,6 @@ app_name = "opengym"
 urlpatterns = [
     url(r'^', include('coursemanaging.urls')),
     url(r'^admin/', admin.site.urls),
-    url(r'^landing/', views.LandingView.as_view(), name='landing'),
 
 ]
 

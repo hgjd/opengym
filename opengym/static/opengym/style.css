@@ -79,13 +79,14 @@ CALENDAR STYLING
 
 .calendar{
 border-collapse: collapse;
+color:#545454;
 }
 
 /* Calendar title*/
 .calendar-month-title{
     padding: 70px 25px;
     width: 100%;
-    background: var(--main-color);
+    background: #E74200;
     color: white;
     font-size: 20px;
     text-transform: uppercase;
@@ -97,30 +98,21 @@ border-collapse: collapse;
 .calendar {
     padding: 70px 25px;
     width: 100%;
-    background: var(--main-color);
+    background: #E74200;
     text-align: center;
 }
 
 /* calendar list */
-.calendar ul {
+.calendar table {
     margin: 0;
     padding: 0.5em;
 }
 
-.calendar ul li {
+.calendar table td {
+    vertical-align:top;
     text-align : left;
     padding-left: 0.5em;
     font-size : 0.8em;
-}
-
-.calendar ul li a{
-color : var(--main-color-brightest);
-float:right;
-}
-
-.calendar ul li a:hover{
-color : var(--compl-color-brightest);
-text-decoration: none;
 }
 
 
@@ -128,7 +120,7 @@ text-decoration: none;
 .weekday {
     margin: 0;
     padding: 10px 0;
-    background-color:var(--main-color-brightest);
+    background-color:pink;
     color:white;
     text-align :center;
     width: 13.6%;
@@ -142,13 +134,41 @@ text-decoration: none;
     margin: 0;
 }
 
-.day-today-filled {
-background-color : var(--main-color-brightest);
-color : var(--main-color-darkest);
+
+
+.day-today{
+color : green;
+padding : 2em;
+border:1px solid black;
 }
 
-.day-today-filled ul li a{
-color : var(--compl-color-darkest)
+.calendar-day-events a{
+color:white;
+text-decoration:none;
+}
+
+.calendar-day-events a:hover{
+color:crimson;
+}
+
+.month-next {
+float:right;
+}
+
+.month-prev {
+float:left;
+}
+
+.month-nav{
+padding:2em;
+    color: white;
+    -webkit-transition: 0.5s;
+          transition: 0.5s;
+}
+
+.month-nav:hover{
+  -webkit-transform: scale(1.5);
+          transform: scale(1.5);
 }
 
 

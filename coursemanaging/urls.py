@@ -33,8 +33,9 @@ urlpatterns = [
         name='logout'),
     url('^account-activation-sent', views.AccountActivationSentView.as_view(),
         name='account-activation-sent'),
-    url(r'^calendar/$', views.CalendarView.as_view(),
+    url(r'^calendar/$', views.get_calendar,
         name='calendar'),
+    url(r'^landing/', views.LandingView.as_view(), name='landing'),
     url(r'^impossible/$', views.ImpossibleView.as_view(),
         name='impossible'),
 ]
