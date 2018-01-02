@@ -43,6 +43,26 @@
 
 {% endif %}
 {% else %}
-<p>U bent geen leerkracht</p>
+<H2>U bent ingeschreven voor</H2>
+<table class="table table-striped">
+    <thead>
+    <tr>
+        <th>Naam</th>
+        <th>Level</th>
+        <th>Sessies bouwen op</th>
+        <th>Volgende sessie</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for course in courses_student %}
+    <tr>
+        <td><a href="{% url 'coursemanaging:course-detail' course.id %}"> {{course.course_name}} </a></td>
+        <td>{{course.get_course_level_display}}</td>
+        <td>{{course.build_up_sessions|yesno:"ja,nee"}}</td>
+        <td>{{course.get_next_session}}</td>
+    </tr>
+    {% endfor %}
+    </tbody>
+</table>
 {% endif %}
 {% endblock %}

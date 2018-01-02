@@ -29,10 +29,7 @@
     <ul class="navbar-nav mr-auto ml-5">
         {% if user.is_authenticated %}
         <li>
-            <a class="nav-link" href="#">FLOP</a>
-        </li>
-        <li>
-            <a class="nav-link" href="#">FLEP</a>
+            <a class="nav-link" href="{% url 'coursemanaging:course-list' %}">Lessen</a>
         </li>
         {% else %}
         <li>

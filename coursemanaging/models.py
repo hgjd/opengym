@@ -99,6 +99,9 @@ class Course(models.Model):
     def __str__(self):
         return self.course_name
 
+    def get_next_session(self):
+        return Session.objects.filter(course=self).order_by('-start_datetime')[0]
+
 
 class Session(models.Model):
     course = models.ForeignKey(Course, related_name='sessions', default=1, null=True, blank=True)

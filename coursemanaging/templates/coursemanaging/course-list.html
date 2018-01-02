@@ -1,6 +1,23 @@
 {% extends "base.html" %}
 {% block content %}
-{% for course in course_list %}
-<p> {{course.course_name}}</p>
-{% endfor %}
+
+<h2>Alle lessen die je kan volgen bij open gym</h2>
+<table class="table">
+    <thead>
+    <tr>
+        <th>Les</th>
+        <th>Niveau</th>
+        <th>Volgende sessie</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for course in course_list %}
+    <tr>
+        <td><a href="{% url 'coursemanaging:course-detail' course.id %}">{{course.course_name}}</a></td>
+        <td>{{course.get_course_level_display}}</td>
+        <td>{{course.get_next_session.start_datetime}}</td>
+    </tr>
+    {% endfor %}
+    </tbody>
+</table>
 {% endblock %}

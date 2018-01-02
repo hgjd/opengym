@@ -104,12 +104,11 @@ class CourseDetailView(generic.DetailView):
             course.students.add(self.request.user)
             return redirect('coursemanaging:course-detail', pk=course.id)
         if join_session:
-            session = get_object_or_404(Session,pk=join_session)
-            if  session.subscribed_users.filter(pk=request.user.id).exists():
+            session = get_object_or_404(Session, pk=join_session)
+            if session.subscribed_users.filter(pk=request.user.id).exists():
                 return redirect('coursemanaging:impossible')
             session.subscribed_users.add(self.request.user)
             return redirect('coursemanaging:course-detail', pk=course.id)
-
 
 
 class CourseListView(generic.ListView):
@@ -139,6 +138,11 @@ class CourseDeleteView(generic.DeleteView):
 class CoursesUserListView(generic.ListView):
     template_name = 'coursemanaging/courses-user.html'
     context_object_name = 'courses_teacher'
+
+    def get_context_data(self, **kwargs):
+        context = super(CoursesUserListView, self).get_context_data(**kwargs)
+        context['courses_student'] = Course.objects.filter(students=self.request.user)
+        return context
 
     def get_queryset(self):
         return Course.objects.filter(teachers=self.request.user)
