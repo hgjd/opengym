@@ -4,7 +4,7 @@ import datetime
 from django.utils.safestring import mark_safe
 from django.views import generic
 
-from coursemanaging.models import Session
+from coursemanaging.models import Session, NewsBulletin
 from coursemanaging.session_calendar import SessionCalendar
 
 utc = pytz.UTC
@@ -21,6 +21,8 @@ class LandingView(generic.TemplateView):
 
         sessions = Session.objects.filter(start_datetime__lte=end_calendar_period,
                                           start_datetime__gte=start_calendar_period)
+        bulletins = NewsBulletin.objects.all().order_by('-bulletin_level')
         calendar = SessionCalendar(sessions).formatmonth(2017, 11)
         context['calendar'] = mark_safe(calendar)
+        context['bulletins'] = bulletins
         return context

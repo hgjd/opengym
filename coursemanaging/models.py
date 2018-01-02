@@ -2,6 +2,7 @@ from datetime import date
 
 from django.contrib.auth.base_user import BaseUserManager, AbstractBaseUser
 from django.contrib.auth.models import AbstractUser, PermissionsMixin
+from django.core.exceptions import ValidationError
 from django.core.mail import send_mail
 from django.db import models
 from django.utils.translation import gettext as _
@@ -104,12 +105,62 @@ class Course(models.Model):
 
 
 class Session(models.Model):
-    course = models.ForeignKey(Course, related_name='sessions', default=1, null=True, blank=True)
+    course = models.ForeignKey(Course, related_name='sessions', default=1, blank=True)
 
-    subscribed_users = models.ManyToManyField(User, related_name='sessions', null=True, blank=True)
+    subscribed_users = models.ManyToManyField(User, related_name='sessions', blank=True)
     start_datetime = models.DateTimeField(null=False, blank=False)
     duration = models.DurationField(null=False, blank=False)
     extra_info = models.TextField(null=True, blank=True)
 
     def __str__(self):
         return str(self.course) + ' ' + str(self.start_datetime.date())
+
+
+class NewsItem(models.Model):
+    text = models.TextField()
+    short_text = models.TextField(null=True, blank=True)
+    title = models.CharField(max_length=200)
+    image = models.ImageField(null=True, blank=True)
+
+    def __str__(self):
+        return self.title
+
+
+class NewsBulletin(models.Model):
+    FIRST = 1
+    SECOND = 2
+    THIRD = 3
+
+    BULLETIN_CHOICES = ((FIRST, '  First'),
+                        (SECOND, 'Second'),
+                        (THIRD, 'Third'),
+                        )
+
+    bulletin_level = models.SmallIntegerField(choices=BULLETIN_CHOICES)
+    news_item = models.OneToOneField(NewsItem, null=True, blank=True)
+
+    def clean(self):
+        if self.news_item.short_text is None:
+            raise ValidationError(
+                "news item : %(news_item)s needs to have a short_text in order to become a bulletin",
+                code='invalid short_text',
+                params={'news_item': self.news_item}
+            )
+
+        try:
+            self.news_item.url
+        except AttributeError:
+            raise ValidationError(
+                "news item : %(news_item)s needs to have an image in order to become a bulletin",
+                code='missing image',
+                params={'news_item': self.news_item}
+            )
+
+    def save(self, *args, **kwargs):
+        self.full_clean()
+        if NewsBulletin.objects.filter(bulletin_level=self.bulletin_level).exists():
+            NewsBulletin.objects.filter(bulletin_level=self.bulletin_level).delete()
+        super(NewsBulletin, self).save(*args, **kwargs)
+
+    def __str__(self):
+        return self.get_bulletin_level_display()

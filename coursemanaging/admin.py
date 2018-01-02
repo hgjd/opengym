@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Course, Session, User
+from .models import Course, Session, User, NewsItem, NewsBulletin
 
 
 class CourseAdmin(admin.ModelAdmin):
@@ -13,3 +13,5 @@ class UserAdmin(admin.ModelAdmin):
 admin.site.register(Course, CourseAdmin)
 admin.site.register(Session)
 admin.site.register(User, UserAdmin)
+admin.site.register(NewsItem)
+admin.site.register(NewsBulletin)
