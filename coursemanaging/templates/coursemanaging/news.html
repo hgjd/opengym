@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% load static %}
+{% block extra_head %}
+<link rel="stylesheet" type="text/css" href="{% static 'opengym/news.css' %}"/>
+<script src="{% static 'opengym/news.js' %}"></script>
+<script type="text/javascript">
+      window.CSRF_TOKEN = "{{ csrf_token }}";
+
+</script>
+{% endblock %}
+{% block content %}
+<div class="container-fluid">
+    <div class="row">
+        <div class="sidebar col-sm-2 hidden-xs">
+            <ul class="nav nav-pills flex-column">
+                {% for news_item in news_items %}
+                <li class="nav-item">
+                    <button id="{{news_item.id}}" type="button" class="nav-link btn btn-primary news-link">
+                        <div>{{news_item.title}}</div>
+                        <time>{{news_item.publication_date|date:"d-g-o"}}</time>
+                    </button>
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+        <main class="w-100 p-3 news-item" role="main">
+            <h1>{{news_item.title}}</h1>
+            <h2>{{news_item.short_text}}</h2>
+            <p>{{news_item.text}}</p>
+        </main>
+    </div>
+</div>
+{% endblock %}

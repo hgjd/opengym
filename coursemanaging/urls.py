@@ -35,7 +35,12 @@ urlpatterns = [
         name='account-activation-sent'),
     url(r'^calendar/$', views.get_calendar,
         name='calendar'),
-    url(r'^landing/', views.LandingView.as_view(), name='landing'),
+    url(r'^landing/', views.LandingView.as_view(),
+        name='landing'),
+    url(r'^news/$', views.NewsView.as_view(),
+        name='news'),
+    url(r'^news/(?P<pk>[0-9]+)$', views.NewsView.as_view(),
+        name='news'),
     url(r'^impossible/$', views.ImpossibleView.as_view(),
         name='impossible'),
 ]

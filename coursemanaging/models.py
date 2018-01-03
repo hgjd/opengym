@@ -5,6 +5,7 @@ from django.contrib.auth.models import AbstractUser, PermissionsMixin
 from django.core.exceptions import ValidationError
 from django.core.mail import send_mail
 from django.db import models
+from django.utils import timezone
 from django.utils.translation import gettext as _
 
 
@@ -127,6 +128,7 @@ class NewsItem(models.Model):
     short_text = models.TextField(null=True, blank=True)
     title = models.CharField(max_length=200)
     image = models.ImageField(null=True, blank=True)
+    publication_date = models.DateTimeField(default=timezone.now, null=False, blank=False)
 
     def __str__(self):
         return self.title

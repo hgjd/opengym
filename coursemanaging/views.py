@@ -1,7 +1,9 @@
 import pytz
 import datetime
 import calendar
+import json
 
+from django.http import HttpResponse
 from django.shortcuts import redirect, render, get_object_or_404, render_to_response
 from django.urls import reverse_lazy
 from django.utils.encoding import force_text
@@ -12,7 +14,7 @@ from django.views import generic
 from coursemanaging.forms import UserRegisterForm, CourseCreateForm, SessionCreateForm
 from coursemanaging.session_calendar import SessionCalendar
 from coursemanaging.tokens import account_activation_token
-from .models import Course, Session, User, NewsBulletin
+from .models import Course, Session, User, NewsBulletin, NewsItem
 from django.contrib.auth import login
 
 utc = pytz.UTC
@@ -36,6 +38,25 @@ class LandingView(generic.TemplateView):
         context['calendar'] = mark_safe(cal)
         context['bulletins'] = bulletins
         return context
+
+
+class NewsView(generic.TemplateView):
+    template_name = 'coursemanaging/news.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(NewsView, self).get_context_data(**kwargs)
+        news_items = NewsItem.objects.all().order_by('publication_date')
+
+        if kwargs.get('pk'):
+            context['news_item'] = get_object_or_404(NewsItem, pk=kwargs.get('pk'))
+
+        context['news_items'] = news_items
+        return context
+
+    def post(self, request, *args, **kwargs):
+        if request.is_ajax():
+            news_item = get_object_or_404(NewsItem, pk=request.POST['news_item_id'])
+            return render_to_response('coursemanaging/news-item.html', {'news_item': news_item})
 
 
 """
