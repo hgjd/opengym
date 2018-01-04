@@ -107,6 +107,9 @@ class Course(models.Model):
     def user_is_subscribed(self, user):
         return self.students.filter(id=user.id).exists()
 
+    def user_is_teacher(self, user):
+        return self.teachers.filter(id=user.id).exists()
+
 
 class Session(models.Model):
     course = models.ForeignKey(Course, related_name='sessions', default=1, blank=True)

@@ -20,7 +20,7 @@
         <th>Level</th>
         <th>Aantal leerkrachten</th>
         <th>Aantal studenten</th>
-        <th>Opbouwende lessen</th>
+        <th>Sessies bouwen op</th>
         <th>Sessies</th>
     </tr>
     </thead>
@@ -31,7 +31,7 @@
         <td>{{course.get_course_level_display}}</td>
         <td>{{course.teachers.count}}</td>
         <td>{{course.students.count}}</td>
-        <td>{{course.build_up_sessions}}</td>
+        <td>{{course.build_up_sessions|yesno:"Ja,Nee"}}</td>
         <td>{{course.sessions.count}}</td>
     </tr>
     {% endfor %}
@@ -42,7 +42,7 @@
     om één aan te maken</h3>
 
 {% endif %}
-{% else %}
+{% endif %}
 <H2>U bent ingeschreven voor</H2>
 <table class="table table-striped">
     <thead>
@@ -64,5 +64,4 @@
     {% endfor %}
     </tbody>
 </table>
-{% endif %}
 {% endblock %}

@@ -179,6 +179,10 @@ background : green;
 background : yellow;
 }
 
+.course-teacher{
+background : brown;
+}
+
 
 /* CUSTOMIZE THE CAROUSEL
 -------------------------------------------------- */
@@ -206,9 +210,9 @@ background : yellow;
   height: 32rem;
 }
 
+/* Timeslots */
 .course-create {
     float : right;
 }
 
-
-
+/*

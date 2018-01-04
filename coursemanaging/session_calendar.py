@@ -25,6 +25,9 @@ class SessionCalendar(HTMLCalendar):
                 for session in self.session_list[day]:
 
                     li_cssclass = None
+                    if session.course.user_is_teacher(self.user):
+                        li_cssclass = 'course-teacher'
+
                     if session.course.user_is_subscribed(self.user):
                         li_cssclass = 'course-subscribed'
 

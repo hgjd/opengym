@@ -24,9 +24,13 @@
             </ul>
         </div>
         <main class="w-100 p-3 news-item" role="main">
+            {% if news_item %}
             <h1>{{news_item.title}}</h1>
             <h2>{{news_item.short_text}}</h2>
             <p>{{news_item.text}}</p>
+            {% else %}
+            <h2>Kies rechts een nieuws bericht</h2>
+            {% endif %}
         </main>
     </div>
 </div>
