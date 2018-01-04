@@ -36,7 +36,7 @@ font-family: Verdana, sans-serif;
 }
 
 .album {
-  min-height: 50rem; /* Can be removed; just added for demo purposes */
+  min-height: 50rem;
   padding-top: 3rem;
   padding-bottom: 3rem;
   background-color: #f7f7f7;
@@ -63,31 +63,13 @@ font-family: Verdana, sans-serif;
 CALENDAR STYLING
 ================
 */
-:root {
-  --main-color: #277554;
-  --main-color-darker: #3B5F4F;
-  --main-color-darkest: #434946;
-  --main-color-brighter: #068A51;
-  --main-color-brightest: #009E5A;
 
-  --compl-color:#AA5939;
-  --compl-color-darker:#8A6556;
-  --compl-color-darkest:#6B6461;
-  --compl-color-brighter:#CA4009;
-  --compl-color-brightest:#E74200;
-}
-
-.calendar{
-border-collapse: collapse;
-color:#545454;
-}
 
 /* Calendar title*/
 .calendar-month-title{
     padding: 70px 25px;
     width: 100%;
-    background: #E74200;
-    color: white;
+    color: black;
     font-size: 20px;
     text-transform: uppercase;
     letter-spacing: 3px;
@@ -98,15 +80,12 @@ color:#545454;
 .calendar {
     padding: 70px 25px;
     width: 100%;
-    background: #E74200;
     text-align: center;
-}
-
-/* calendar list */
-.calendar table {
     margin: 0;
     padding: 0.5em;
+    border-collapse: separate;
 }
+
 
 .calendar table td {
     vertical-align:top;
@@ -120,32 +99,62 @@ color:#545454;
 .weekday {
     margin: 0;
     padding: 10px 0;
-    background-color:pink;
-    color:white;
+    color:black;
     text-align :center;
     width: 13.6%;
+    border-left : 3px solid black;
+    border-right : 3px solid white;
 
 }
 
 /* Days (1-31) */
 .day {
     width 50em;
-    background: #eee;
     margin: 0;
+    border-left : 3px solid black;
+    border-right : 3px solid white;
+}
+
+.day-filled {
+background:black;
+color:white;
+ border-left : 3px solid black;
+  border-right : 3px solid white;
+}
+
+.noday{
+ border-left : 3px solid black;
+  border-right : 3px solid white;
+}
+
+
+.day-today{
+border-left : 3px solid black;
+border-right : 3px solid white;
+color:crimson;
+font-size: 200%;
 }
 
 
 
-.day-today{
-padding : 1em;
-background : gold;
-border:1px solid black;
+.day-bottom{
+padding-right:0.5em;
+text-align: right;
+border-bottom : 1px solid black;
+}
+
+.day-filled .day-bottom{
+border-bottom : 1px solid white;
 }
 
 .calendar-day-events a{
 color:white;
 text-decoration:none;
+float:right;
+padding-right:1em;
 }
+
+
 
 .calendar-day-events a:hover{
 color:crimson;
@@ -161,7 +170,7 @@ float:left;
 
 .month-nav{
 padding:2em;
-    color: white;
+    color: black;
     -webkit-transition: 0.5s;
           transition: 0.5s;
 }
@@ -172,15 +181,12 @@ padding:2em;
 }
 
 .session-subscribed{
-background : green;
 }
 
 .course-subscribed{
-background : yellow;
 }
 
 .course-teacher{
-background : brown;
 }
 
 
@@ -210,7 +216,6 @@ background : brown;
   height: 32rem;
 }
 
-/* Timeslots */
 .course-create {
     float : right;
 }

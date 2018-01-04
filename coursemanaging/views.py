@@ -225,6 +225,24 @@ class SessionCreateView(generic.CreateView):
         return reverse_lazy('coursemanaging:course-detail', kwargs={'pk': self.kwargs['pk']})
 
 
+class CalendarView(generic.TemplateView):
+
+    template_name = 'coursemanaging/calendar.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(CalendarView, self).get_context_data(**kwargs)
+        today = datetime.datetime.today()
+        monthrange = calendar.monthrange(today.year, today.month)
+        start_calendar_period = utc.localize(datetime.datetime(today.year, today.month, 1))
+        end_calendar_period = utc.localize(datetime.datetime(today.year, today.month, monthrange[1]))
+
+        sessions = Session.objects.filter(start_datetime__lte=end_calendar_period,
+                                          start_datetime__gte=start_calendar_period)
+        cal = SessionCalendar(sessions, self.request.user).formatmonth(today.year, today.month)
+        context['calendar'] = mark_safe(cal)
+        return context
+
+
 def get_calendar(request):
     if request.is_ajax():
         month = int(request.GET.get('month'))
@@ -237,7 +255,7 @@ def get_calendar(request):
                                           start_datetime__gte=start_calendar_period)
 
         cal = SessionCalendar(sessions, request.user).formatmonth(year, month)
-        return render_to_response('coursemanaging/calendar.html', {'calendar': mark_safe(cal)})
+        return render_to_response('coursemanaging/calendar-ajax.html', {'calendar': mark_safe(cal)})
 
 
 class ImpossibleView(generic.TemplateView):

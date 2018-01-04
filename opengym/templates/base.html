@@ -52,6 +52,7 @@
             <div class="dropdown-menu" aria-labelledby="dropdown01">
                 <a class="dropdown-item" href="{% url 'coursemanaging:courses-user' %}">Lessen</a>
                 <a class="dropdown-item" href="{% url 'coursemanaging:user-detail' %}">Uw gegevens</a>
+                <a class="dropdown-item" href="{% url 'coursemanaging:calendar' %}">Kalender</a>
                 <a class="dropdown-item" href="{% url 'coursemanaging:logout' %}">Logout</a>
             </div>
         </li>
@@ -61,7 +62,8 @@
 <div class="base container">
     {% block content %}
     {% endblock %}
-
 </div>
+    {% block content-no-div %}
+    {% endblock %}
 </body>
 </html>

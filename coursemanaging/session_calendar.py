@@ -16,6 +16,7 @@ class SessionCalendar(HTMLCalendar):
 
     def formatday(self, day, weekday):
         if day != 0:
+            day_html = '<div class="day-bottom">' + str(day) + '</div>'
             cssclass = 'day'
             if date.today() == date(self.year, self.month, day):
                 cssclass += '-today'
@@ -24,29 +25,28 @@ class SessionCalendar(HTMLCalendar):
                 body = ['<ul class="calendar-day-events">']
                 for session in self.session_list[day]:
 
-                    li_cssclass = None
                     if session.course.user_is_teacher(self.user):
-                        li_cssclass = 'course-teacher'
+                        body.append('<li> <span class="fa fa-user-circle-o" aria-hidden="true"></span> ')
 
-                    if session.course.user_is_subscribed(self.user):
-                        li_cssclass = 'course-subscribed'
+                    elif session.user_is_subscribed(self.user):
+                        body.append('<li> <span class="fa fa-check" aria-hidden="true"></span> ')
 
-                    if session.user_is_subscribed(self.user):
-                        li_cssclass = 'session-subscribed'
+                    elif session.course.user_is_subscribed(self.user):
+                        body.append('<li> <i class="fa fa-spinner fa-pulse fa-fw"></i><span '
+                                    'class="sr-only">Loading...< span></span> ')
 
-                    if li_cssclass:
-                        body.append('<li class="'+li_cssclass+'">')
                     else:
-                        body.append('<li>')
+                        body.append('<li> <span class="fa fa-bed" aria-hidden="true"></span> ')
 
-                    body.append('<time>%s</time>-' % (
+                    body.append('<time>%s</time>' % (
                         str(session.start_datetime.hour) + "h" + str(session.start_datetime.minute)))
                     body.append('<a href="%s">' % reverse('coursemanaging:session-detail', args=[session.id]))
-                    body.append(session.course.course_name + "</a>")
+                    body.append(session.course.course_name + '</a> <div style="clear: both;"></div>')
+
                     body.append('</li>')
                 body.append('</ul>')
-                return self.day_cell(cssclass, '%d %s' % (day, ''.join(body)))
-            return self.day_cell(cssclass, day)
+                return self.day_cell(cssclass, '%s %s' % (''.join(body), day_html))
+            return self.day_cell(cssclass, day_html)
         return self.day_cell('noday', '&nbsp;')
 
     def formatmonth(self, theyear, themonth, withyear=True):
@@ -77,7 +77,7 @@ class SessionCalendar(HTMLCalendar):
             s = '%s %s' % (month_name[themonth], theyear)
         else:
             s = '%s' % month_name[themonth]
-        return '<tr><th colspan="1"><span class="fa fa-angle-left fa-2x month-nav month-prev"></span></th>' + \
+        return '<tr class="month-header"><th colspan="1"><span class="fa fa-angle-left fa-2x month-nav month-prev"></span></th>' + \
                '<th colspan="5" class="calendar-month-title">%s</th>' % s + \
                '<th colspan="1"><span class="fa fa-angle-right fa-2x month-nav month-next"></span></th></tr>'
 

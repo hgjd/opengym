@@ -1,1 +1,17 @@
-{{calendar}}
+{% extends "base.html" %}
+{% load static %}
+{% block extra_head %}
+<link rel="stylesheet" type="text/css" href="{% static 'opengym/calendar.css' %}"/>
+<script src="{% static 'opengym/calendar.js' %}"></script>
+<script src="https://use.fontawesome.com/9d1627fd30.js"></script>
+<script type="text/javascript">
+      window.CSRF_TOKEN = "{{ csrf_token }}";
+      window.CALENDAR_YEAR = {% now "o" %}
+      window.CALENDAR_MONTH = {% now "n" %}
+</script>
+{% endblock %}
+{% block content-no-div %}
+<div id="calendar-content">
+    {{calendar}}
+</div>
+{% endblock %}
