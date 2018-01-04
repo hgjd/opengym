@@ -35,7 +35,7 @@
     }
      $.ajax({
         type: 'GET',
-        url: '/calendar/',
+        url: '/ajax-calendar/',
         data: {'csrfmiddlewaretoken': window.CSRF_TOKEN,
         'month':month,
         'year':year},
@@ -59,7 +59,7 @@ $(document).on('click', '.month-next', function(){
     }
      $.ajax({
         type: 'GET',
-        url: '/calendar/',
+        url: '/ajax-calendar/',
         data: {'csrfmiddlewaretoken': window.CSRF_TOKEN,
         'month':month,
         'year':year,},

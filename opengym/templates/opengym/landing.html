@@ -14,6 +14,10 @@
       window.CALENDAR_YEAR = {% now "o" %}
       window.CALENDAR_MONTH = {% now "n" %}
 
+
+
+
+
     </script>
     <meta charset="UTF-8">
     <title>Title</title>
@@ -63,7 +67,8 @@
                 <img class="first-slide" src="{{ bulletins.0.news_item.image.url }}">
                 <div class="container">
                     <div class="carousel-caption d-none d-md-block text-left">
-                        <h1><a href="{% url 'coursemanaging:news' bulletins.0.news_item.id %}">{{ bulletins.0.news_item.title }}</a></h1>
+                        <h1><a href="{% url 'coursemanaging:news' bulletins.0.news_item.id %}">{{bulletins.0.news_item.title}}</a>
+                        </h1>
                         <p>{{ bulletins.0.news_item.short_text }}</p>
                     </div>
                 </div>
@@ -72,7 +77,8 @@
                 <img class="second-slide" src="{{ bulletins.1.news_item.image.url }}">
                 <div class="container">
                     <div class="carousel-caption d-none d-md-block">
-                        <h1><a href="{% url 'coursemanaging:news' bulletins.1.news_item.id %}">{{ bulletins.1.news_item.title }}</a></h1>
+                        <h1><a href="{% url 'coursemanaging:news' bulletins.1.news_item.id %}">{{bulletins.1.news_item.title}}</a>
+                        </h1>
                         <p>{{ bulletins.1.news_item.short_text }}</p>
                     </div>
                 </div>
@@ -81,7 +87,8 @@
                 <img class="third-slide" src="{{ bulletins.2.news_item.image.url }}">
                 <div class="container">
                     <div class="carousel-caption d-none d-md-block text-right">
-                       <h1><a href="{% url 'coursemanaging:news' bulletins.2.news_item.id %}">{{ bulletins.2.news_item.title }}</a></h1>
+                        <h1><a href="{% url 'coursemanaging:news' bulletins.2.news_item.id %}">{{bulletins.2.news_item.title}}</a>
+                        </h1>
                         <p>{{ bulletins.2.news_item.short_text }}</p>
                     </div>
                 </div>
@@ -101,6 +108,10 @@
 <section id="kalender">
     <div class="jumbotron text-center mt-3">
         <div id="calendar-content">{{calendar}}</div>
+    </div>
+    <div class="container">
+        <a class="float-right" href="{% url 'coursemanaging:course-list' %}">Bekijk hier alle lessen <span
+                class="fa fa-chevron-right"></span></a>
     </div>
 </section>
 

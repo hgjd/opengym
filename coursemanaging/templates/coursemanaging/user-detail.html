@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block content %}
+<h3>Uw gegevens</h3>
+<table class="table">
+    <tbody>
+    <tr>
+        <th scope="row">Naam</th>
+        <td>{{user.last_name}}</td>
+    </tr>
+    <tr>
+        <th scope="row">Voornaam</th>
+        <td>{{user.first_name}}</td>
+    </tr>
+    <tr>
+        <th scope="row">Geboortedatum</th>
+        <td>{{user.birthdate|date:'d/j/o'}}</td>
+    </tr>
+    <tr>
+        <th scope="row">Vrijwilliger</th>
+        <td>{{user.volunteer|yesno:"Ja,nee"}}</td>
+    </tr>
+    <tr>
+        <th scope="row">Leerkracht</th>
+        <td>{{user.teacher|yesno:"Ja,nee"}}</td>
+    </tr>
+    </tbody>
+</table>
+{% endblock %}

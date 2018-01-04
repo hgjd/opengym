@@ -19,12 +19,16 @@ urlpatterns = [
         name='course-delete'),
     url(r'^courses$', views.CoursesUserListView.as_view(),
         name='courses-user'),
+
     url(r'^session/(?P<pk>[0-9]+)$', views.SessionDetailView.as_view(),
         name='session-detail'),
     url(r'^course/(?P<pk>[0-9]+)/session-create$', views.SessionCreateView.as_view(),
         name='session-create'),
+
     url(r'^register/$', views.UserCreateView.as_view(),
         name='user-register'),
+    url(r'^user/$', views.UserDetailView.as_view(),
+        name='user-detail'),
     url(r'^activate/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,20})/$', views.activate,
         name='user-activate'),
     url(r'^login/$', auth_views.login, {'template_name': 'coursemanaging/user-login.html'},
@@ -33,14 +37,17 @@ urlpatterns = [
         name='logout'),
     url('^account-activation-sent', views.AccountActivationSentView.as_view(),
         name='account-activation-sent'),
-    url(r'^calendar/$', views.get_calendar,
-        name='calendar'),
+
+    url(r'^ajax-calendar/$', views.get_calendar,
+        name='ajax-calendar'),
     url(r'^landing/', views.LandingView.as_view(),
         name='landing'),
+
     url(r'^news/$', views.NewsView.as_view(),
         name='news'),
     url(r'^news/(?P<pk>[0-9]+)$', views.NewsView.as_view(),
         name='news'),
+
     url(r'^impossible/$', views.ImpossibleView.as_view(),
         name='impossible'),
 ]

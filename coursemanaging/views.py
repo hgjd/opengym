@@ -77,6 +77,10 @@ class UserCreateView(generic.CreateView):
         return kwargs
 
 
+class UserDetailView(generic.TemplateView):
+    template_name = 'coursemanaging/user-detail.html'
+
+
 class AccountActivationSentView(generic.TemplateView):
     template_name = 'coursemanaging/account-activation-sent.html'
 
