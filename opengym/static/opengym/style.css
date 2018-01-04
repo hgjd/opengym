@@ -78,6 +78,7 @@ CALENDAR STYLING
 
 /* calendar table */
 .calendar {
+    font-family: 'Julius Sans One', sans-serif;
     padding: 70px 25px;
     width: 100%;
     text-align: center;
@@ -87,20 +88,18 @@ CALENDAR STYLING
 }
 
 
-.calendar table td {
+.calendar td {
     vertical-align:top;
-    text-align : left;
-    padding-left: 0.5em;
-    font-size : 0.8em;
+    font-size : 0.9em;
 }
 
 
 /* Weekdays (Mon-Sun) */
 .weekday {
     margin: 0;
-    padding: 10px 0;
+    padding-left: 1em;
     color:black;
-    text-align :center;
+    text-align :left;
     width: 13.6%;
     border-left : 3px solid black;
     border-right : 3px solid white;
@@ -151,7 +150,6 @@ border-bottom : 1px solid white;
 color:white;
 text-decoration:none;
 float:right;
-padding-right:1em;
 }
 
 

@@ -45,7 +45,7 @@ class SessionCalendar(HTMLCalendar):
 
                     body.append('</li>')
                 body.append('</ul>')
-                return self.day_cell(cssclass, '%s %s' % (''.join(body), day_html))
+                return self.day_cell(cssclass, '%s %s' % (day_html, ''.join(body)))
             return self.day_cell(cssclass, day_html)
         return self.day_cell('noday', '&nbsp;')
 
