@@ -49,7 +49,7 @@ class NewsView(generic.TemplateView):
 
         if kwargs.get('pk'):
             context['news_item'] = get_object_or_404(NewsItem, pk=kwargs.get('pk'))
-
+        context['current_page'] = 'news'
         context['news_items'] = news_items
         return context
 
@@ -167,6 +167,12 @@ class CourseListView(generic.ListView):
     def get_queryset(self):
         return Course.objects.all()
 
+    def get_context_data(self, **kwargs):
+        context = super(CourseListView, self).get_context_data(**kwargs)
+
+        context['current_page'] = 'courses'
+        return context
+
 
 class CourseUpdateView(generic.UpdateView):
     """Update view of a course"""
@@ -239,6 +245,7 @@ class CalendarView(generic.TemplateView):
         sessions = Session.objects.filter(start_datetime__lte=end_calendar_period,
                                           start_datetime__gte=start_calendar_period)
         cal = SessionCalendar(sessions, self.request.user).formatmonth(today.year, today.month)
+        context['current_page'] = 'calendar'
         context['calendar'] = mark_safe(cal)
         return context
 

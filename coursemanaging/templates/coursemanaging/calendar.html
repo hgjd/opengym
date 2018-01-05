@@ -3,7 +3,6 @@
 {% block extra_head %}
 <link rel="stylesheet" type="text/css" href="{% static 'opengym/calendar.css' %}"/>
 <script src="{% static 'opengym/calendar.js' %}"></script>
-<script src="https://use.fontawesome.com/9d1627fd30.js"></script>
 <script type="text/javascript">
       window.CSRF_TOKEN = "{{ csrf_token }}";
       window.CALENDAR_YEAR = {% now "o" %}

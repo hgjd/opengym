@@ -17,6 +17,7 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js"
             integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1"
             crossorigin="anonymous"></script>
+    <script src="https://use.fontawesome.com/9d1627fd30.js"></script>
     {% block extra_head %}
 
     {% endblock %}
@@ -30,13 +31,47 @@
 
     <ul class="collapse navbar-collapse justify-content-md-center">
         <li>
-            <a class="nav-link" href="{% url 'coursemanaging:course-list' %}">Lessen</a>
+            {% if current_page == 'courses' %}
+
+            <a class="nav-link" href="{% url 'coursemanaging:course-list' %}">
+                <span class="fa fa-angle-double-right" aria-hidden="true"></span>
+                Lessen
+                <span class="fa fa-angle-double-left" aria-hidden="true"></span>
+            </a>
+
+            {% else %}
+
+            <a class="nav-link" href="{% url 'coursemanaging:course-list' %}">
+                Lessen
+            </a>
+
+            {% endif %}
+
         </li>
         <li>
-            <a class="nav-link" href="{% url 'coursemanaging:news' %}">Nieuws</a>
+            {% if current_page == 'news' %}
+            <a class="nav-link" href="{% url 'coursemanaging:news' %}">
+                <span class="fa fa-angle-double-right" aria-hidden="true"></span>
+                Nieuws
+                <span class="fa fa-angle-double-left" aria-hidden="true"></span>
+            </a>
+
+            {% else %}
+             <a class="nav-link" href="{% url 'coursemanaging:news' %}">Nieuws</a>
+            {% endif %}
+
         </li>
         <li>
-            <a class="nav-link" href="{% url 'coursemanaging:calendar' %}">Kalender</a>
+            {% if current_page == 'calendar' %}
+            <a class="nav-link" href="{% url 'coursemanaging:calendar' %}">
+                <span class="fa fa-angle-double-right" aria-hidden="true"></span>
+                Kalender
+                <span class="fa fa-angle-double-left" aria-hidden="true"></span>
+            </a>
+
+            {% else %}
+             <a class="nav-link" href="{% url 'coursemanaging:calendar' %}">Kalender</a>
+            {% endif %}
         </li>
 
     </ul>

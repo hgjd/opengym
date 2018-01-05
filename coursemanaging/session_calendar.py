@@ -27,17 +27,19 @@ class SessionCalendar(HTMLCalendar):
                     body.append('<li>')
                     body.append('<time>')
 
-                    if session.course.user_is_teacher(self.user):
-                        body.append('<span class="fa fa-user-circle-o" aria-hidden="true"></span> ')
+                    if self.user.is_authenticated():
+                        if session.course.user_is_teacher(self.user):
+                            body.append('<span class="fa fa-user-circle-o" aria-hidden="true"></span> ')
 
-                    elif session.user_is_subscribed(self.user):
-                        body.append('<span class="fa fa-check" aria-hidden="true"></span> ')
+                        elif session.user_is_subscribed(self.user):
+                            body.append('<span class="fa fa-check" aria-hidden="true"></span> ')
 
-                    elif session.course.user_is_subscribed(self.user):
-                        body.append('<span class="fa fa-thumb-tack" aria-hidden="true"></span> ')
+                        elif session.course.user_is_subscribed(self.user):
+                            body.append('<span class="fa fa-thumb-tack" aria-hidden="true"></span> ')
 
-                    else:
-                        body.append('<span class="fa fa-bed" aria-hidden="true"></span> ')
+                        else:
+                            body.append('<span class="fa fa-bed" aria-hidden="true"></span> ')
+
                     body.append('%s</time>' % (
                         str(session.start_datetime.hour) + "h" + str(session.start_datetime.minute)))
 
