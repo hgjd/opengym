@@ -6,6 +6,7 @@
 <script type="text/javascript">
       window.CSRF_TOKEN = "{{ csrf_token }}";
 
+
 </script>
 {% endblock %}
 {% block content %}
@@ -15,7 +16,7 @@
             <ul class="nav nav-pills flex-column">
                 {% for news_item in news_items %}
                 <li class="nav-item">
-                    <button id="{{news_item.id}}" type="button" class="nav-link btn btn-primary news-link">
+                    <button id="{{news_item.id}}" type="button" class="nav-link btn news-link">
                         <div>{{news_item.title}}</div>
                         <time>{{news_item.publication_date|date:"d-g-o"}}</time>
                     </button>
@@ -23,13 +24,14 @@
                 {% endfor %}
             </ul>
         </div>
-        <main class="w-100 p-3 news-item" role="main">
+        <main class="p-3 news-item" role="main">
             {% if news_item %}
             <h1>{{news_item.title}}</h1>
             <h2>{{news_item.short_text}}</h2>
+            <time>{{news_item.publication_date|date:"d-g-o"}}</time>
             <p>{{news_item.text}}</p>
             {% else %}
-            <h2>Kies rechts een nieuws bericht</h2>
+            <h2>Er is nog geen nieuws</h2>
             {% endif %}
         </main>
     </div>

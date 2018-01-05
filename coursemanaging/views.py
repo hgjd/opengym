@@ -49,6 +49,8 @@ class NewsView(generic.TemplateView):
 
         if kwargs.get('pk'):
             context['news_item'] = get_object_or_404(NewsItem, pk=kwargs.get('pk'))
+        elif news_items:
+            context['news_item'] = news_items[0]
         context['current_page'] = 'news'
         context['news_items'] = news_items
         return context

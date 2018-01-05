@@ -7,6 +7,7 @@
     <link rel="stylesheet" type="text/css" href="{% static 'opengym/style.css' %}"/>
     <link href="https://fonts.googleapis.com/css?family=Julius+Sans+One" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Megrim" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Quattrocento" rel="stylesheet">
 
     <script src="https://code.jquery.com/jquery-3.2.1.js"
             integrity="sha256-DZAnKJ/6XZ9si04Hgrsxu/8s717jcIzLy3oi35EouyE="
@@ -79,7 +80,7 @@
         {% if user.is_authenticated %}
         <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle btn-lg" id="dropdown01" data-toggle="dropdown"
-               aria-haspopup="true" aria-expanded="false">{{user}}</a>
+               aria-haspopup="true" aria-expanded="false">{{user.first_name}}</a>
             <div class="dropdown-menu" aria-labelledby="dropdown01">
                 <a class="dropdown-item" href="{% url 'coursemanaging:courses-user' %}">Lessen</a>
                 <a class="dropdown-item" href="{% url 'coursemanaging:user-detail' %}">Uw gegevens</a>
