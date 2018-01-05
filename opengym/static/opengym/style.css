@@ -10,13 +10,10 @@ font-family: Verdana, sans-serif;
     margin: 0;
     padding: 0;
     padding-top: 5rem;
+    background-color: #FBFBFB;
 }
 
-.navbar {
-  margin-bottom: 0;
-  background-color: #969696;
-  border-bottom : 3px solid white;
-}
+
 
 .jumbotron {
   padding-top: 6rem;
@@ -58,6 +55,48 @@ font-family: Verdana, sans-serif;
 
 .card-text {
   font-size: 85%;
+}
+/*
+================
+NAVIGATION STYLING
+================
+*/
+
+
+.navbar {
+  font-family: 'Megrim', cursive;
+  margin-bottom: 0;
+  background-color: #F6F6F6;
+  border-bottom : 5px solid white;
+  font-size : 150%;
+}
+
+.navbar a{
+ color:red:
+}
+
+.justify-content-md-center{
+margin-right: 5em;
+}
+
+.navbar-right{
+width : 5em;
+}
+
+.navbar-brand{
+color:#3a6826;
+}
+.navbar-brand:hover{
+color:#CCCCCC;
+}
+
+.nav-link{
+color:#3a6826;
+}
+
+
+.nav-link:hover{
+color:#CCCCCC;
 }
 
 /*
@@ -194,14 +233,6 @@ padding:2em;
           transform: scale(1.5);
 }
 
-.session-subscribed{
-}
-
-.course-subscribed{
-}
-
-.course-teacher{
-}
 
 
 /* CUSTOMIZE THE CAROUSEL
