@@ -102,7 +102,10 @@ class Course(models.Model):
         return self.course_name
 
     def get_next_session(self):
-        return Session.objects.filter(course=self).order_by('-start_datetime')[0]
+        if Session.objects.filter(course=self).exists():
+            return Session.objects.filter(course=self).order_by('-start_datetime')[0]
+        else:
+            return None
 
     def user_is_subscribed(self, user):
         return self.students.filter(id=user.id).exists()

@@ -16,7 +16,7 @@ class SessionCalendar(HTMLCalendar):
 
     def formatday(self, day, weekday):
         if day != 0:
-            day_html = '<div class="day-bottom">' + str(day) + '</div>'
+            day_html = '<div class="day-head">' + str(day) + '</div>'
             cssclass = 'day'
             if date.today() == date(self.year, self.month, day):
                 cssclass += '-today'
@@ -24,22 +24,23 @@ class SessionCalendar(HTMLCalendar):
                 cssclass += '-filled'
                 body = ['<ul class="calendar-day-events">']
                 for session in self.session_list[day]:
+                    body.append('<li>')
+                    body.append('<time>')
 
                     if session.course.user_is_teacher(self.user):
-                        body.append('<li> <span class="fa fa-user-circle-o" aria-hidden="true"></span> ')
+                        body.append('<span class="fa fa-user-circle-o" aria-hidden="true"></span> ')
 
                     elif session.user_is_subscribed(self.user):
-                        body.append('<li> <span class="fa fa-check" aria-hidden="true"></span> ')
+                        body.append('<span class="fa fa-check" aria-hidden="true"></span> ')
 
                     elif session.course.user_is_subscribed(self.user):
-                        body.append('<li> <i class="fa fa-spinner fa-pulse fa-fw"></i><span '
-                                    'class="sr-only">Loading...< span></span> ')
+                        body.append('<span class="fa fa-thumb-tack" aria-hidden="true"></span> ')
 
                     else:
-                        body.append('<li> <span class="fa fa-bed" aria-hidden="true"></span> ')
-
-                    body.append('<time>%s</time>' % (
+                        body.append('<span class="fa fa-bed" aria-hidden="true"></span> ')
+                    body.append('%s</time>' % (
                         str(session.start_datetime.hour) + "h" + str(session.start_datetime.minute)))
+
                     body.append('<a href="%s">' % reverse('coursemanaging:session-detail', args=[session.id]))
                     body.append(session.course.course_name + '</a> <div style="clear: both;"></div>')
 

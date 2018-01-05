@@ -1,5 +1,7 @@
 ul {
 list-style-type: none;
+padding:0;
+margin:0;
 }
 
 body {
@@ -85,6 +87,9 @@ CALENDAR STYLING
     margin: 0;
     padding: 0.5em;
     border-collapse: separate;
+    height:90vh;
+    width:96%;
+    margin: 0 auto;
 }
 
 
@@ -97,9 +102,9 @@ CALENDAR STYLING
 /* Weekdays (Mon-Sun) */
 .weekday {
     margin: 0;
-    padding-left: 1em;
+    padding-right: 0.5em;
     color:black;
-    text-align :left;
+    text-align :right;
     width: 13.6%;
     border-left : 3px solid black;
     border-right : 3px solid white;
@@ -112,6 +117,7 @@ CALENDAR STYLING
     margin: 0;
     border-left : 3px solid black;
     border-right : 3px solid white;
+    height:120px;
 }
 
 .day-filled {
@@ -136,13 +142,13 @@ font-size: 200%;
 
 
 
-.day-bottom{
-padding-right:0.5em;
-text-align: right;
+.day-head{
+padding-left:0.5em;
+text-align: left;
 border-bottom : 1px solid black;
 }
 
-.day-filled .day-bottom{
+.day-filled .day-head{
 border-bottom : 1px solid white;
 }
 
@@ -150,6 +156,12 @@ border-bottom : 1px solid white;
 color:white;
 text-decoration:none;
 float:right;
+margin-right:0.5em;
+}
+
+.calendar-day-events time{
+float:left;
+margin-left:0.5em;
 }
 
 
@@ -164,6 +176,10 @@ float:right;
 
 .month-prev {
 float:left;
+}
+
+.month-header{
+height: 5vh;
 }
 
 .month-nav{
