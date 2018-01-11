@@ -215,10 +215,6 @@ float:right;
 float:left;
 }
 
-.current-news{
-padding-right:2em;
-}
-
 .month-header{
 height: 5vh;
 }
@@ -240,6 +236,10 @@ padding:2em;
 NEWS STYLING
 ================
 */
+
+.current-news{
+padding-right:2em;
+}
 
 .sidebar {
   font-family: 'Quattrocento', serif;
