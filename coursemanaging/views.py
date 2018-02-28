@@ -31,8 +31,8 @@ class LandingView(generic.TemplateView):
         start_calendar_period = utc.localize(datetime.datetime(today.year, today.month, 1))
         end_calendar_period = utc.localize(datetime.datetime(today.year, today.month, monthrange[1]))
 
-        sessions = Session.objects.filter(start_datetime__lte=end_calendar_period,
-                                          start_datetime__gte=start_calendar_period)
+        sessions = Session.objects.filter(start__lte=end_calendar_period,
+                                          start__gte=start_calendar_period)
         bulletins = NewsBulletin.objects.all().order_by('-bulletin_level')
         cal = SessionCalendar(sessions, self.request.user).formatmonth(today.year, today.month)
         context['calendar'] = mark_safe(cal)
@@ -156,7 +156,7 @@ class CourseDetailView(generic.DetailView):
             session = get_object_or_404(Session, pk=join_session)
             if session.subscribed_users.filter(pk=request.user.id).exists():
                 return redirect('coursemanaging:impossible')
-            session.subscribed_users.add(self.request.user)
+            session.subscribe_user(self.request.user)
             return redirect('coursemanaging:course-detail', pk=course.id)
 
 
@@ -210,17 +210,10 @@ SESSION VIEWS
 """
 
 
-class SessionDetailView(generic.DetailView):
-    """Detailview for a session"""
-    template_name = "coursemanaging/session-detail.html"
-    model = Session
-
-
 class SessionCreateView(generic.CreateView):
     """create view for a Session"""
     template_name = 'coursemanaging/session-create.html'
     model = Session
-    success_url = reverse_lazy('coursemanaging:index')
     form_class = SessionCreateForm
 
     def get_form_kwargs(self):
@@ -233,8 +226,16 @@ class SessionCreateView(generic.CreateView):
         return reverse_lazy('coursemanaging:course-detail', kwargs={'pk': self.kwargs['pk']})
 
 
-class CalendarView(generic.TemplateView):
+class SessionUpdateView(generic.UpdateView):
+    template_name = 'coursemanaging/session-create.html'
+    model = Session
+    fields = ['start', 'duration', 'extra_info', 'max_students_diff_course', 'max_students']
 
+    def get_success_url(self):
+        return reverse_lazy('coursemanaging:session-detail', kwargs={'pk': self.kwargs['pk']})
+
+
+class CalendarView(generic.TemplateView):
     template_name = 'coursemanaging/calendar.html'
 
     def get_context_data(self, **kwargs):
@@ -244,8 +245,8 @@ class CalendarView(generic.TemplateView):
         start_calendar_period = utc.localize(datetime.datetime(today.year, today.month, 1))
         end_calendar_period = utc.localize(datetime.datetime(today.year, today.month, monthrange[1]))
 
-        sessions = Session.objects.filter(start_datetime__lte=end_calendar_period,
-                                          start_datetime__gte=start_calendar_period)
+        sessions = Session.objects.filter(start__lte=end_calendar_period,
+                                          start__gte=start_calendar_period)
         cal = SessionCalendar(sessions, self.request.user).formatmonth(today.year, today.month)
         context['current_page'] = 'calendar'
         context['calendar'] = mark_safe(cal)
@@ -260,8 +261,8 @@ def get_calendar(request):
         start_calendar_period = utc.localize(datetime.datetime(year, month, 1))
         end_calendar_period = utc.localize(datetime.datetime(year, month, monthrange[1]))
 
-        sessions = Session.objects.filter(start_datetime__lte=end_calendar_period,
-                                          start_datetime__gte=start_calendar_period)
+        sessions = Session.objects.filter(start__lte=end_calendar_period,
+                                          start__gte=start_calendar_period)
 
         cal = SessionCalendar(sessions, request.user).formatmonth(year, month)
         return render_to_response('coursemanaging/calendar-ajax.html', {'calendar': mark_safe(cal)})

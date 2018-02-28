@@ -1,112 +1,186 @@
 {% extends "base.html" %}
 {% load coursemanaging_extras %}
 {% block content %}
-<h1>{{course.course_name}}</h1>
-<p>{{course.get_course_level_display}}</p>
+<h1 class="text-center">{{course.course_name}}</h1>
 
-{% if build_up_sessions %}
-<p> De sessies bouwen op</p>
-{% else %}
-<p> De sessies zijn makkelijk appart te volgen</p>
-{% endif %}
 
-{% if not is_teacher and not is_student%}
-<form method="post">
-    {% csrf_token %}
-    <input type="hidden" name="join_course" value="true">
-    <button type="submit" class="btn btn-primary">Shrijf je in</button>
-</form>
-{% elif is_teacher%}
-<button class="btn btn-success disabled">U bent leerkracht</button>
-{% else %}
-<button class="btn btn-success disabled">U bent ingeschreven</button>
-{% endif %}
+<ul class="nav nav-tabs course-detail-tabs" id="courseTab" role="tablist">
+    <li class="nav-item">
+        <a class="nav-link tab" id="information-tab" data-toggle="tab" href="#information" role="tab"
+           aria-controls="information"
+           aria-selected="true">Informatie</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link tab active" id="sessions-tab" data-toggle="tab" href="#sessions" role="tab"
+           aria-controls="sessions"
+           aria-selected="true">Sessies</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link tab" id="teachers-tab" data-toggle="tab" href="#teachers" role="tab"
+           aria-controls="teachers"
+           aria-selected="true">Leerkrachten</a>
+    </li>
+    {% if is_teacher %}
+    <li class="nav-item">
+        <a class="nav-link tab" id="students-tab" data-toggle="tab" href="#students" role="tab"
+           aria-controls="students"
+           aria-selected="true">Studenten</a>
+    </li>
+    {% endif %}
+</ul>
 
-<h2>Leerkrachten</h2>
-<table class="table">
-    <thead>
-    <tr>
-        <th>Voornaam</th>
-        <th>Naam</th>
-    </tr>
-    </thead>
-    <tbody>
-    {% for user in course.teachers.all %}
-    <tr>
-        <td>{{user.first_name}}</td>
-        <td>{{user.last_name}}</td>
-    </tr>
-    {% endfor %}
-    </tbody>
-</table>
-{% if is_teacher %}
-<h2>Studenten</h2>
-<table class="table">
-    <thead>
-    <tr>
-        <th>Voornaam</th>
-        <th>Naam</th>
-    </tr>
-    </thead>
+<div class="tab-content pt-5 course-detail-tab-content" id="myTabContent">
+    <!-- start information tab -->
+    <div class="tab-pane fade " id="information" role="tabpanel" aria-labelledby="information-tab">
+        <table class="table">
+            <tbody>
+            <tr>
+                <th scope="row">Niveau</th>
+                <td>{{course.get_course_level_display}}</td>
+            </tr>
+            <tr>
+                <th scope="row">Opbouwende sessies <span data-toggle="tooltip" class="click-hover"
+                                                         data-placement="top"
+                                                         title="Dit betekend dat elke sessie verder gaat op vorige sessies, wat het moeilijker maakt lessen te missen">
+                (?)
+            </span></th>
+                <td>
+                    {{course.build_up_sessions|yesno:"Ja,nee"}}
+                </td>
+            </tr>
+            {% if course.max_students_course %}
+            <tr>
+                <th scope="row">Max inschrijvingen</th>
+                <td>{{course.max_students_course}}</td>
+            </tr>
+            {% endif %}
+            {% if is_student %}
+            <tr>
+                <th scope="row">Aantal inschrijvingen</th>
+                <td>{{course.students.count}}</td>
+            </tr>
+            {% endif %}
+            <tr>
+                <th scope="row">Beschrijving</th>
+                <td>{{course.description}}</td>
+            </tr>
+            <tr>
+                <th scope="row">Inschrijven</th>
+                <td>
+                    {% if not is_teacher and not is_student%}
+                    {% if not course.is_full %}
+                    <form method="post">
+                        {% csrf_token %}
+                        <input type="hidden" name="join_course" value="true">
+                        <button type="submit" class="btn btn-primary">Shrijf je in</button>
+                    </form>
+                    {% else %}
+                    <button class="btn btn-primary disabled">Volzet</button>
+                    {% endif %}
+                    {% elif is_teacher%}
+                    <button class="btn btn-success disabled">U bent leerkracht</button>
+                    {% else %}
+                    <button class="btn btn-success disabled">U bent ingeschreven</button>
+                    {% endif %}
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <!-- end information tab -->
+    <!-- start sessions tab -->
+    <div class="tab-pane fade active show" id="sessions" role="tabpanel" aria-labelledby="sessions-tab">
+        <table class="table">
+            <thead>
+            <tr>
+                <th>Tijdstip</th>
+                <th>Duur</th>
+                <th></th>
+                <th>Max deelnemers</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for session in course.sessions.all %}
+            <tr>
+                <td>{{session.start}}</a></td>
+                <td>{{session.duration}}</td>
+                <td>
+                    {% if is_teacher %}
+                    {{session.subscribed_users.all.count}} inschrijving(en)
+                    {% else %}
+                    {% if not sessions_subscribed|get_item:session.id %}
+                    {% if not session.is_full %}
+                    <form method="post">
+                        {% csrf_token %}
+                        <input type="hidden" name="join_session" value="{{session.id}}">
+                        <button type="submit" class="btn btn-primary">Schrijf je in</button>
+                    </form>
+                    {% else %}
+                    <button class="btn btn-primary disabled">Volzet</button>
+                    {% endif %}
+                    {% else %}
+                    <button class="btn btn-primary disabled">Ingeschreven</button>
+                    {% endif %}
+                    {% endif %}
 
-    <tbody>
-    {% for user in course.students.all %}
-    <tr>
-        <td> {{user.first_name}}</td>
-        <td>{{user.last_name}}</td>
-    </tr>
-    {% endfor %}
-    </tbody>
-</table>
-{% elif is_student %}
-<h2>{{course.students.all.count}} andere student(en)</h2>
-{% endif %}
-
-<div class="row">
-    <h2 class="col-md-8">Sessies</h2>
-
-    <div class="col-md-4">
+                </td>
+                <td>
+                    {{session.get_max_students|default_if_none:"geen maximum"}}
+                </td>
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
         {% if is_teacher %}
         <a href="{% url 'coursemanaging:session-create' course.id %}"
-           class="btn btn-outline-warning course-create">
-            <span class="fa fa-plus" aria-hidden="true"></span> Create
+           class="btn btn-success mt-5">
+            <span class="fa fa-plus" aria-hidden="true"></span> Sessie(s) toevoegen
         </a>
         {% endif %}
     </div>
-</div>
-<table class="table">
-    <thead>
-    <tr>
-        <th>Tijdstip</th>
-        <th>Duur</th>
-        <th></th>
-    </tr>
-    </thead>
-    <tbody>
-    {% for session in course.sessions.all %}
-    <tr>
-        <td><a href="{% url 'coursemanaging:session-detail' session.id %}">{{session.start_datetime}}</a></td>
-        <td>{{session.duration}}</td>
-        <td>
-            {% if is_teacher %}
-            {{session.subscribed_users.all.count}} inschrijving(en)
-            {%else%}
-            {% if not sessions_subscribed|get_item:session.id %}
-            <form method="post">
-                {% csrf_token %}
-                <input type="hidden" name="join_session" value="{{session.id}}">
-                <button type="submit" class="btn btn-primary">Shrijf je in</button>
-            </form>
-            {% else %}
-            <button class="btn btn-primary disabled">Ingeschreven</button>
-            {% endif %}
-            {% endif %}
+    <!-- end sessions tab -->
+    <!-- start teachers tab -->
+    <div class="tab-pane fade " id="teachers" role="tabpanel" aria-labelledby="teachers-tab">
+        <table class="table">
+            <thead>
+            <tr>
+                <th>Voornaam</th>
+                <th>Naam</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for user in course.teachers.all %}
+            <tr>
+                <td>{{user.first_name}}</td>
+                <td>{{user.last_name}}</td>
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <!-- end teachers tab -->
+    <!-- start students tab -->
+    <div class="tab-pane fade " id="students" role="tabpanel" aria-labelledby="students-tab">
+        <table class="table">
+            <thead>
+            <tr>
+                <th>Voornaam</th>
+                <th>Naam</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for user in course.students.all %}
+            <tr>
+                <td> {{user.first_name}}</td>
+                <td>{{user.last_name}}</td>
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
 
-        </td>
-    </tr>
-    {% endfor %}
-    </tbody>
-</table>
+    </div>
+    <!-- end students tab -->
+
+</div>
 {% endblock %}
 
-<td>{{course.sessions.count}}</td>

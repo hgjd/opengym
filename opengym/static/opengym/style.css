@@ -9,10 +9,14 @@ body {
     margin: 0;
     padding: 0;
     padding-top: 7rem;
-    background-color: #FBFBFB;
+    background-color: #F8F8F8;
+    color:#375926;
 }
 
 
+.navbar-nav{
+color:#3a6826;
+}
 
 .jumbotron {
   padding-top: 6rem;
@@ -70,9 +74,6 @@ NAVIGATION STYLING
   font-size : 160%;
 }
 
-.navbar a{
- color:red:
-}
 
 .justify-content-md-center{
 margin-right: 5em;
@@ -86,7 +87,7 @@ width : 5em;
 color:#3a6826;
 }
 .navbar-brand:hover{
-color:#CCCCCC;
+color:#d3d65e;
 }
 
 .nav-link{
@@ -95,7 +96,7 @@ color:#3a6826;
 
 
 .nav-link:hover{
-color:#CCCCCC;
+color:#d3d65e;
 }
 
 /*
@@ -145,7 +146,6 @@ CALENDAR STYLING
     width: 13.6%;
     border-left : 3px solid black;
     border-right : 3px solid white;
-
 }
 
 /* Days (1-31) */
@@ -290,7 +290,22 @@ padding-top : 2em;
 border-top : 1px solid black;
 }
 
+.click-hover{
+cursor: pointer;
+}
 
+.session-subscribe{
+margin : 0 auto;
+width:50%;
+}
+
+.session-card{
+width:100%
+}
+
+.session-detail{
+height:300px;
+}
 
 
 /* CUSTOMIZE THE CAROUSEL
@@ -319,8 +334,23 @@ border-top : 1px solid black;
   height: 32rem;
 }
 
-.course-create {
-    float : right;
+/*Tabs*/
+.tab-title-right{
+color:red;
+margin-right:0;
 }
 
-/*
+.course-detail-tab-content{
+background:white;
+padding:1em;
+padding-bottom:5em;
+padding-top:2em;
+margin-bottom:2em;
+border-radius: 0px 30px 5px 30px;
+border : 1px dashed #aabfa0;
+border-top:0;
+}
+
+.course-detail-tabs{
+margin-right:30px;
+}

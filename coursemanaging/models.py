@@ -1,10 +1,11 @@
 from datetime import date
 
 from django.contrib.auth.base_user import BaseUserManager, AbstractBaseUser
-from django.contrib.auth.models import AbstractUser, PermissionsMixin
+from django.contrib.auth.models import PermissionsMixin
 from django.core.exceptions import ValidationError
 from django.core.mail import send_mail
 from django.db import models
+from django.urls import reverse_lazy
 from django.utils import timezone
 from django.utils.translation import gettext as _
 
@@ -93,17 +94,25 @@ class Course(models.Model):
 
     course_name = models.CharField(max_length=100, null=False, blank=False)
     course_level = models.SmallIntegerField(null=False, blank=False, choices=LEVEL_CHOICES)
+    build_up_sessions = models.BooleanField(default=False)
+    max_students_session = models.PositiveSmallIntegerField(null=True, blank=True)
+    max_students_course = models.PositiveSmallIntegerField(null=True, blank=True)
+    description = models.TextField()
+
     teachers = models.ManyToManyField(User, related_name='courses_teacher', blank=True)
     students = models.ManyToManyField(User, related_name='courses_student', blank=True)
-    build_up_sessions = models.BooleanField(null=False, blank=False)
-    description = models.TextField()
 
     def __str__(self):
         return self.course_name
 
+    def is_full(self):
+            if self.max_students_course:
+                return self.max_students_course <= self.students.count()
+            return False
+
     def get_next_session(self):
         if Session.objects.filter(course=self).exists():
-            return Session.objects.filter(course=self).order_by('-start_datetime')[0]
+            return Session.objects.filter(course=self).order_by('-start')[0]
         else:
             return None
 
@@ -113,20 +122,87 @@ class Course(models.Model):
     def user_is_teacher(self, user):
         return self.teachers.filter(id=user.id).exists()
 
+    def subscribe_user(self, user):
+        if self.max_students_course and self.students.count() >= self.max_students_course:
+            raise ValidationError(
+                "This course is full",
+                code='full',
+            )
+        self.students.add(user)
+
+    def clean(self):
+        if self.max_students_course and self.students.count() > self.max_students_course:
+            raise ValidationError(
+                "This course has more students than possible",
+                code='full',
+            )
+
+    def save(self, *args, **kwargs):
+        self.full_clean()
+        super(Course, self).save(*args, **kwargs)
+
+    def get_absolute_url(self):
+        return reverse_lazy('coursemanaging:course-detail', args=[self.id])
+
 
 class Session(models.Model):
-    course = models.ForeignKey(Course, related_name='sessions', default=1, blank=True)
-
-    subscribed_users = models.ManyToManyField(User, related_name='sessions', blank=True)
-    start_datetime = models.DateTimeField(null=False, blank=False)
+    start = models.DateTimeField(null=False, blank=False)
     duration = models.DurationField(null=False, blank=False)
     extra_info = models.TextField(null=True, blank=True)
+    max_students_diff_course = models.BooleanField(default=False)
+    max_students = models.PositiveSmallIntegerField(null=True, blank=True)
+
+    course = models.ForeignKey(Course, related_name='sessions', default=1, blank=True)
+    subscribed_users = models.ManyToManyField(User, related_name='sessions', blank=True)
 
     def user_is_subscribed(self, user):
         return self.subscribed_users.filter(id=user.id).exists()
 
+    def time_until(self):
+        return self.start - timezone.now()
+
+    def subscribe_user(self, user):
+        if self.max_students and self.subscribed_users.count() >= self.max_students:
+            raise ValidationError(
+                "This session is full",
+                code='full',
+            )
+        self.subscribed_users.add(user)
+
+    def get_max_students(self):
+        if self.max_students_diff_course:
+            return self.max_students
+        else:
+            return self.course.max_students_session
+
+    def is_full(self):
+        if self.max_students_diff_course:
+            if self.max_students:
+                return self.max_students <= self.subscribed_users.count()
+            return True
+        else:
+            if self.course.max_students_session:
+                return self.course.max_students_session <= self.subscribed_users.count()
+            return True
+
+    def clean(self):
+        if self.max_students and self.subscribed_users.count() > self.max_students:
+            raise ValidationError(
+                "This session has more students than possible",
+                code='full',
+            )
+
+    def save(self, *args, **kwargs):
+        if not self.max_students_diff_course:
+            self.max_students = self.course.max_students_session
+        self.full_clean()
+        super(Session, self).save(*args, **kwargs)
+
+    def get_absolute_url(self):
+        return reverse_lazy('coursemanaging:session-detail', args=[self.id])
+
     def __str__(self):
-        return str(self.course) + ' ' + str(self.start_datetime.date())
+        return str(self.course) + ' ' + str(self.start.date())
 
 
 class NewsItem(models.Model):

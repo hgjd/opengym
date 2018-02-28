@@ -41,9 +41,9 @@ class SessionCalendar(HTMLCalendar):
                             body.append('<span class="fa fa-bed" aria-hidden="true"></span> ')
 
                     body.append('%s</time>' % (
-                        str(session.start_datetime.hour) + "h" + str(session.start_datetime.minute)))
+                        str(session.start.hour) + "h" + str(session.start.minute)))
 
-                    body.append('<a href="%s">' % reverse('coursemanaging:session-detail', args=[session.id]))
+                    body.append('<a href="%s">' % session.course.get_absolute_url())
                     body.append(session.course.course_name + '</a> <div style="clear: both;"></div>')
 
                     body.append('</li>')
@@ -87,12 +87,12 @@ class SessionCalendar(HTMLCalendar):
     def group_by_day(self, session_list):
         result = defaultdict()
         for session in session_list:
-            if session.start_datetime.day not in result:
-                result[session.start_datetime.day] = [session]
+            if session.start.day not in result:
+                result[session.start.day] = [session]
             else:
-                result[session.start_datetime.day].append(session)
+                result[session.start.day].append(session)
         for result_list in result.values():
-            result_list.sort(key=lambda s: s.start_datetime)
+            result_list.sort(key=lambda s: s.start)
         return result
 
     def day_cell(self, cssclass, body):

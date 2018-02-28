@@ -61,10 +61,10 @@ class CourseCreateForm(forms.ModelForm):
 class SessionCreateForm(forms.ModelForm):
     class Meta:
         model = Session
-        fields = {'start_datetime', 'duration', 'extra_info'}
+        fields = {'start', 'duration', 'extra_info'}
 
         widgets = {
-            'start_datetime': forms.DateTimeInput(attrs={'class': 'datepicker', 'autocomplete': 'off'}),
+            'start': forms.DateTimeInput(attrs={'class': 'datepicker', 'autocomplete': 'off'}),
         }
 
     def __init__(self, *args, **kwargs):
