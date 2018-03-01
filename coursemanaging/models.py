@@ -106,12 +106,12 @@ class Course(models.Model):
         return self.course_name
 
     def is_full(self):
-            if self.max_students_course:
-                return self.max_students_course <= self.students.count()
-            return False
+        if self.max_students_course:
+            return self.max_students_course <= self.students.count()
+        return False
 
     def get_next_session(self):
-        if Session.objects.filter(course=self).exists():
+        if Session.objects.filter(course=self, start__gte=timezone.now()).exists():
             return Session.objects.filter(course=self).order_by('-start')[0]
         else:
             return None
@@ -179,11 +179,11 @@ class Session(models.Model):
         if self.max_students_diff_course:
             if self.max_students:
                 return self.max_students <= self.subscribed_users.count()
-            return True
+            return False
         else:
             if self.course.max_students_session:
                 return self.course.max_students_session <= self.subscribed_users.count()
-            return True
+            return False
 
     def clean(self):
         if self.max_students and self.subscribed_users.count() > self.max_students:

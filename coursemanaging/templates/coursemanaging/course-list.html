@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% block content %}
 
-<h2>Alle lessen die je kan volgen bij open gym</h2>
+<h2>Alle lessen</h2>
 <table class="table">
     <thead>
     <tr>
@@ -15,7 +15,11 @@
     <tr>
         <td><a href="{% url 'coursemanaging:course-detail' course.id %}">{{course.course_name}}</a></td>
         <td>{{course.get_course_level_display}}</td>
+        {% if course.get_next_session %}
         <td>{{course.get_next_session.start}}</td>
+        {% else %}
+        <td class="unimportant">Nog geen geplanned</td>
+        {% endif %}
     </tr>
     {% endfor %}
     </tbody>

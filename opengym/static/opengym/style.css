@@ -11,11 +11,15 @@ body {
     padding-top: 7rem;
     background-color: #F8F8F8;
     color:#375926;
+    font-family: 'Biryani', sans-serif;
 }
 
 
 .navbar-nav{
 color:#3a6826;
+}
+.navbar-right{
+cursor:pointer;
 }
 
 .jumbotron {
@@ -344,7 +348,7 @@ margin-right:0;
 background:white;
 padding:1em;
 padding-bottom:5em;
-padding-top:2em;
+padding-top:3em;
 margin-bottom:2em;
 border-radius: 0px 30px 5px 30px;
 border : 1px dashed #aabfa0;
@@ -353,4 +357,18 @@ border-top:0;
 
 .course-detail-tabs{
 margin-right:30px;
+}
+
+.courses-student{
+margin-top : 2em;
+
+}
+
+.courses-tab-content{
+background:white;
+padding:5em;
+}
+
+.unimportant{
+opacity: 0.5;
 }

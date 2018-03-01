@@ -45,7 +45,6 @@ class SessionCalendar(HTMLCalendar):
 
                     body.append('<a href="%s">' % session.course.get_absolute_url())
                     body.append(session.course.course_name + '</a> <div style="clear: both;"></div>')
-
                     body.append('</li>')
                 body.append('</ul>')
                 return self.day_cell(cssclass, '%s %s' % (day_html, ''.join(body)))

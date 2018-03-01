@@ -29,7 +29,7 @@
     {% endif %}
 </ul>
 
-<div class="tab-content pt-5 course-detail-tab-content" id="myTabContent">
+<div class="tab-content pt-5 course-detail-tab-content" id="courseTabContent">
     <!-- start information tab -->
     <div class="tab-pane fade " id="information" role="tabpanel" aria-labelledby="information-tab">
         <table class="table">
@@ -95,15 +95,20 @@
             <tr>
                 <th>Tijdstip</th>
                 <th>Duur</th>
-                <th></th>
                 <th>Max deelnemers</th>
+                <th></th>
+                <th></th>
+                <th></th>
             </tr>
             </thead>
             <tbody>
             {% for session in course.sessions.all %}
             <tr>
-                <td>{{session.start}}</a></td>
+                <td id="time-{{session.id}}">{{session.start}}</a></td>
                 <td>{{session.duration}}</td>
+                <td>
+                    {{session.get_max_students|default_if_none:"geen maximum"}}
+                </td>
                 <td>
                     {% if is_teacher %}
                     {{session.subscribed_users.all.count}} inschrijving(en)
@@ -122,10 +127,20 @@
                     <button class="btn btn-primary disabled">Ingeschreven</button>
                     {% endif %}
                     {% endif %}
-
                 </td>
                 <td>
-                    {{session.get_max_students|default_if_none:"geen maximum"}}
+                    {% if is_teacher %}
+                    <a class="btn btn-warning " href="{% url 'coursemanaging:session-update' session.id %}"><span
+                            class="fa fa-refresh" aria-hidden="true"></span></a>
+                    {% endif %}
+                </td>
+                <td>
+                    {% if is_teacher %}
+                    <button id="{{session.id}}" class="btn btn-danger available remove-session" data-toggle="modal"
+                            data-target="#remove-modal"><span
+                            class="fa fa-times" aria-hidden="true"></span>
+                    </button>
+                    {% endif %}
                 </td>
             </tr>
             {% endfor %}
@@ -180,7 +195,34 @@
 
     </div>
     <!-- end students tab -->
+</div>
+<div class="modal fade" id="remove-modal" role="dialog">
+    <div class="modal-dialog modal-lg">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Sessie verwijderen</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p>Bent u zeker dat u de sessie op <span id="remove-help"></span> wilt verwijderen?</p>
+                <div class="modal-footer">
+                    <div>
+                        <form method="post">
+                            {% csrf_token %}
+                            <input type="hidden" id="remove-session" name="remove_session" value="">
+                            <button type="submit" class="btn btn-danger">Verwijder</button>
+                        </form>
+                    </div>
+                    <div>
+                        <button type="button" class="btn btn-primary" data-dismiss="modal">Neejneejneej
+                        </button>
+                    </div>
+                </div>
+            </div>
 
+        </div>
+    </div>
 </div>
 {% endblock %}
 

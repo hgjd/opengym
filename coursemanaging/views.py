@@ -1,9 +1,7 @@
 import pytz
 import datetime
 import calendar
-import json
 
-from django.http import HttpResponse
 from django.shortcuts import redirect, render, get_object_or_404, render_to_response
 from django.urls import reverse_lazy
 from django.utils.encoding import force_text
@@ -29,7 +27,8 @@ class LandingView(generic.TemplateView):
         today = datetime.datetime.today()
         monthrange = calendar.monthrange(today.year, today.month)
         start_calendar_period = utc.localize(datetime.datetime(today.year, today.month, 1))
-        end_calendar_period = utc.localize(datetime.datetime(today.year, today.month, monthrange[1]))
+        end_calendar_period = utc.localize(
+            datetime.datetime(today.year, today.month, monthrange[1], hour=23, minute=59, second=59))
 
         sessions = Session.objects.filter(start__lte=end_calendar_period,
                                           start__gte=start_calendar_period)
@@ -145,6 +144,7 @@ class CourseDetailView(generic.DetailView):
     def post(self, request, *args, **kwargs):
         join_session = request.POST.get("join_session")
         join_course = request.POST.get("join_course")
+        remove_session = request.POST.get("remove_session")
         course = get_object_or_404(Course, pk=self.kwargs['pk'])
 
         if join_course:
@@ -158,6 +158,12 @@ class CourseDetailView(generic.DetailView):
                 return redirect('coursemanaging:impossible')
             session.subscribe_user(self.request.user)
             return redirect('coursemanaging:course-detail', pk=course.id)
+        if remove_session:
+            if course.teachers.filter(pk=self.request.user.id).exists():
+                get_object_or_404(Session, pk=remove_session).delete()
+                return redirect('coursemanaging:course-detail', pk=course.id)
+            else:
+                return redirect('coursemanaging:impossible')
 
 
 class CourseListView(generic.ListView):
@@ -232,7 +238,7 @@ class SessionUpdateView(generic.UpdateView):
     fields = ['start', 'duration', 'extra_info', 'max_students_diff_course', 'max_students']
 
     def get_success_url(self):
-        return reverse_lazy('coursemanaging:session-detail', kwargs={'pk': self.kwargs['pk']})
+        return reverse_lazy('coursemanaging:course-detail', kwargs={'pk': self.object.course.id})
 
 
 class CalendarView(generic.TemplateView):
@@ -243,7 +249,8 @@ class CalendarView(generic.TemplateView):
         today = datetime.datetime.today()
         monthrange = calendar.monthrange(today.year, today.month)
         start_calendar_period = utc.localize(datetime.datetime(today.year, today.month, 1))
-        end_calendar_period = utc.localize(datetime.datetime(today.year, today.month, monthrange[1]))
+        end_calendar_period = utc.localize(
+            datetime.datetime(today.year, today.month, monthrange[1], hour=23, minute=59, second=59))
 
         sessions = Session.objects.filter(start__lte=end_calendar_period,
                                           start__gte=start_calendar_period)
@@ -259,7 +266,7 @@ def get_calendar(request):
         year = int(request.GET.get('year'))
         monthrange = calendar.monthrange(year, month)
         start_calendar_period = utc.localize(datetime.datetime(year, month, 1))
-        end_calendar_period = utc.localize(datetime.datetime(year, month, monthrange[1]))
+        end_calendar_period = utc.localize(datetime.datetime(year, month, monthrange[1], hour=23, minute=59, second=59))
 
         sessions = Session.objects.filter(start__lte=end_calendar_period,
                                           start__gte=start_calendar_period)
