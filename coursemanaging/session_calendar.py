@@ -1,11 +1,7 @@
 from calendar import HTMLCalendar, day_name, month_name
 from datetime import date
-from itertools import groupby
 
 from collections import defaultdict
-from django.urls import reverse
-from django.urls import reverse_lazy
-from django.utils.html import conditional_escape as esc
 
 
 class SessionCalendar(HTMLCalendar):
@@ -17,7 +13,7 @@ class SessionCalendar(HTMLCalendar):
     def formatday(self, day, weekday):
         if day != 0:
             day_html = '<div class="day-head">' + str(day) + '</div>'
-            cssclass = 'day'
+            cssclass = 'day day'
             if date.today() == date(self.year, self.month, day):
                 cssclass += '-today'
             if day in self.session_list:
@@ -79,9 +75,9 @@ class SessionCalendar(HTMLCalendar):
             s = '%s %s' % (month_name[themonth], theyear)
         else:
             s = '%s' % month_name[themonth]
-        return '<tr class="month-header"><th colspan="1"><span class="fa fa-angle-left fa-2x month-nav month-prev"></span></th>' + \
-               '<th colspan="5" class="calendar-month-title">%s</th>' % s + \
-               '<th colspan="1"><span class="fa fa-angle-right fa-2x month-nav month-next"></span></th></tr>'
+        return '<tr class="month-header"><th></th><th colspan="1"><span class="fa fa-angle-left fa-2x month-nav month-prev"></span></th>' + \
+               '<th colspan="3" class="calendar-month-title">%s</th>' % s + \
+               '<th colspan="1"><span class="fa fa-angle-right fa-2x month-nav month-next"></span></th><th class="calendar-help"><span class="fa fa-info-circle" data-toggle="modal" data-target="#calendar-info-modal"></span></th></tr>'
 
     def group_by_day(self, session_list):
         result = defaultdict()

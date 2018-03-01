@@ -11,7 +11,7 @@ body {
     padding-top: 7rem;
     background-color: #F8F8F8;
     color:#375926;
-    font-family: 'Biryani', sans-serif;
+    font-family: 'Raleway', sans-serif;
 }
 
 
@@ -114,7 +114,6 @@ CALENDAR STYLING
 .calendar-month-title{
     padding: 70px 25px;
     width: 100%;
-    color: black;
     font-size: 20px;
     text-transform: uppercase;
     letter-spacing: 3px;
@@ -129,6 +128,7 @@ CALENDAR STYLING
     margin: 0;
     padding: 0.5em;
     border-collapse: separate;
+    border-spacing: 5px 0;
     height:85vh;
     width:96%;
     margin: 0 auto;
@@ -145,48 +145,58 @@ CALENDAR STYLING
 .weekday {
     margin: 0;
     padding-right: 0.5em;
-    color:black;
     text-align :right;
     width: 13.6%;
-    border-left : 3px solid black;
-    border-right : 3px solid white;
+    border-left : 1px solid;
+    border-right : 1px solid white;
 }
 
 /* Days (1-31) */
 .day {
     width 50em;
     margin: 0;
-    border-left : 3px solid black;
-    border-right : 3px solid white;
+    border-left : 1px solid;
+    border-right : 1px solid white;
     height:120px;
 }
 
 .day-filled {
-background:black;
+background:#375926;
 color:white;
- border-left : 3px solid black;
-  border-right : 3px solid white;
+ border-left : 1px solid;
+  border-right : 1px solid white;
+}
+
+.day-today-filled {
+background:#375926;
+color:white;
+ border-left : 1px solid #375926;
+  border-top : 3px dashed white;
+border-bottom : 3px dashed white;
+border-right : 3px dashed white;
+}
+
+.day-today-filled  .day-head{
+border-bottom : 1px solid white;
 }
 
 .noday{
- border-left : 3px solid black;
-  border-right : 3px solid white;
+ border-left : 1px solid;
+  border-right : 1px solid white;
 }
 
 
 .day-today{
-border-left : 3px solid black;
-border-right : 3px solid white;
-color:crimson;
-font-size: 200%;
+border-top : 1px dashed #375926;
+border-bottom : 1px dashed #375926;
+border-right : 1px dashed #375926;
 }
-
 
 
 .day-head{
 padding-left:0.5em;
 text-align: left;
-border-bottom : 1px solid black;
+border-bottom : 1px solid #375926;
 }
 
 .day-filled .day-head{
@@ -225,13 +235,27 @@ height: 5vh;
 
 .month-nav{
 padding:2em;
-    color: black;
+    color: #375926;
     -webkit-transition: 0.5s;
           transition: 0.5s;
 }
 
 .month-nav:hover{
   -webkit-transform: scale(1.5);
+          transform: scale(1.5);
+}
+
+.calendar-help{
+color:#375926;
+text-align:center;
+font-size : 200%;
+-webkit-transition: 0.5s;
+          transition: 0.5s;
+
+}
+
+.calendar-help:hover{
+-webkit-transform: scale(1.5);
           transform: scale(1.5);
 }
 
