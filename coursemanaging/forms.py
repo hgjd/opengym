@@ -41,10 +41,27 @@ class UserRegisterForm(UserCreationForm):
         return user
 
 
+class NameForm(forms.Form):
+    your_name = forms.CharField(label='Your name', max_length=100)
+
+
+class UserUpdateForm(forms.ModelForm):
+    nameform = NameForm()
+
+    class Meta:
+        model = User
+        fields = ['first_name', 'last_name', 'birthdate', 'volunteer']
+        widgets = {
+            'birthdate': forms.DateTimeInput(attrs={'class': 'datepicker', 'autocomplete': 'off'}),
+
+        }
+
+
 class CourseCreateForm(forms.ModelForm):
     class Meta:
         model = Course
-        fields = {'course_name', 'course_level', 'build_up_sessions', 'description'}
+        fields = ['course_name', 'course_level', 'build_up_sessions', 'description', 'location_short',
+                  'location_street', 'location_number', 'location_city']
 
     def __init__(self, *args, **kwargs):
         self.user = kwargs.pop("user")
@@ -61,7 +78,8 @@ class CourseCreateForm(forms.ModelForm):
 class SessionCreateForm(forms.ModelForm):
     class Meta:
         model = Session
-        fields = {'start', 'duration', 'extra_info'}
+        fields = ['start', 'duration', 'extra_info', 'max_students_diff_course', 'max_students', 'location_diff_course',
+                  'location_short', 'location_number', 'location_city']
 
         widgets = {
             'start': forms.DateTimeInput(attrs={'class': 'datepicker', 'autocomplete': 'off'}),
@@ -70,6 +88,12 @@ class SessionCreateForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         self.course = kwargs.pop("course")
         super(SessionCreateForm, self).__init__(*args, **kwargs)
+        labels = {
+            'max_students_diff_course': _('Writer'),
+        }
+        help_texts = {
+            'name': _('Some useful help text.'),
+        }
 
     def save(self, commit=True):
         session = super(SessionCreateForm, self).save()
@@ -77,4 +101,3 @@ class SessionCreateForm(forms.ModelForm):
         if commit:
             session.save()
         return session
-

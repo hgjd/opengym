@@ -28,6 +28,8 @@ urlpatterns = [
         name='user-register'),
     url(r'^user/$', views.UserDetailView.as_view(),
         name='user-detail'),
+    url(r'^user-update/$', views.UserUpdateView.as_view(),
+        name='user-update'),
     url(r'^activate/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,20})/$', views.activate,
         name='user-activate'),
     url(r'^login/$', auth_views.login, {'template_name': 'coursemanaging/user-login.html'},

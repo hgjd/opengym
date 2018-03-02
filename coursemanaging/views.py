@@ -9,7 +9,7 @@ from django.utils.http import urlsafe_base64_decode
 from django.utils.safestring import mark_safe
 from django.views import generic
 
-from coursemanaging.forms import UserRegisterForm, CourseCreateForm, SessionCreateForm
+from coursemanaging.forms import UserRegisterForm, CourseCreateForm, SessionCreateForm, UserUpdateForm
 from coursemanaging.session_calendar import SessionCalendar
 from coursemanaging.tokens import account_activation_token
 from .models import Course, Session, User, NewsBulletin, NewsItem
@@ -31,7 +31,7 @@ class LandingView(generic.TemplateView):
             datetime.datetime(today.year, today.month, monthrange[1], hour=23, minute=59, second=59))
 
         sessions = Session.objects.filter(start__lte=end_calendar_period,
-                                          start__gte=start_calendar_period)
+                                          start__gte=start_calendar_period, course__is_active=True)
         bulletins = NewsBulletin.objects.all().order_by('-bulletin_level')
         cal = SessionCalendar(sessions, self.request.user).formatmonth(today.year, today.month)
         context['calendar'] = mark_safe(cal)
@@ -80,6 +80,14 @@ class UserCreateView(generic.CreateView):
 
 class UserDetailView(generic.TemplateView):
     template_name = 'coursemanaging/user-detail.html'
+
+
+class UserUpdateView(generic.UpdateView):
+    template_name = 'coursemanaging/user-update.html'
+    form_class = UserUpdateForm
+
+    def get_object(self, queryset=None):
+        return self.request.user
 
 
 class AccountActivationSentView(generic.TemplateView):
@@ -173,7 +181,7 @@ class CourseListView(generic.ListView):
     model = Course
 
     def get_queryset(self):
-        return Course.objects.all()
+        return Course.objects.filter(is_active=True)
 
     def get_context_data(self, **kwargs):
         context = super(CourseListView, self).get_context_data(**kwargs)
@@ -184,10 +192,14 @@ class CourseListView(generic.ListView):
 
 class CourseUpdateView(generic.UpdateView):
     """Update view of a course"""
-    template_name = 'coursemanaging/course-update.html'
+    template_name = 'coursemanaging/course-create.html'
     model = Course
-    fields = ['course_name', 'course_level', 'build_up_sessions', 'description']
+    fields = ['course_name', 'course_level', 'build_up_sessions', 'description', 'location_short', 'location_street',
+              'location_number', 'location_city']
     success_url = reverse_lazy('coursemanaging:index')
+
+    def get_success_url(self):
+        return self.object.get_absolute_url()
 
 
 class CourseDeleteView(generic.DeleteView):
@@ -202,11 +214,11 @@ class CoursesUserListView(generic.ListView):
 
     def get_context_data(self, **kwargs):
         context = super(CoursesUserListView, self).get_context_data(**kwargs)
-        context['courses_student'] = Course.objects.filter(students=self.request.user)
+        context['courses_student'] = Course.objects.filter(students=self.request.user, is_active=True)
         return context
 
     def get_queryset(self):
-        return Course.objects.filter(teachers=self.request.user)
+        return Course.objects.filter(teachers=self.request.user, is_active=True)
 
 
 """
@@ -235,7 +247,8 @@ class SessionCreateView(generic.CreateView):
 class SessionUpdateView(generic.UpdateView):
     template_name = 'coursemanaging/session-create.html'
     model = Session
-    fields = ['start', 'duration', 'extra_info', 'max_students_diff_course', 'max_students']
+    fields = ['start', 'duration', 'extra_info', 'max_students_diff_course', 'max_students', 'location_diff_course',
+              'location_short', 'location_street', 'location_number', 'location_city']
 
     def get_success_url(self):
         return reverse_lazy('coursemanaging:course-detail', kwargs={'pk': self.object.course.id})
@@ -253,7 +266,7 @@ class CalendarView(generic.TemplateView):
             datetime.datetime(today.year, today.month, monthrange[1], hour=23, minute=59, second=59))
 
         sessions = Session.objects.filter(start__lte=end_calendar_period,
-                                          start__gte=start_calendar_period)
+                                          start__gte=start_calendar_period, course__is_active=True)
         cal = SessionCalendar(sessions, self.request.user).formatmonth(today.year, today.month)
         context['current_page'] = 'calendar'
         context['calendar'] = mark_safe(cal)
@@ -269,7 +282,7 @@ def get_calendar(request):
         end_calendar_period = utc.localize(datetime.datetime(year, month, monthrange[1], hour=23, minute=59, second=59))
 
         sessions = Session.objects.filter(start__lte=end_calendar_period,
-                                          start__gte=start_calendar_period)
+                                          start__gte=start_calendar_period, course__is_active=True)
 
         cal = SessionCalendar(sessions, request.user).formatmonth(year, month)
         return render_to_response('coursemanaging/calendar-ajax.html', {'calendar': mark_safe(cal)})

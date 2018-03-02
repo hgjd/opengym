@@ -41,7 +41,7 @@
                 {% if course.get_next_session %}
                 <td>{{course.get_next_session.start}}</td>
                 {% else %}
-                <td>Nog geen geplanned</td>
+                <td class="unimportant" >Nog geen geplanned</td>
                 {% endif %}
             </tr>
             {% endfor %}

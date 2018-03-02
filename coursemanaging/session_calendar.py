@@ -40,7 +40,12 @@ class SessionCalendar(HTMLCalendar):
                         str(session.start.hour) + "h" + str(session.start.minute)))
 
                     body.append('<a href="%s">' % session.course.get_absolute_url())
-                    body.append(session.course.course_name + '</a> <div style="clear: both;"></div>')
+                    body.append(session.course.course_name)
+                    if session.location_diff_course and session.location_short:
+                        body.append(" @ "+session.location_short)
+                    elif session.course.location_short:
+                        body.append(" @ "+session.course.location_short)
+                    body.append('</a> <div style="clear: both;"></div>')
                     body.append('</li>')
                 body.append('</ul>')
                 return self.day_cell(cssclass, '%s %s' % (day_html, ''.join(body)))
@@ -77,7 +82,7 @@ class SessionCalendar(HTMLCalendar):
             s = '%s' % month_name[themonth]
         return '<tr class="month-header"><th></th><th colspan="1"><span class="fa fa-angle-left fa-2x month-nav month-prev"></span></th>' + \
                '<th colspan="3" class="calendar-month-title">%s</th>' % s + \
-               '<th colspan="1"><span class="fa fa-angle-right fa-2x month-nav month-next"></span></th><th class="calendar-help"><span class="fa fa-info-circle" data-toggle="modal" data-target="#calendar-info-modal"></span></th></tr>'
+               '<th colspan="1"><span class="fa fa-angle-right fa-2x month-nav month-next"></span></th><th class="help-cell"><span class="fa fa-info-circle calendar-help" data-toggle="modal" data-target="#calendar-info-modal"></span></th></tr>'
 
     def group_by_day(self, session_list):
         result = defaultdict()

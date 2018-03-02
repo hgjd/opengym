@@ -3,7 +3,7 @@ from .models import Course, Session, User, NewsItem, NewsBulletin
 
 
 class CourseAdmin(admin.ModelAdmin):
-    list_display = ('course_name', 'course_level')
+    list_display = ('course_name', 'is_active', 'course_level')
 
 
 class UserAdmin(admin.ModelAdmin):

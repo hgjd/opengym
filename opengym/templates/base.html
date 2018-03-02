@@ -6,7 +6,7 @@
           integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
     <link rel="stylesheet" type="text/css" href="{% static 'opengym/style.css' %}"/>
     <link href="https://fonts.googleapis.com/css?family=Julius+Sans+One" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css?family=Megrim" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Amatic+SC" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Quattrocento" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet">
 
@@ -28,9 +28,10 @@
     <meta charset="UTF-8">
     <title>{% block page-title %}{% endblock %}</title>
 </head>
-<body>
+<body onload="{% block onload %}
+    {% endblock %}">
 <nav class="navbar navbar-expand-md fixed-top">
-    <a class="navbar-brand ml-5" href="/"> Open GYM</a>
+    <a class="navbar-brand ml-5" href="/"> Open Gym</a>
 
     <ul class="collapse navbar-collapse justify-content-md-center">
         <li>
@@ -56,7 +57,7 @@
             </a>
 
             {% else %}
-             <a class="nav-link" href="{% url 'coursemanaging:news' %}">Nieuws</a>
+            <a class="nav-link" href="{% url 'coursemanaging:news' %}">Nieuws</a>
             {% endif %}
 
         </li>
@@ -69,7 +70,7 @@
             </a>
 
             {% else %}
-             <a class="nav-link" href="{% url 'coursemanaging:calendar' %}">Kalender</a>
+            <a class="nav-link" href="{% url 'coursemanaging:calendar' %}">Kalender</a>
             {% endif %}
         </li>
 
@@ -97,6 +98,7 @@
         {% endif %}
     </ul>
 </nav>
+
 <div class="base container">
     {% block content %}
     {% endblock %}

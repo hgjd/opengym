@@ -2,6 +2,7 @@ ul {
 list-style-type: none;
 padding:0;
 margin:0;
+
 }
 
 body {
@@ -12,6 +13,11 @@ body {
     background-color: #F8F8F8;
     color:#375926;
     font-family: 'Raleway', sans-serif;
+    background-image: url("logo.png");
+    background-repeat: no-repeat,no-repeat;
+    background-attachment: fixed;
+    background-size: 35%;
+    background-position: 100% 100%;
 }
 
 
@@ -71,17 +77,29 @@ NAVIGATION STYLING
 
 
 .navbar {
-  font-family: 'Megrim', cursive;
+  font-family: 'Amatic SC', cursive;
   margin-bottom: 0;
   background-color: #F6F6F6;
-  border-bottom : 5px solid white;
-  font-size : 160%;
-}
+  border-bottom : 3px dashed white;
+  font-size : 240%;
+  opacity:0.95;
 
 
-.justify-content-md-center{
-margin-right: 5em;
 }
+
+.dropdown-toggle{
+  font-size : 100%;
+}
+
+.dropdown-item{
+  font-size : 150%;
+}
+
+.dropdown-menu{
+border : 1px dashed #aabfa0;
+border-radius: 15px 5px 15px 5px;
+}
+
 
 .navbar-right{
 width : 5em;
@@ -89,6 +107,12 @@ width : 5em;
 
 .navbar-brand{
 color:#3a6826;
+ font-size : 100%;
+ letter-spacing: 3px;
+  font-weight: bold;
+}
+.navbar-brand span{
+ font-size : 100%;
 }
 .navbar-brand:hover{
 color:#d3d65e;
@@ -132,12 +156,15 @@ CALENDAR STYLING
     height:85vh;
     width:96%;
     margin: 0 auto;
+    opacity:0.95;
+    border : 1px dashed #aabfa0;
+
 }
 
 
 .calendar td {
     vertical-align:top;
-    font-size : 0.9em;
+    font-size : 0.8em;
 }
 
 
@@ -163,7 +190,7 @@ CALENDAR STYLING
 .day-filled {
 background:#375926;
 color:white;
- border-left : 1px solid;
+ border-left : 1px solid #375926;
   border-right : 1px solid white;
 }
 
@@ -174,6 +201,11 @@ color:white;
   border-top : 3px dashed white;
 border-bottom : 3px dashed white;
 border-right : 3px dashed white;
+}
+
+.calendar {
+background:white;
+    border-radius:15px;
 }
 
 .day-today-filled  .day-head{
@@ -201,6 +233,7 @@ border-bottom : 1px solid #375926;
 
 .day-filled .day-head{
 border-bottom : 1px solid white;
+border-top : 1px solid white;
 }
 
 .calendar-day-events a{
@@ -247,16 +280,12 @@ padding:2em;
 
 .calendar-help{
 color:#375926;
-text-align:center;
-font-size : 200%;
--webkit-transition: 0.5s;
-          transition: 0.5s;
 
 }
 
 .calendar-help:hover{
--webkit-transform: scale(1.5);
-          transform: scale(1.5);
+color:#d3d65e;
+cursor: pointer;
 }
 
 /*
@@ -379,6 +408,17 @@ border : 1px dashed #aabfa0;
 border-top:0;
 }
 
+.open-gym-page{
+background:white;
+padding:1em;
+padding-bottom:5em;
+padding-top:2em;
+margin-bottom:2em;
+border-radius: 10px 30px 10px 30px;
+border : 1px dashed #aabfa0;
+opacity: 0.96;
+}
+
 .course-detail-tabs{
 margin-right:30px;
 }
@@ -395,4 +435,9 @@ padding:5em;
 
 .unimportant{
 opacity: 0.5;
+}
+
+.help-cell{
+text-align:center;
+font-size : 200%;
 }

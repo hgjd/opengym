@@ -98,6 +98,11 @@ class Course(models.Model):
     max_students_session = models.PositiveSmallIntegerField(null=True, blank=True)
     max_students_course = models.PositiveSmallIntegerField(null=True, blank=True)
     description = models.TextField()
+    location_short = models.CharField(max_length=30, null=True, blank=True)
+    location_street = models.CharField(max_length=50, null=True, blank=True)
+    location_number = models.CharField(max_length=5, null=True, blank=True)
+    location_city = models.CharField(max_length=50, null=True, blank=True)
+    is_active = models.BooleanField(default=True)
 
     teachers = models.ManyToManyField(User, related_name='courses_teacher', blank=True)
     students = models.ManyToManyField(User, related_name='courses_student', blank=True)
@@ -115,6 +120,9 @@ class Course(models.Model):
             return Session.objects.filter(course=self).order_by('-start')[0]
         else:
             return None
+
+    def get_future_sessions(self):
+        return Session.objects.filter(start__gte=timezone.now(), course=self).order_by('-start')
 
     def user_is_subscribed(self, user):
         return self.students.filter(id=user.id).exists()
@@ -151,9 +159,17 @@ class Session(models.Model):
     extra_info = models.TextField(null=True, blank=True)
     max_students_diff_course = models.BooleanField(default=False)
     max_students = models.PositiveSmallIntegerField(null=True, blank=True)
+    location_diff_course = models.BooleanField(default=False)
+    location_short = models.CharField(max_length=30, null=True, blank=True)
+    location_street = models.CharField(max_length=50, null=True, blank=True)
+    location_number = models.CharField(max_length=5, null=True, blank=True)
+    location_city = models.CharField(max_length=50, null=True, blank=True)
 
     course = models.ForeignKey(Course, related_name='sessions', default=1, blank=True)
     subscribed_users = models.ManyToManyField(User, related_name='sessions', blank=True)
+
+    class Meta:
+        ordering = ["start"]
 
     def user_is_subscribed(self, user):
         return self.subscribed_users.filter(id=user.id).exists()
@@ -168,6 +184,30 @@ class Session(models.Model):
                 code='full',
             )
         self.subscribed_users.add(user)
+
+    def get_location_short(self):
+        if self.location_diff_course:
+            return self.location_short
+        else:
+            return self.course.location_short
+
+    def get_location_street(self):
+        if self.location_diff_course:
+            return self.location_street
+        else:
+            return self.course.location_street
+
+    def get_location_number(self):
+        if self.location_diff_course:
+            return self.location_number
+        else:
+            return self.course.location_number
+
+    def get_location_city(self):
+        if self.location_diff_course:
+            return self.location_city
+        else:
+            return self.course.location_city
 
     def get_max_students(self):
         if self.max_students_diff_course:

@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block extra_head %}
+<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<script>
+  $( function() {
+    $( ".datepicker" ).datepicker({dateFormat: 'yy-mm-dd'});
+  } );
+
+</script>
+{% endblock %}
+
+
+{% block content %}
+<div class="open-gym-page">
+    <form method="POST">
+        {% csrf_token %}
+        {{form|crispy}}
+        <input class="btn btn-primary" type="submit" value="Save"/>
+    </form>
+</div>
+
+{{form.nameform|crispy}}
+{% endblock %}
