@@ -8,19 +8,15 @@
   $( function() {
     $( ".datepicker" ).datepicker({dateFormat: 'yy-mm-dd'});
   } );
-
 </script>
 {% endblock %}
 
 
 {% block content %}
-<div class="open-gym-page">
-    <form method="POST">
-        {% csrf_token %}
-        {{form|crispy}}
-        <input class="btn btn-primary" type="submit" value="Save"/>
-    </form>
-</div>
-
+<form method="POST">
+    {% csrf_token %}
+    {% crispy form %}
+    <input class="btn btn-primary" type="submit" value="Save"/>
+</form>
 {{form.nameform|crispy}}
 {% endblock %}

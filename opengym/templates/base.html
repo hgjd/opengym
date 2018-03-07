@@ -7,7 +7,6 @@
     <link rel="stylesheet" type="text/css" href="{% static 'opengym/style.css' %}"/>
     <link href="https://fonts.googleapis.com/css?family=Julius+Sans+One" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Amatic+SC" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css?family=Quattrocento" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet">
 
     <script src="https://code.jquery.com/jquery-3.2.1.js"
@@ -24,15 +23,13 @@
     {% block extra_head %}
 
     {% endblock %}
-
     <meta charset="UTF-8">
     <title>{% block page-title %}{% endblock %}</title>
 </head>
 <body onload="{% block onload %}
     {% endblock %}">
 <nav class="navbar navbar-expand-md fixed-top">
-    <a class="navbar-brand ml-5" href="/"> Open Gym</a>
-
+    <a class="navbar-brand ml-5" href="{% url 'coursemanaging:landing' %}"> Open Gym</a>
     <ul class="collapse navbar-collapse justify-content-md-center">
         <li>
             {% if current_page == 'courses' %}
@@ -97,6 +94,8 @@
         </li>
         {% endif %}
     </ul>
+    {% block extra_nav %}
+    {% endblock %}
 </nav>
 
 <div class="base container">

@@ -202,12 +202,6 @@ class CourseUpdateView(generic.UpdateView):
         return self.object.get_absolute_url()
 
 
-class CourseDeleteView(generic.DeleteView):
-    """Delete view of a course"""
-    template_name = "coursemanaging/course-delete.html"
-    model = Course
-
-
 class CoursesUserListView(generic.ListView):
     template_name = 'coursemanaging/courses-user.html'
     context_object_name = 'courses_teacher'
@@ -271,6 +265,10 @@ class CalendarView(generic.TemplateView):
         context['current_page'] = 'calendar'
         context['calendar'] = mark_safe(cal)
         return context
+
+
+class AlbumView(generic.TemplateView):
+    template_name = 'coursemanaging/album.html'
 
 
 def get_calendar(request):

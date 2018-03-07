@@ -5,12 +5,28 @@ margin:0;
 
 }
 
+.landing-link{
+font-size:150%;
+border-radius: 10px 30px 30px 10px;
+border : 1px dashed #aabfa0;
+padding:0.5em;
+padding-right:1em;
+  font-family: 'Amatic SC', cursive;
+
+}
+
+.myImg{
+border-radius: 5px 5px 5px 5px;
+  box-shadow: 2px 2px 2px grey;
+
+}
+
 body {
     align-items:center;
     margin: 0;
     padding: 0;
     padding-top: 7rem;
-    background-color: #F8F8F8;
+    background-color: #F4F4F4;
     color:#375926;
     font-family: 'Raleway', sans-serif;
     background-image: url("logo.png");
@@ -18,6 +34,23 @@ body {
     background-attachment: fixed;
     background-size: 35%;
     background-position: 100% 100%;
+}
+
+a {
+text-decoration:none;
+color:#3a6826;
+font-weight: bold;
+}
+
+a:hover{
+color:#d3d65e;
+text-decoration:none;
+border-color: #d3d65e;
+
+}
+
+#page-top{
+background-image:none;
 }
 
 
@@ -30,9 +63,10 @@ cursor:pointer;
 
 .jumbotron {
   padding-top: 6rem;
-  padding-bottom: 6rem;
+  padding-bottom: 2rem;
   margin-bottom: 0;
   background-color: #fff;
+  background-color: #F4F4F4;
 }
 
 .jumbotron p:last-child {
@@ -48,10 +82,9 @@ cursor:pointer;
 }
 
 .album {
-  min-height: 50rem;
   padding-top: 3rem;
-  padding-bottom: 3rem;
-  background-color: #f7f7f7;
+  padding-bottom: 0rem;
+  margin-top: 5rem;
 }
 
 .card {
@@ -79,10 +112,9 @@ NAVIGATION STYLING
 .navbar {
   font-family: 'Amatic SC', cursive;
   margin-bottom: 0;
-  background-color: #F6F6F6;
   border-bottom : 3px dashed white;
   font-size : 240%;
-  opacity:0.95;
+  background-color: rgba(240,240,240,0.9); /* Black w/ opacity */
 
 
 }
@@ -122,10 +154,112 @@ color:#d3d65e;
 color:#3a6826;
 }
 
+.nav-link.active{
+color:#d3d65e;
+}
+
 
 .nav-link:hover{
 color:#d3d65e;
 }
+
+.landing-nav{
+border-color : #3a6826;
+border-width : 2px;
+}
+
+/*
+custom modal
+*/
+
+/* The Modal (background) */
+.custom-modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    padding-top: 100px; /* Location of the box */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.9); /* Black w/ opacity */
+}
+
+/* Modal Content (Image) */
+.modal-content {
+    margin: auto;
+    display: block;
+    width: 80%;
+    max-width: 700px;
+}
+
+#modal_image {
+    background-color: rgba(0,0,0,1); /* Black w/ opacity */
+}
+
+/* Caption of Modal Image (Image Text) - Same Width as the Image */
+#caption {
+    margin: auto;
+    display: block;
+    width: 80%;
+    max-width: 700px;
+    text-align: center;
+    color: #ccc;
+    padding: 10px 0;
+    height: 150px;
+}
+
+#modal-image-title{
+margin: auto;
+    text-align: center;
+    color: #ccc;
+}
+
+/* Add Animation - Zoom in the Modal */
+.modal-content, #caption {
+    -webkit-animation-name: zoom;
+    -webkit-animation-duration: 0.6s;
+    animation-name: zoom;
+    animation-duration: 0.6s;
+}
+
+@-webkit-keyframes zoom {
+    from {-webkit-transform:scale(0)}
+    to {-webkit-transform:scale(1)}
+}
+
+@keyframes zoom {
+    from {transform:scale(0)}
+    to {transform:scale(1)}
+}
+
+/* The Close Button */
+.close {
+    position: absolute;
+    top: 80px;
+    right: 35px;
+    color: #f1f1f1;
+    font-size: 40px;
+    font-weight: bold;
+    transition: 0.3s;
+}
+
+.close:hover,
+.close:focus {
+    color: #bbb;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+/* 100% Image Width on Smaller Screens */
+@media only screen and (max-width: 700px){
+    .modal-content {
+        width: 100%;
+    }
+}
+
 
 /*
 ================
@@ -249,7 +383,6 @@ margin-left:0.5em;
 }
 
 
-
 .calendar-day-events a:hover{
 color:crimson;
 }
@@ -280,7 +413,6 @@ padding:2em;
 
 .calendar-help{
 color:#375926;
-
 }
 
 .calendar-help:hover{
@@ -299,7 +431,6 @@ padding-right:2em;
 }
 
 .sidebar {
-  font-family: 'Quattrocento', serif;
   position: fixed;
   top: 70px;
   bottom: 0;
@@ -307,7 +438,7 @@ padding-right:2em;
   z-index: 1000;
   overflow-x: hidden;
   overflow-y: auto; /* Scrollable contents if viewport is shorter than content. */
-  border-right: 6px solid white;
+  border-right: 2px dashed white;
   height: 100%;
   padding-left: 0;
   padding-right: 0;
@@ -321,7 +452,7 @@ width:100%
 
 .sidebar .nav-link{
   width:100%;
-  background-color: #F6F6F6;
+  background-color: #F7F7F7;
   color : color:#3a6826;
 }
 
@@ -338,13 +469,23 @@ width:100%
 }
 
 .news-item{
-font-family: 'Quattrocento', serif;
-width:50%;
-
+width:75%;
 }
-.news-item p{
-padding-top : 2em;
-border-top : 1px solid black;
+
+.news-item h1{
+font-weight: bold;
+}
+
+.news-item h4{
+line-height :2.2rem;
+padding-top:1rem;
+padding-bottom:1rem;
+}
+
+.news-item h4{
+padding-bottom : 2em;
+border-bottom : 1px solid black;
+margin-bottom : 2em;
 }
 
 .click-hover{
@@ -370,7 +511,8 @@ height:300px;
 
 /* Carousel base class */
 .carousel {
-  margin-bottom: 4rem;
+  margin-bottom: 2rem;
+  box-shadow: 2px 2px 2px grey;
 }
 /* Since positioning the image, we need to help out the caption */
 .carousel-caption {
@@ -390,6 +532,19 @@ height:300px;
   min-width: 100%;
   height: 32rem;
 }
+.open-gym-carousel{
+background:black;
+opacity:0.8;
+padding : 2em;
+border-radius: 10px 30px 10px 30px;
+border : 1px dashed #aabfa0;
+}
+
+.open-gym-carousel h1{
+  font-family: 'Amatic SC', cursive;
+}
+
+
 
 /*Tabs*/
 .tab-title-right{
@@ -397,7 +552,7 @@ color:red;
 margin-right:0;
 }
 
-.course-detail-tab-content{
+.opengym-tab{
 background:white;
 padding:1em;
 padding-bottom:5em;
@@ -406,6 +561,7 @@ margin-bottom:2em;
 border-radius: 0px 30px 5px 30px;
 border : 1px dashed #aabfa0;
 border-top:0;
+opacity: 0.96;
 }
 
 .open-gym-page{
@@ -419,7 +575,7 @@ border : 1px dashed #aabfa0;
 opacity: 0.96;
 }
 
-.course-detail-tabs{
+.opengym-tabs-head{
 margin-right:30px;
 }
 

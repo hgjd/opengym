@@ -4,6 +4,7 @@ from django.contrib.auth.base_user import BaseUserManager, AbstractBaseUser
 from django.contrib.auth.models import PermissionsMixin
 from django.core.exceptions import ValidationError
 from django.core.mail import send_mail
+from django.core.validators import RegexValidator
 from django.db import models
 from django.urls import reverse_lazy
 from django.utils import timezone
@@ -43,6 +44,12 @@ class MyUserManager(BaseUserManager):
 
 
 class User(AbstractBaseUser, PermissionsMixin):
+    SEX_CHOICES = (
+        ('F', 'Female',),
+        ('M', 'Male',),
+        ('U', 'Unsure',),
+    )
+
     email = models.EmailField(unique=True, null=True)
     first_name = models.CharField(_('first name'), max_length=30)
     last_name = models.CharField(_('last name'), max_length=30)
@@ -63,6 +70,7 @@ class User(AbstractBaseUser, PermissionsMixin):
             'Unselect this instead of deleting accounts.'
         ),
     )
+
     USERNAME_FIELD = 'email'
     objects = MyUserManager()
 
@@ -278,7 +286,7 @@ class NewsBulletin(models.Model):
             )
 
         try:
-            self.news_item.url
+            self.news_item.image
         except AttributeError:
             raise ValidationError(
                 "news item : %(news_item)s needs to have an image in order to become a bulletin",

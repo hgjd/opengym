@@ -1,6 +1,12 @@
 (function($) {
   "use strict"; // Start of use strict
 
+
+  $('.close').click(function(){
+  $('.custom-modal').hide();
+  });
+
+
   // Smooth scrolling using jQuery easing
   $('a.js-scroll-trigger[href*="#"]:not([href="#"])').click(function() {
     if (location.pathname.replace(/^\//, '') == this.pathname.replace(/^\//, '') && location.hostname == this.hostname) {
@@ -78,3 +84,15 @@ $(document).on('click', '.month-next', function(){
 
 })(jQuery); // End of use strict
 
+function showImage(thumb_id){
+id = thumb_id.substring(10);
+url = document.getElementById('url_'+id).innerHTML;
+description = document.getElementById('description_'+id).innerHTML;
+title = document.getElementById('title_'+id).innerHTML;
+modalImg = document.getElementById('modal_image');
+modalImg.src = url;
+document.getElementById("caption").innerHTML = description;
+document.getElementById("modal-image-title").innerHTML = title;
+var modal = document.getElementById('modal-lightbox');
+modal.style.display = "block";
+}

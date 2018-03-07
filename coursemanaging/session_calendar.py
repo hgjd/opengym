@@ -82,7 +82,7 @@ class SessionCalendar(HTMLCalendar):
             s = '%s' % month_name[themonth]
         return '<tr class="month-header"><th></th><th colspan="1"><span class="fa fa-angle-left fa-2x month-nav month-prev"></span></th>' + \
                '<th colspan="3" class="calendar-month-title">%s</th>' % s + \
-               '<th colspan="1"><span class="fa fa-angle-right fa-2x month-nav month-next"></span></th><th class="help-cell"><span class="fa fa-info-circle calendar-help" data-toggle="modal" data-target="#calendar-info-modal"></span></th></tr>'
+               '<th colspan="1"><span class="fa fa-angle-right fa-2x month-nav month-next"></span></th><th class="help-cell"><div class="calendar-help" data-toggle="modal" data-target="#calendar-info-modal"><span class="fa fa-info-circle " ></span> Legende</div></th></tr>'
 
     def group_by_day(self, session_list):
         result = defaultdict()

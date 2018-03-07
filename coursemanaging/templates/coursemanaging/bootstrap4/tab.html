@@ -1,0 +1,6 @@
+<ul{% if tabs.css_id %} id="{{ tabs.css_id }}"{% endif %} class="nav nav-tabs opengym-tabs-head">
+    {{ links|safe }}
+</ul>
+<div class="tab-content panel-body opengym-tab">
+    {{ content|safe }}
+</div>

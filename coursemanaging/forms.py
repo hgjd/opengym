@@ -1,3 +1,4 @@
+from crispy_forms.bootstrap import TabHolder, Tab
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.sites.shortcuts import get_current_site
@@ -5,8 +6,14 @@ from django.template.loader import render_to_string
 from django.utils.encoding import force_bytes
 from django.utils.http import urlsafe_base64_encode
 
+from crispy_forms.helper import FormHelper
+from crispy_forms.layout import Layout, Field
+
 from coursemanaging.models import User, Course, Session
 from coursemanaging.tokens import account_activation_token
+
+Tab.link_template = 'coursemanaging/%s/tab-link.html'
+TabHolder.template = 'coursemanaging/%s/tab.html'
 
 
 class UserRegisterForm(UserCreationForm):
@@ -41,20 +48,24 @@ class UserRegisterForm(UserCreationForm):
         return user
 
 
-class NameForm(forms.Form):
-    your_name = forms.CharField(label='Your name', max_length=100)
-
-
 class UserUpdateForm(forms.ModelForm):
-    nameform = NameForm()
-
     class Meta:
         model = User
         fields = ['first_name', 'last_name', 'birthdate', 'volunteer']
         widgets = {
             'birthdate': forms.DateTimeInput(attrs={'class': 'datepicker', 'autocomplete': 'off'}),
-
         }
+
+    def __init__(self, *args, **kwargs):
+        super(UserUpdateForm, self).__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.layout = Layout(
+            TabHolder(
+                Tab('First Tab',
+                    'first_name', 'last_name'),
+                Tab('Second Tab',
+                    Field('birthdate')
+                    )))
 
 
 class CourseCreateForm(forms.ModelForm):
@@ -88,12 +99,6 @@ class SessionCreateForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         self.course = kwargs.pop("course")
         super(SessionCreateForm, self).__init__(*args, **kwargs)
-        labels = {
-            'max_students_diff_course': _('Writer'),
-        }
-        help_texts = {
-            'name': _('Some useful help text.'),
-        }
 
     def save(self, commit=True):
         session = super(SessionCreateForm, self).save()

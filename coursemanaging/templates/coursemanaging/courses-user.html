@@ -2,7 +2,7 @@
 {% block content %}
 <h1 class="text-center">Uw lessen</h1>
 {% if user.teacher %}
-<ul class="nav nav-tabs course-detail-tabs" id="coursesTab" role="tablist">
+<ul class="nav nav-tabs opengym-tabs-head" id="coursesTab" role="tablist">
     <li class="nav-item">
         <a class="nav-link tab active" id="teacher-tab" data-toggle="tab" href="#teacher" role="tab"
            aria-controls="teacher"
@@ -16,7 +16,7 @@
 </ul>
 
 
-<div class="tab-content course-detail-tab-content" id="coursesTabContent">
+<div class="tab-content opengym-tab" id="coursesTabContent">
     <!-- start teacher tab -->
     <div class="tab-pane fade active show " id="teacher" role="tabpanel" aria-labelledby="teachers-tab">
         {% if courses_teacher %}

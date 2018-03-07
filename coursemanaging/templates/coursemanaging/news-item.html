@@ -1,3 +1,6 @@
 <h1>{{news_item.title}}</h1>
-<h2>{{news_item.short_text}}</h2>
+<time>{{news_item.publication_date|date:"d-g-o"}}</time>
+<h4>{{news_item.short_text}}</h4>
+{% autoescape off %}
 <p>{{news_item.text}}</p>
+{% endautoescape %}
