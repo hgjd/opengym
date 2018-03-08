@@ -125,12 +125,12 @@ class Course(models.Model):
 
     def get_next_session(self):
         if Session.objects.filter(course=self, start__gte=timezone.now()).exists():
-            return Session.objects.filter(course=self).order_by('-start')[0]
+            return Session.objects.filter(course=self,start__gte=timezone.now()).order_by('start')[0]
         else:
             return None
 
     def get_future_sessions(self):
-        return Session.objects.filter(start__gte=timezone.now(), course=self).order_by('-start')
+        return Session.objects.filter(start__gte=timezone.now(), course=self).order_by('start')
 
     def user_is_subscribed(self, user):
         return self.students.filter(id=user.id).exists()

@@ -15,13 +15,25 @@ checkMaxStudents();
 });
 
 $(document).on("click", "#id_location_diff_course",function(){
-checkLocation()
+checkLocation();
+});
+
+$(document).on("click", "#id_multiple_sessions",function(){
+checkMultipleSessions();
 });
 
 
 
-
 })(jQuery); // End of use strict
+
+
+function checkMultipleSessions(){
+if ($('#id_multiple_sessions').is(":checked")){
+$('#div_id_weekly_until').slideDown();
+}else{
+$('#div_id_weekly_until').slideUp();
+}
+}
 
 function checkMaxStudents(){
 if ($('#id_max_students_diff_course').is(":checked")){

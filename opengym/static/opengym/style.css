@@ -16,9 +16,30 @@ padding-right:1em;
 }
 
 .myImg{
-border-radius: 5px 5px 5px 5px;
-  box-shadow: 2px 2px 2px grey;
+border-radius: 2px 2px 2px 2px;
 
+
+}
+
+.myImg:hover{
+opacity:0.5;
+cursor:pointer;
+}
+
+.footer-logo {
+    width:90px;
+    height: auto;
+}
+
+.mijn-leuven{
+width:200px;
+height:auto;
+}
+
+.spit-logo{
+
+width:250px;
+    height: auto;
 }
 
 body {
@@ -36,6 +57,7 @@ body {
     background-position: 100% 100%;
 }
 
+
 a {
 text-decoration:none;
 color:#3a6826;
@@ -51,6 +73,10 @@ border-color: #d3d65e;
 
 #page-top{
 background-image:none;
+}
+
+#div_id_weekly_until{
+display:none;
 }
 
 
@@ -112,7 +138,7 @@ NAVIGATION STYLING
 .navbar {
   font-family: 'Amatic SC', cursive;
   margin-bottom: 0;
-  border-bottom : 3px dashed white;
+  border-bottom : 2px dashed #3a6826;
   font-size : 240%;
   background-color: rgba(240,240,240,0.9); /* Black w/ opacity */
 
@@ -163,10 +189,6 @@ color:#d3d65e;
 color:#d3d65e;
 }
 
-.landing-nav{
-border-color : #3a6826;
-border-width : 2px;
-}
 
 /*
 custom modal
@@ -237,10 +259,7 @@ margin: auto;
 
 /* The Close Button */
 .close {
-    position: absolute;
-    top: 80px;
-    right: 35px;
-    color: #f1f1f1;
+    color: #3a6826;
     font-size: 40px;
     font-weight: bold;
     transition: 0.3s;
@@ -384,7 +403,7 @@ margin-left:0.5em;
 
 
 .calendar-day-events a:hover{
-color:crimson;
+color:#d3d65e;
 }
 
 .month-next {

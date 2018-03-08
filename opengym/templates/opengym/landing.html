@@ -127,12 +127,10 @@
     </div>
 </section>
 
-<section id="kalender">
-    <div class="jumbotron text-center mt-5">
-        <div id="calendar-content">{{calendar}}</div>
-    </div>
+<section id="kalender" class="pt-5">
+    <div id="calendar-content">{{calendar}}</div>
     <div class="container">
-        <a class="float-right landing-link" href="{% url 'coursemanaging:course-list' %}">Bekijk hier alle
+        <a class="float-right landing-link mt-2" href="{% url 'coursemanaging:course-list' %}">Bekijk hier alle
             lessen <span
                     class="fa fa-chevron-right ml-2"></span></a>
     </div>
@@ -187,7 +185,7 @@
                     <p id="description_6" class="card-text" hidden></p>
                 </div>
                 <div class="container text-right ">
-                    <a class="landing-link" href="{% url 'coursemanaging:album' %}">Meer foto's
+                    <a class="landing-link" href="{% url 'coursemanaging:album' %}">Meer beeldmateriaal
                         <span
                                 class="fa fa-chevron-right ml-2"></span></a>
                 </div>
@@ -236,6 +234,7 @@
                 <button type="button" class="close" data-dismiss="modal"><span class="fa fa-times"
                                                                                aria-hidden="true"></span></button>
             </div>
+
             <div class="modal-body">
                 <table class="table ">
                     <tbody>
@@ -282,7 +281,12 @@
 
 <footer class="py-5 bg-dark">
     <div class="container">
-        <p class="m-0 text-center text-white">Copyright &copy; Your Website 2017</p>
+        <p class="m-0 text-center text-white">
+            <img class="mijn-leuven mr-5" src="{% static 'opengym/img/sponsors/mijn_leuven.jpg' %}">
+            <img class="spit-logo" src="{% static 'opengym/img/sponsors/spit.png' %}">
+            <img class="footer-logo mr-5 ml-5" src="{% static 'opengym/img/sponsors/stad.jpg' %}">
+            <img class="footer-logo" src="{% static 'opengym/img/sponsors/tofsport.jpg' %}">
+        </p>
     </div>
     <!-- /.container -->
 </footer>

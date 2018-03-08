@@ -2,6 +2,8 @@ import pytz
 import datetime
 import calendar
 
+from django.contrib.auth.mixins import UserPassesTestMixin
+from django.core.exceptions import PermissionDenied
 from django.shortcuts import redirect, render, get_object_or_404, render_to_response
 from django.urls import reverse_lazy
 from django.utils.encoding import force_text
@@ -65,7 +67,7 @@ USER VIEWS
 """
 
 
-class UserCreateView(generic.CreateView):
+class RegisterView(generic.CreateView):
     """Register view for user"""
     template_name = 'coursemanaging/user-create.html'
     model = User
@@ -73,7 +75,7 @@ class UserCreateView(generic.CreateView):
     success_url = reverse_lazy('coursemanaging:account-activation-sent')
 
     def get_form_kwargs(self):
-        kwargs = super(UserCreateView, self).get_form_kwargs()
+        kwargs = super(RegisterView, self).get_form_kwargs()
         kwargs.update({'request': self.request})
         return kwargs
 
@@ -106,7 +108,7 @@ def activate(request, uidb64, token):
         user.email_confirmed = True
         user.save()
         login(request, user)
-        return redirect('coursemanaging:index')
+        return redirect('coursemanaging:landing')
     else:
         return render(request, 'coursemanaging/account-activation-invalid.html')
 
@@ -121,17 +123,27 @@ class IndexView(generic.TemplateView):
     template_name = 'coursemanaging/index.html'
 
 
-class CourseCreateView(generic.CreateView):
+class CourseCreateView(UserPassesTestMixin, generic.CreateView):
     """create view for a course"""
     template_name = 'coursemanaging/course-create.html'
     model = Course
-    success_url = reverse_lazy('coursemanaging:index')
     form_class = CourseCreateForm
+
+    def test_func(self):
+        return self.request.user.teacher
+
+    def handle_no_permission(self):
+        if self.raise_exception:
+            raise PermissionDenied(self.get_permission_denied_message())
+        return redirect('coursemanaging:impossible')
 
     def get_form_kwargs(self):
         kwargs = super(CourseCreateView, self).get_form_kwargs()
         kwargs.update({'user': self.request.user})
         return kwargs
+
+    def get_success_url(self):
+        return self.object.get_absolute_url()
 
 
 class CourseDetailView(generic.DetailView):
@@ -185,18 +197,24 @@ class CourseListView(generic.ListView):
 
     def get_context_data(self, **kwargs):
         context = super(CourseListView, self).get_context_data(**kwargs)
-
         context['current_page'] = 'courses'
         return context
 
 
-class CourseUpdateView(generic.UpdateView):
+class CourseUpdateView(UserPassesTestMixin, generic.UpdateView):
+    def test_func(self):
+        return self.request.user.teacher and self.request.user in self.get_object().teachers.all()
+
+    def handle_no_permission(self):
+        if self.raise_exception:
+            raise PermissionDenied(self.get_permission_denied_message())
+        return redirect('coursemanaging:impossible')
+
     """Update view of a course"""
     template_name = 'coursemanaging/course-create.html'
     model = Course
     fields = ['course_name', 'course_level', 'build_up_sessions', 'description', 'location_short', 'location_street',
               'location_number', 'location_city']
-    success_url = reverse_lazy('coursemanaging:index')
 
     def get_success_url(self):
         return self.object.get_absolute_url()
@@ -222,11 +240,20 @@ SESSION VIEWS
 """
 
 
-class SessionCreateView(generic.CreateView):
+class SessionCreateView(UserPassesTestMixin, generic.CreateView):
     """create view for a Session"""
     template_name = 'coursemanaging/session-create.html'
     model = Session
     form_class = SessionCreateForm
+
+    def test_func(self):
+        course = get_object_or_404(Course, pk=self.kwargs['pk'])
+        return self.request.user.teacher and self.request.user in course.teachers.all()
+
+    def handle_no_permission(self):
+        if self.raise_exception:
+            raise PermissionDenied(self.get_permission_denied_message())
+        return redirect('coursemanaging:impossible')
 
     def get_form_kwargs(self):
         kwargs = super(SessionCreateView, self).get_form_kwargs()
@@ -238,11 +265,20 @@ class SessionCreateView(generic.CreateView):
         return reverse_lazy('coursemanaging:course-detail', kwargs={'pk': self.kwargs['pk']})
 
 
-class SessionUpdateView(generic.UpdateView):
+class SessionUpdateView(UserPassesTestMixin, generic.UpdateView):
     template_name = 'coursemanaging/session-create.html'
     model = Session
     fields = ['start', 'duration', 'extra_info', 'max_students_diff_course', 'max_students', 'location_diff_course',
               'location_short', 'location_street', 'location_number', 'location_city']
+
+    def test_func(self):
+        course = self.get_object().course
+        return self.request.user.teacher and self.request.user in course.teachers.all()
+
+    def handle_no_permission(self):
+        if self.raise_exception:
+            raise PermissionDenied(self.get_permission_denied_message())
+        return redirect('coursemanaging:impossible')
 
     def get_success_url(self):
         return reverse_lazy('coursemanaging:course-detail', kwargs={'pk': self.object.course.id})

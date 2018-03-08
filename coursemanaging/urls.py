@@ -7,8 +7,8 @@ from . import views
 
 app_name = "coursemanaging"
 urlpatterns = [
-    url(r'^$', views.IndexView.as_view(),
-        name='index'),
+    url(r'^$', views.LandingView.as_view(),
+        name='landing'),
     url(r'^course/register$', login_required(views.CourseCreateView.as_view()),
         name='course-create'),
     url(r'^course/(?P<pk>[0-9]+)/$', login_required(views.CourseDetailView.as_view()),
@@ -23,7 +23,7 @@ urlpatterns = [
         name='session-create'),
     url(r'^session/(?P<pk>[0-9]+)/session-update$', login_required(views.SessionUpdateView.as_view()),
         name='session-update'),
-    url(r'^register/$', views.UserCreateView.as_view(),
+    url(r'^register/$', views.RegisterView.as_view(),
         name='user-register'),
     url(r'^user/$', login_required(views.UserDetailView.as_view()),
         name='user-detail'),
@@ -37,9 +37,6 @@ urlpatterns = [
         name='logout'),
     url('^account-activation-sent', views.AccountActivationSentView.as_view(),
         name='account-activation-sent'),
-
-    url(r'^landing/', views.LandingView.as_view(),
-        name='landing'),
     url(r'^calendar/', views.CalendarView.as_view(),
         name='calendar'),
     url(r'^album/', views.AlbumView.as_view(),
