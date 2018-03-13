@@ -10,7 +10,7 @@ from django.utils.encoding import force_bytes
 from django.utils.http import urlsafe_base64_encode
 
 from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Layout, Field
+from crispy_forms.layout import Layout, Field, Div, ButtonHolder, Submit
 
 from coursemanaging.models import User, Course, Session
 from coursemanaging.tokens import account_activation_token
@@ -33,7 +33,7 @@ class UserRegisterForm(UserCreationForm):
 
     class Meta:
         model = User
-        fields = ('first_name', 'last_name', 'birthdate', 'email', 'password1', 'password2', 'volunteer')
+        fields = ('first_name', 'last_name', 'birthdate', 'email', 'password1', 'password2')
         widgets = {
             'birthdate': forms.DateTimeInput(attrs={'class': 'datepicker', 'autocomplete': 'off'}),
         }
@@ -59,24 +59,23 @@ class UserRegisterForm(UserCreationForm):
         return user
 
 
-class UserUpdateForm(forms.ModelForm):
-    class Meta:
-        model = User
-        fields = ['first_name', 'last_name', 'birthdate', 'volunteer']
-        widgets = {
-            'birthdate': forms.DateTimeInput(attrs={'class': 'datepicker', 'autocomplete': 'off'}),
-        }
+class ContactForm(forms.Form):
+    first_name = forms.CharField(label='Voornaam', max_length=100, required=False)
+    last_name = forms.CharField(label='Familienaam', max_length=100, required=False)
+    phone_nr = forms.CharField(label="Telefoon", required=False)
+    email = forms.EmailField(label="email")
+    message = forms.CharField(widget=forms.Textarea)
 
     def __init__(self, *args, **kwargs):
-        super(UserUpdateForm, self).__init__(*args, **kwargs)
+        super(ContactForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.layout = Layout(
-            TabHolder(
-                Tab('First Tab',
-                    'first_name', 'last_name'),
-                Tab('Second Tab',
-                    Field('birthdate')
-                    )))
+            Div(
+                Div('first_name', 'last_name', css_class='form-left'),
+                Div('phone_nr', 'email', css_class='form-right'), css_class='form-top'),
+            'message', ButtonHolder(
+                Submit('submit', 'Verstuur', css_class='btn btn-lg')
+            ))
 
 
 class CourseCreateForm(forms.ModelForm):

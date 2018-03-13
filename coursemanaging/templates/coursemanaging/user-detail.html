@@ -2,10 +2,7 @@
 {% block content %}
 <div class="open-gym-page">
     <div class="mt-4">
-        <h3 class="float-left">Uw gegevens</h3>
-        <a class="btn btn-outline-success float-right mr-5" href="{% url 'coursemanaging:user-update' %}"><span
-                class="fa fa-refresh" aria-hidden="true"></span></a>
-        <div style="clear: both;"></div>
+        <h3 class="">Uw gegevens</h3>
     </div>
         <table class="table mt-4">
             <tbody>
@@ -20,10 +17,6 @@
             <tr>
                 <th scope="row">Geboortedatum</th>
                 <td>{{user.birthdate|date:'d/m/o'}}</td>
-            </tr>
-            <tr>
-                <th scope="row">Vrijwilliger</th>
-                <td>{{user.volunteer|yesno:"Ja,nee"}}</td>
             </tr>
             <tr>
                 <th scope="row">Leerkracht</th>

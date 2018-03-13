@@ -24,78 +24,88 @@
 
     {% endblock %}
     <meta charset="UTF-8">
-    <title>{% block page-title %}{% endblock %}</title>
+    <title>Open Gym - DIY Sports centre {% block page-title %}{% endblock %}</title>
+    <meta name="description" content="Open gym is een DIY gym voor iedereen!">
+    <meta name="keywords" content="Leuven, open, gym, diy, bouw, sport">
 </head>
 <body onload="{% block onload %}
     {% endblock %}">
 <nav class="navbar navbar-expand-md fixed-top">
-    <a class="navbar-brand ml-5" href="{% url 'coursemanaging:landing' %}"> Open Gym</a>
-    <ul class="collapse navbar-collapse justify-content-md-center">
-        <li>
-            {% if current_page == 'courses' %}
-            <a class="nav-link" href="{% url 'coursemanaging:course-list' %}">
-                <span class="fa fa-angle-double-right" aria-hidden="true"></span>
-                Lessen
-                <span class="fa fa-angle-double-left" aria-hidden="true"></span>
-            </a>
+    <div class="social-media-buttons">
+        <a href="https://www.facebook.com/OpenGymLeuven/" class="fa fa-facebook"></a>
+        <a href="https://www.youtube.com/" class="fa fa-youtube"></a>
+    </div>
+    <a class="navbar-brand ml-3" href="{% url 'coursemanaging:landing' %}"> Open Gym</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse"
+            aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon">KOEKSKES</span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarCollapse">
+        <ul class="navbar-collapse justify-content-md-center">
+            <li>
+                {% if current_page == 'courses' %}
+                <a class="nav-link" href="{% url 'coursemanaging:course-list' %}">
+                    <span class="fa fa-angle-double-right" aria-hidden="true"></span>
+                    Lessen
+                    <span class="fa fa-angle-double-left" aria-hidden="true"></span>
+                </a>
+                {% else %}
+                <a class="nav-link" href="{% url 'coursemanaging:course-list' %}">
+                    Lessen
+                </a>
+                {% endif %}
+
+            </li>
+            <li>
+                {% if current_page == 'news' %}
+                <a class="nav-link" href="{% url 'coursemanaging:news' %}">
+                    <span class="fa fa-angle-double-right" aria-hidden="true"></span>
+                    Nieuws
+                    <span class="fa fa-angle-double-left" aria-hidden="true"></span>
+                </a>
+
+                {% else %}
+                <a class="nav-link" href="{% url 'coursemanaging:news' %}">Nieuws</a>
+                {% endif %}
+
+            </li>
+            <li>
+                {% if current_page == 'calendar' %}
+                <a class="nav-link" href="{% url 'coursemanaging:calendar' %}">
+                    <span class="fa fa-angle-double-right" aria-hidden="true"></span>
+                    Kalender
+                    <span class="fa fa-angle-double-left" aria-hidden="true"></span>
+                </a>
+
+                {% else %}
+                <a class="nav-link" href="{% url 'coursemanaging:calendar' %}">Kalender</a>
+                {% endif %}
+            </li>
+
+        </ul>
+        <ul class="nav navbar-nav navbar-right mr-5">
+            {% if user.is_authenticated %}
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle btn-lg" id="dropdown01" data-toggle="dropdown"
+                   aria-haspopup="true" aria-expanded="false">{{user.first_name}}</a>
+                <div class="dropdown-menu" aria-labelledby="dropdown01">
+                    <a class="dropdown-item" href="{% url 'coursemanaging:courses-user' %}">Lessen</a>
+                    <a class="dropdown-item" href="{% url 'coursemanaging:user-detail' %}">Uw gegevens</a>
+                    <a class="dropdown-item" href="{% url 'coursemanaging:logout' %}">Logout</a>
+                </div>
+            </li>
             {% else %}
-            <a class="nav-link" href="{% url 'coursemanaging:course-list' %}">
-                Lessen
-            </a>
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle btn-lg" id="dropdown02" data-toggle="dropdown"
+                   aria-haspopup="true" aria-expanded="false">Login</a>
+                <div class="dropdown-menu" aria-labelledby="dropdown02">
+                    <a class="dropdown-item" href="{% url 'coursemanaging:login' %}">Login</a>
+                    <a class="dropdown-item" href="{% url 'coursemanaging:user-register' %}">Register</a>
+                </div>
+            </li>
             {% endif %}
-
-        </li>
-        <li>
-            {% if current_page == 'news' %}
-            <a class="nav-link" href="{% url 'coursemanaging:news' %}">
-                <span class="fa fa-angle-double-right" aria-hidden="true"></span>
-                Nieuws
-                <span class="fa fa-angle-double-left" aria-hidden="true"></span>
-            </a>
-
-            {% else %}
-            <a class="nav-link" href="{% url 'coursemanaging:news' %}">Nieuws</a>
-            {% endif %}
-
-        </li>
-        <li>
-            {% if current_page == 'calendar' %}
-            <a class="nav-link" href="{% url 'coursemanaging:calendar' %}">
-                <span class="fa fa-angle-double-right" aria-hidden="true"></span>
-                Kalender
-                <span class="fa fa-angle-double-left" aria-hidden="true"></span>
-            </a>
-
-            {% else %}
-            <a class="nav-link" href="{% url 'coursemanaging:calendar' %}">Kalender</a>
-            {% endif %}
-        </li>
-
-    </ul>
-    <ul class="nav navbar-nav navbar-right mr-5">
-        {% if user.is_authenticated %}
-        <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle btn-lg" id="dropdown01" data-toggle="dropdown"
-               aria-haspopup="true" aria-expanded="false">{{user.first_name}}</a>
-            <div class="dropdown-menu" aria-labelledby="dropdown01">
-                <a class="dropdown-item" href="{% url 'coursemanaging:courses-user' %}">Lessen</a>
-                <a class="dropdown-item" href="{% url 'coursemanaging:user-detail' %}">Uw gegevens</a>
-                <a class="dropdown-item" href="{% url 'coursemanaging:logout' %}">Logout</a>
-            </div>
-        </li>
-        {% else %}
-        <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle btn-lg" id="dropdown02" data-toggle="dropdown"
-               aria-haspopup="true" aria-expanded="false">Login</a>
-            <div class="dropdown-menu" aria-labelledby="dropdown02">
-                <a class="dropdown-item" href="{% url 'coursemanaging:login' %}">Login</a>
-                <a class="dropdown-item" href="{% url 'coursemanaging:user-register' %}">Register</a>
-            </div>
-        </li>
-        {% endif %}
-    </ul>
-    {% block extra_nav %}
-    {% endblock %}
+        </ul>
+    </div>
 </nav>
 
 <div class="base container">

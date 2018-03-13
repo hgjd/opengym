@@ -8,17 +8,106 @@ margin:0;
 .landing-link{
 font-size:150%;
 border-radius: 10px 30px 30px 10px;
-border : 1px dashed #aabfa0;
+border : 2px dashed #3a6826;
 padding:0.5em;
 padding-right:1em;
   font-family: 'Amatic SC', cursive;
 
 }
+#contact{
+    padding-top: 3rem;
+}
+
+.contact-container{
+display:flex;
+width:95%;
+height:750px;
+margin:auto;
+background-color: #375926;
+color:#c1d1ba;
+padding-top:2rem;
+border-radius:8px;
+background-image: url("logo.png");
+    background-repeat: no-repeat,no-repeat;
+    background-attachment: fixed;
+    background-size: 35%;
+    background-position: 100% 100%;
+}
+
+.contact-container h2{
+font-family: 'Amatic SC', cursive;
+font-weight:bold;
+font-size : 300%
+
+}
+
+
+#submit-id-submit{
+font-family: 'Amatic SC', cursive;
+background:#d3d65e;
+border-color:#d3d65e;
+color:black;
+float:right;
+margin-right:1%;
+font-size:300%;
+-webkit-transition: 0.5s;
+          transition: 0.5s;
+}
+
+#submit-id-submit:hover{
+-webkit-transform: scale(1.1);
+          transform: scale(1.1);
+  cursor:pointer;
+}
+.contact-container label{
+font-family: 'Amatic SC', cursive;
+font-size : 200%
+}
+
+#div_id_message{
+margin-right:1%
+}
+
+.form-top{
+display:flex;
+}
+
+.form-left{
+width:48%
+}
+
+.form-right{
+width:48%;
+margin-left : 3%;
+}
+
+
+.contact-form{
+width:60%;
+float:right;
+opacity:0.90;
+}
+
+.contact-info{
+width:40%;
+overflow:hidden;
+}
+
+.google-maps{
+width:600px;
+height:450px;
+margin : 0 auto;
+margin-top : 8%;
+margin-left : 5%;
+margin-right : 5%;
+overflow:hidden;
+border-radius:3px;
+
+}
+
 
 .myImg{
 border-radius: 2px 2px 2px 2px;
-
-
 }
 
 .myImg:hover{
@@ -27,19 +116,23 @@ cursor:pointer;
 }
 
 .footer-logo {
-    width:90px;
+    width:60px;
     height: auto;
 }
 
+footer{
+margin-top : 5rem;
+opacity:0.9;
+}
+
 .mijn-leuven{
-width:200px;
+width:100px;
 height:auto;
 }
 
 .spit-logo{
-
-width:250px;
-    height: auto;
+width:150px;
+height: auto;
 }
 
 body {
@@ -68,21 +161,37 @@ a:hover{
 color:#d3d65e;
 text-decoration:none;
 border-color: #d3d65e;
-
 }
 
-#page-top{
-background-image:none;
-}
 
 #div_id_weekly_until{
 display:none;
 }
 
 
+.landing-body{
+margin-top : 5em;
+ background-image:url('img/bg.jpg');
+    background-attachment:fixed;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.social-media-buttons{
+font-size:50%;
+margin-left:0;
+}
+
+
 .navbar-nav{
 color:#3a6826;
+
 }
+
+.navbar{
+padding-left:0.5rem;
+}
+
 .navbar-right{
 cursor:pointer;
 }
@@ -140,7 +249,7 @@ NAVIGATION STYLING
   margin-bottom: 0;
   border-bottom : 2px dashed #3a6826;
   font-size : 240%;
-  background-color: rgba(240,240,240,0.9); /* Black w/ opacity */
+  background-color: rgba(244,244,244,0.9); /* Black w/ opacity */
 
 
 }
@@ -297,6 +406,14 @@ CALENDAR STYLING
     text-align : center;
 }
 
+#calendar-content{
+background-image: url("logo.png");
+    background-repeat: no-repeat,no-repeat;
+    background-attachment: fixed;
+    background-size: 35%;
+    background-position: 100% 100%;
+}
+
 /* calendar table */
 .calendar {
     font-family: 'Julius Sans One', sans-serif;
@@ -446,49 +563,65 @@ NEWS STYLING
 */
 
 .current-news{
-padding-right:2em;
+color:#d3d65e;
 }
 
-.sidebar {
-  position: fixed;
-  top: 70px;
-  bottom: 0;
-  left: 0;
-  z-index: 1000;
-  overflow-x: hidden;
-  overflow-y: auto; /* Scrollable contents if viewport is shorter than content. */
-  border-right: 2px dashed white;
-  height: 100%;
-  padding-left: 0;
-  padding-right: 0;
-  padding-top:2em;
-  background-color: #F6F6F6;
+.news-link{
+width:100%;
+margin-top:0.5em;;
 }
 
-.sidebar .nav {
-width:100%
+.news-title{
+font-family: 'Amatic SC', cursive;
+font-weight :bold;
 }
 
-.sidebar .nav-link{
-  width:100%;
-  background-color: #F7F7F7;
-  color : color:#3a6826;
+
+
+.news-link:hover{
+cursor:pointer;
+color:#d3d65e;
 }
 
-.nav-link time{
-float:right;
-}
-
-.nav-link div{
-float:left;
-}
-
-.sidebar .nav-item {
-width:100%
+.news-page{
+overflow: hidden;
 }
 
 .news-item{
-width:75%;
+width:70%;
+ float:left;
+}
+
+.news-item img{
+
+width :50%;
+height:auto;
+margin-top: 25px;
+margin-bottom : 25px;
+
+margin-left: auto;
+margin-right: auto;
+display: block;
+
+}
+
+.news-link time{
+float:right;
+}
+
+.news-history{
+overflow: auto;
+width:25%;
+margin-left:2em;
+background:white;
+padding:1em;
+padding-bottom:5em;
+padding-top:2em;
+margin-bottom:2em;
+border-radius: 30px 10px 30px 10px;
+border : 1px dashed #aabfa0;
+opacity: 0.96;
+max-height:60vh;
 }
 
 .news-item h1{

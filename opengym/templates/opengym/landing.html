@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
     {% load static %}
+    {% load crispy_forms_tags %}
     <!-- CSS -->
     <link href="https://fonts.googleapis.com/css?family=Amatic+SC" rel="stylesheet">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css"
@@ -14,18 +15,24 @@
     <script src="https://use.fontawesome.com/9d1627fd30.js"></script>
     <script type="text/javascript">
       window.CSRF_TOKEN = "{{ csrf_token }}";
-      window.CALENDAR_YEAR = {% now "o" %}
-      window.CALENDAR_MONTH = {% now "n" %}
+      window.CALENDAR_YEAR = {% now "o" %};
+      window.CALENDAR_MONTH = {% now "n" %};
+
+
 
     </script>
     <meta charset="UTF-8">
-    <title>Open Gym</title>
+    <title>Open Gym - DIY Sports centre</title>
 </head>
-<body id="page-top">
+<body class="landing-body" id="page-top">
 
 <!-- Navigation -->
 <nav class="navbar navbar-expand-md fixed-top landing-nav" id="mainNav">
-    <a class="navbar-brand ml-5 js-scroll-trigger" href="#page-top">Open Gym</a>
+    <div class="social-media-buttons">
+        <a href="https://www.facebook.com/OpenGymLeuven/" class="fa fa-facebook"></a>
+        <a href="https://www.youtube.com/" class="fa fa-youtube"></a>
+    </div>
+    <a class="navbar-brand ml-3 js-scroll-trigger" href="#page-top">Open Gym</a>
     <ul class="collapse navbar-collapse justify-content-md-center">
         <li class="nav-item">
             <a class="nav-link js-scroll-trigger" href="#nieuwigheden">Nieuwigheden</a>
@@ -37,7 +44,7 @@
             <a class="nav-link js-scroll-trigger" href="#beeldmateriaal">Beeldmateriaal</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link js-scroll-trigger" href="#vitalestad">Leuven Vitaal</a>
+            <a class="nav-link js-scroll-trigger" href="#contact">Contact</a>
         </li>
     </ul>
     <ul class="nav navbar-nav navbar-right mr-5">
@@ -80,6 +87,7 @@
             <li data-target="#myCarousel" data-slide-to="2"></li>
         </ol>
         <div class="carousel-inner">
+            {% if bulletins.0 %}
             <div class="carousel-item active">
                 <img class="first-slide" src="{{ bulletins.0.news_item.image.url }}">
                 <div class="container">
@@ -90,6 +98,9 @@
                     </div>
                 </div>
             </div>
+            {% endif %}
+
+            {% if bulletins.1 %}
             <div class="carousel-item">
                 <img class="second-slide" src="{{ bulletins.1.news_item.image.url }}">
                 <div class="container">
@@ -100,6 +111,9 @@
                     </div>
                 </div>
             </div>
+            {% endif %}
+
+            {% if bulletins.2 %}
             <div class="carousel-item">
                 <img class="third-slide" src="{{ bulletins.2.news_item.image.url }}">
                 <div class="container">
@@ -110,6 +124,8 @@
                     </div>
                 </div>
             </div>
+            {% endif %}
+
         </div>
         <a class="carousel-control-prev" href="#myCarousel" role="button" data-slide="prev">
             <span class="carousel-control-prev-icon" aria-hidden="true"></span>
@@ -192,39 +208,24 @@
             </div>
         </div>
     </div>
-
 </section>
-<section id="vitalestad">
-    <div class="container">
-        <!-- Example row of columns -->
-        <div class="row">
-            <h1>Leuven, een vitale stad</h1>
-            <p><!-- start slipsum code -->
 
-                Look, just because I don't be givin' no man a foot massage don't make it right for Marsellus to throw
-                Antwone into a glass motherfuckin' house, fuckin' up the way the nigger talks. Motherfucker do that shit
-                to me, he better paralyze my ass, 'cause I'll kill the motherfucker, know what I'm sayin'?
 
-                You think water moves fast? You should see ice. It moves like it has a mind. Like it knows it killed the
-                world once and got a taste for murder. After the avalanche, it took us a week to climb out. Now, I don't
-                know exactly when we turned on each other, but I know that seven of us survived the slide... and only
-                five made it out. Now we took an oath, that I'm breaking now. We said we'd say it was the snow that
-                killed the other two, but it wasn't. Nature is lethal but it doesn't hold a candle to man.
-
-                Now that there is the Tec-9, a crappy spray gun from South Miami. This gun is advertised as the most
-                popular gun in American crime. Do you believe that shit? It actually says that in the little book that
-                comes with it: the most popular gun in American crime. Like they're actually proud of that shit.
-
-                Now that we know who you are, I know who I am. I'm not a mistake! It all makes sense! In a comic, you
-                know how you can tell who the arch-villain's going to be? He's the exact opposite of the hero. And most
-                times they're friends, like you and me! I should've known way back when... You know why, David? Because
-                of the kids. They called me Mr Glass.
-
-                <!-- end slipsum code --></p>
-
+<section id="contact">
+    <div class="contact-container">
+        <div class="contact-info">
+            <div class="google-maps">
+                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2516.1337003714066!2d4.70292751593842!3d50.90274216255221!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47c160ba17f1bad7%3A0xb1d1231faad76a61!2sOpen+Gym+Leuven!5e0!3m2!1snl!2sbe!4v1520703788938"
+                        width="600" height="450" frameborder="0" style="border:0" allowfullscreen></iframe>
+            </div>
+        </div>
+        <div class="contact-form">
+            <H2 class="text-center mt-3 mb-2"> Contacteer ons </H2>
+            {% crispy contact_form %}
         </div>
     </div>
 </section>
+
 <div class="modal fade" id="calendar-info-modal" role="dialog">
     <div class="modal-dialog modal-lg">
         <!-- Modal content-->
@@ -279,13 +280,17 @@
 </div>
 
 
-<footer class="py-5 bg-dark">
+<footer class="py-2 bg-dark">
     <div class="container">
         <p class="m-0 text-center text-white">
-            <img class="mijn-leuven mr-5" src="{% static 'opengym/img/sponsors/mijn_leuven.jpg' %}">
-            <img class="spit-logo" src="{% static 'opengym/img/sponsors/spit.png' %}">
-            <img class="footer-logo mr-5 ml-5" src="{% static 'opengym/img/sponsors/stad.jpg' %}">
-            <img class="footer-logo" src="{% static 'opengym/img/sponsors/tofsport.jpg' %}">
+            <a href="http://www.mijnleuven.be/"><img class="mijn-leuven mr-5"
+                                                     src="{% static 'opengym/img/sponsors/mijn_leuven.jpg' %}"></a>
+            <a href="https://www.dekringwinkel.be/"><img class="spit-logo"
+                                                         src="{% static 'opengym/img/sponsors/spit.png' %}"></a>
+            <a href="https://www.leuven.be/"><img class="footer-logo mr-5 ml-5"
+                                                  src="{% static 'opengym/img/sponsors/stad.jpg' %}"></a>
+            <a href="http://www.tofsport.be/"><img class="footer-logo"
+                                                   src="{% static 'opengym/img/sponsors/tofsport.jpg' %}"></a>
         </p>
     </div>
     <!-- /.container -->

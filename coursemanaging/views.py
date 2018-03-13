@@ -4,6 +4,8 @@ import calendar
 
 from django.contrib.auth.mixins import UserPassesTestMixin
 from django.core.exceptions import PermissionDenied
+from django.core.mail import send_mail, EmailMessage
+from django.http import HttpResponseRedirect
 from django.shortcuts import redirect, render, get_object_or_404, render_to_response
 from django.urls import reverse_lazy
 from django.utils.encoding import force_text
@@ -11,7 +13,7 @@ from django.utils.http import urlsafe_base64_decode
 from django.utils.safestring import mark_safe
 from django.views import generic
 
-from coursemanaging.forms import UserRegisterForm, CourseCreateForm, SessionCreateForm, UserUpdateForm
+from coursemanaging.forms import UserRegisterForm, CourseCreateForm, SessionCreateForm, ContactForm
 from coursemanaging.session_calendar import SessionCalendar
 from coursemanaging.tokens import account_activation_token
 from .models import Course, Session, User, NewsBulletin, NewsItem
@@ -38,7 +40,35 @@ class LandingView(generic.TemplateView):
         cal = SessionCalendar(sessions, self.request.user).formatmonth(today.year, today.month)
         context['calendar'] = mark_safe(cal)
         context['bulletins'] = bulletins
+        context['contact_form'] = ContactForm()
         return context
+
+    def post(self, request, *args, **kwargs):
+        form = ContactForm(request.POST)
+        form.full_clean()
+        if form.is_valid():
+            first_name = form.cleaned_data['first_name']
+            last_name = form.cleaned_data['last_name']
+            phone_nr = form.cleaned_data['phone_nr']
+            email = form.cleaned_data['email']
+            message = form.cleaned_data['message']
+
+            body = ['']
+            a = body.append
+            a("Mail verzonden door : "+first_name + " " + last_name+" <br>")
+            a("tel: " + phone_nr + "<br>")
+            a("email : " + email + "<br>")
+            a("bericht : " + message + "<br>")
+
+            msg = EmailMessage(
+                'Bericht op de opengym website ',
+                ''.join(body),
+                'opengym.online@gmail.com',
+                ['vandermostenjonas@gmail.com', ]
+            )
+            msg.content_subtype = "html"
+            msg.send()
+            return HttpResponseRedirect('/thanks/')
 
 
 class NewsView(generic.TemplateView):
@@ -82,14 +112,6 @@ class RegisterView(generic.CreateView):
 
 class UserDetailView(generic.TemplateView):
     template_name = 'coursemanaging/user-detail.html'
-
-
-class UserUpdateView(generic.UpdateView):
-    template_name = 'coursemanaging/user-update.html'
-    form_class = UserUpdateForm
-
-    def get_object(self, queryset=None):
-        return self.request.user
 
 
 class AccountActivationSentView(generic.TemplateView):
@@ -325,3 +347,7 @@ def get_calendar(request):
 class ImpossibleView(generic.TemplateView):
     """View where the user ends when he does something wrong"""
     template_name = "coursemanaging/impossible.html"
+
+
+class ThanksView(generic.TemplateView):
+    template_name = "coursemanaging/thanks.html"

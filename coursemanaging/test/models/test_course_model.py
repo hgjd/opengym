@@ -17,7 +17,7 @@ class CourseTest(TestCase):
                                             description="test_description")
 
         self.user = User.objects.create(email="john", first_name="john", last_name="doe",
-                                        birthdate=utc.localize(datetime.datetime(2017, 12, 1)), volunteer=True, )
+                                        birthdate=utc.localize(datetime.datetime(2017, 12, 1)), )
 
     def test_user_is_subscribed(self):
         self.course.students.add(self.user)
@@ -29,11 +29,11 @@ class CourseTest(TestCase):
     def test_course_full(self):
         self.course.max_students_course = 3
         user_a = User.objects.create(email="jub", first_name="john", last_name="doe",
-                                     birthdate=utc.localize(datetime.datetime(2017, 12, 1)), volunteer=True)
+                                     birthdate=utc.localize(datetime.datetime(2017, 12, 1)))
         user_b = User.objects.create(email="jab", first_name="john", last_name="doe",
-                                     birthdate=utc.localize(datetime.datetime(2017, 12, 1)), volunteer=True)
+                                     birthdate=utc.localize(datetime.datetime(2017, 12, 1)))
         user_c = User.objects.create(email="job", first_name="john", last_name="doe",
-                                     birthdate=utc.localize(datetime.datetime(2017, 12, 1)), volunteer=True)
+                                     birthdate=utc.localize(datetime.datetime(2017, 12, 1)))
         self.course.subscribe_user(user_a)
         self.course.subscribe_user(user_b)
         self.course.subscribe_user(user_c)

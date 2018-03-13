@@ -37,14 +37,14 @@ class SessionCalendar(HTMLCalendar):
                             body.append('<span class="fa fa-bed" aria-hidden="true"></span> ')
 
                     body.append('%s</time>' % (
-                        str(session.start.hour) + "h" + str(session.start.minute)))
+                        str(session.start.hour) + "h" + "{:02d}".format(session.start.minute)))
 
                     body.append('<a href="%s">' % session.course.get_absolute_url())
                     body.append(session.course.course_name)
                     if session.location_diff_course and session.location_short:
-                        body.append(" @ "+session.location_short)
+                        body.append(" @ " + session.location_short)
                     elif session.course.location_short:
-                        body.append(" @ "+session.course.location_short)
+                        body.append(" @ " + session.course.location_short)
                     body.append('</a> <div style="clear: both;"></div>')
                     body.append('</li>')
                 body.append('</ul>')

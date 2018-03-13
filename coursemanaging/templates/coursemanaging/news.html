@@ -5,30 +5,30 @@
 <script src="{% static 'opengym/news.js' %}"></script>
 <script type="text/javascript">
       window.CSRF_TOKEN = "{{ csrf_token }}";
-
-
 </script>
 {% endblock %}
 {% block content %}
-<div class="container-fluid">
-        <div class="sidebar col-sm-2 hidden-xs">
-            <ul class="nav nav-pills flex-column">
-                {% for news_item in news_items %}
-                <li class="nav-item">
-                    <button id="{{news_item.id}}" type="button" class="nav-link btn news-link">
-                        <div>{{news_item.title}}</div>
-                        <time>{{news_item.publication_date|date:"d-g-o"}}</time>
-                    </button>
-                </li>
-                {% endfor %}
-            </ul>
-        </div>
-        <main class="news-item open-gym-page" role="main">
-            {% if news_item %}
-            {% include "coursemanaging/news-item.html" %}
-            {% else %}
-            <h2>Er is nog geen nieuws</h2>
-            {% endif %}
-        </main>
+<div class="news-page">
+    <div class="news-item open-gym-page mr-1" role="main">
+        {% if news_item %}
+        {% include "coursemanaging/news-item.html" %}
+        {% else %}
+        <h2>Er is nog geen nieuws</h2>
+        {% endif %}
+    </div>
+    <div class="news-history">
+        <h4 class="news-title text-center mb-3">Geschiedenis</h4>
+        <ul>
+            {% for news_item in news_items %}
+            <li class="">
+                <div id="{{news_item.id}}" class="news-link">
+                    <span>{{news_item.title}}</span>
+                    <time>{{news_item.publication_date|date:"d-g-o"}}</time>
+                </div>
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+
 </div>
 {% endblock %}

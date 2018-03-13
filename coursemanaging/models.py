@@ -34,7 +34,6 @@ class MyUserManager(BaseUserManager):
         extra_fields.setdefault('is_superuser', True)
         extra_fields.setdefault('is_active', True)
         extra_fields.setdefault('birthdate', date.today())
-        extra_fields.setdefault('volunteer', True)
 
         if extra_fields.get('is_staff') is not True:
             raise ValueError('Superuser must have is_staff=True.')
@@ -54,7 +53,6 @@ class User(AbstractBaseUser, PermissionsMixin):
     first_name = models.CharField(_('first name'), max_length=30)
     last_name = models.CharField(_('last name'), max_length=30)
     birthdate = models.DateField()
-    volunteer = models.BooleanField()
     teacher = models.BooleanField(default=False)
     email_confirmed = models.BooleanField(default=False)
     is_staff = models.BooleanField(

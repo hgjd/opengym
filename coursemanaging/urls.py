@@ -2,7 +2,6 @@ from django.conf.urls import url
 from django.contrib.auth import views as auth_views
 from django.contrib.auth.decorators import login_required
 
-
 from . import views
 
 app_name = "coursemanaging"
@@ -27,8 +26,6 @@ urlpatterns = [
         name='user-register'),
     url(r'^user/$', login_required(views.UserDetailView.as_view()),
         name='user-detail'),
-    url(r'^user-update/$', login_required(views.UserUpdateView.as_view()),
-        name='user-update'),
     url(r'^activate/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,20})/$', views.activate,
         name='user-activate'),
     url(r'^login/$', auth_views.login, {'template_name': 'coursemanaging/user-login.html'},
@@ -41,12 +38,14 @@ urlpatterns = [
         name='calendar'),
     url(r'^album/', views.AlbumView.as_view(),
         name='album'),
-    url(r'^news/$', views.NewsView.as_view(),
+    url(r'^blog/$', views.NewsView.as_view(),
         name='news'),
-    url(r'^news/(?P<pk>[0-9]+)$', views.NewsView.as_view(),
+    url(r'^blog/(?P<pk>[0-9]+)$', views.NewsView.as_view(),
         name='news'),
 
     url(r'^impossible/$', views.ImpossibleView.as_view(),
+        name='impossible'),
+    url(r'^thanks/$', views.ThanksView.as_view(),
         name='impossible'),
 
     url(r'^ajax-calendar/$', views.get_calendar,
