@@ -28,8 +28,8 @@ def validate_subscription_key(value):
 
 
 class UserRegisterForm(UserCreationForm):
-    subscription_key = forms.CharField(label="Registratiesleutel", validators=[validate_subscription_key],
-                                       widget=forms.PasswordInput)
+    # subscription_key = forms.CharField(label="Registratiesleutel", validators=[validate_subscription_key],
+    # widget=forms.PasswordInput)
 
     class Meta:
         model = User
