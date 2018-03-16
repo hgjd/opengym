@@ -232,6 +232,8 @@ cursor:pointer;
 
 .card > img {
   margin-bottom: .75rem;
+  height: auto;
+width: 100%;
 }
 
 .card-text {
