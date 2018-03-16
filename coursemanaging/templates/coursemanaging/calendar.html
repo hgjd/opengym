@@ -1,7 +1,6 @@
 {% extends "base.html" %}
 {% load static %}
 {% block extra_head %}
-<link rel="stylesheet" type="text/css" href="{% static 'opengym/calendar.css' %}"/>
 <script src="{% static 'opengym/calendar.js' %}"></script>
 <script type="text/javascript">
       window.CSRF_TOKEN = "{{ csrf_token }}";
