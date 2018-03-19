@@ -108,6 +108,8 @@ border-radius:3px;
 
 .myImg{
 border-radius: 2px 2px 2px 2px;
+height: auto;
+width: 100%;
 }
 
 .myImg:hover{
