@@ -117,6 +117,7 @@ class SessionCreateForm(forms.ModelForm):
         self.fields['location_diff_course'].label = "Sessie gaat door op een andere locatie dan beschreven in les"
         self.fields['max_students_diff_course'].label = "Ander maximum aantal deelnemers dan beschreven in les"
         self.fields['weekly_until'].label = "Sessies aanmaken tot en met"
+        self.fields['duration'].label = "Duur van deze sessie beschreven in uren:minuten:seconden bv 4:30:0"
 
     def clean(self):
         multiple_sessions = self.cleaned_data['multiple_sessions']
@@ -126,7 +127,7 @@ class SessionCreateForm(forms.ModelForm):
         if multiple_sessions and weekly_until is None:
             raise ValidationError(
                 'Als je meerdere sessies wil aanmaken dien je aan te geven tot wanneer je er wil aanmaken')
-        if weekly_until < start + timedelta(days=7) and multiple_sessions:
+        if multiple_sessions and weekly_until < start + timedelta(days=7):
             raise ValidationError(
                 'Als je meerdere seesie wil aanmaken moet de tot-datum minstens een week na de start'
                 ' van de eerste sessie liggen'
