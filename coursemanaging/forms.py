@@ -21,6 +21,7 @@ TabHolder.template = 'coursemanaging/%s/tab.html'
 
 timezone.activate(timezone.get_current_timezone())
 
+
 def validate_subscription_key(value):
     if value != 'opengymopdendraad':
         raise ValidationError(
@@ -137,10 +138,12 @@ class SessionCreateForm(forms.ModelForm):
 
     def save(self, commit=True):
         session = super(SessionCreateForm, self).save()
+        session.start = timezone.localtime(session.start)
         session.course = self.course
         if commit:
             if self.cleaned_data['multiple_sessions']:
                 while session.start <= self.cleaned_data['weekly_until']:
+                    session.start = timezone.localtime(session.start)
                     session.save()
                     session.id = None
                     session.start += timedelta(days=7)
