@@ -6,11 +6,12 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.sites.shortcuts import get_current_site
 from django.core.exceptions import ValidationError
 from django.template.loader import render_to_string
+from django.utils import timezone
 from django.utils.encoding import force_bytes
 from django.utils.http import urlsafe_base64_encode
 
 from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Layout, Field, Div, ButtonHolder, Submit
+from crispy_forms.layout import Layout, Div, ButtonHolder, Submit
 
 from coursemanaging.models import User, Course, Session
 from coursemanaging.tokens import account_activation_token
@@ -18,6 +19,7 @@ from coursemanaging.tokens import account_activation_token
 Tab.link_template = 'coursemanaging/%s/tab-link.html'
 TabHolder.template = 'coursemanaging/%s/tab.html'
 
+timezone.activate(timezone.get_current_timezone())
 
 def validate_subscription_key(value):
     if value != 'opengymopdendraad':
