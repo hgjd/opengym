@@ -142,11 +142,12 @@ class SessionCreateForm(forms.ModelForm):
         session.course = self.course
         if commit:
             if self.cleaned_data['multiple_sessions']:
-                while session.start <= self.cleaned_data['weekly_until']:
-                    session.start = timezone.localtime(session.start)
+                start = session.start
+                while start <= self.cleaned_data['weekly_until']:
+                    session.start = start
                     session.save()
                     session.id = None
-                    session.start += timedelta(days=7)
+                    start += timedelta(days=7)
             else:
                 session.save()
         return session

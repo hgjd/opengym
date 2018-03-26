@@ -1,7 +1,12 @@
 from calendar import HTMLCalendar, day_name, month_name
+from collections import defaultdict
 from datetime import date
 
-from collections import defaultdict
+from django.utils import timezone
+from django.utils.timezone import localtime
+
+
+timezone.activate(timezone.get_current_timezone())
 
 
 class SessionCalendar(HTMLCalendar):
@@ -37,7 +42,7 @@ class SessionCalendar(HTMLCalendar):
                             body.append('<span class="fa fa-bed" aria-hidden="true"></span> ')
 
                     body.append('%s</time>' % (
-                        str(session.start.hour) + "h" + "{:02d}".format(session.start.minute)))
+                        str(localtime(session.start).hour) + "h" + "{:02d}".format(localtime(session.start).minute)))
 
                     body.append('<a href="%s">' % session.course.get_absolute_url())
                     body.append(session.course.course_name)
@@ -87,10 +92,10 @@ class SessionCalendar(HTMLCalendar):
     def group_by_day(self, session_list):
         result = defaultdict()
         for session in session_list:
-            if session.start.day not in result:
-                result[session.start.day] = [session]
+            if localtime(session.start).day not in result:
+                result[localtime(session.start).day] = [session]
             else:
-                result[session.start.day].append(session)
+                result[localtime(session.start).day].append(session)
         for result_list in result.values():
             result_list.sort(key=lambda s: s.start)
         return result
