@@ -139,6 +139,8 @@ height: auto;
 }
 
 body {
+width:100%;
+min-height:100%;
     align-items:center;
     margin: 0;
     padding: 0;
@@ -590,6 +592,7 @@ color:#d3d65e;
 
 .news-page{
 overflow: hidden;
+margin-bottom:10em;
 }
 
 .news-item{
@@ -608,6 +611,15 @@ margin-left: auto;
 margin-right: auto;
 display: block;
 
+}
+
+.news-footer{
+background-color:#375926;
+clear: both;
+    position: relative;
+    z-index: 10;
+    height: 9em;
+    margin-top: -9em;
 }
 
 .news-link time{

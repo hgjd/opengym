@@ -28,6 +28,23 @@
             {% endfor %}
         </ul>
     </div>
-
 </div>
+{% endblock %}
+
+{% block content-no-div %}
+<footer class="py-2 news-footer">
+    <div class="container">
+        <p class="m-0 text-center text-white">
+            <a href="http://www.mijnleuven.be/"><img class="mijn-leuven mr-5"
+                                                     src="{% static 'opengym/img/sponsors/mijn_leuven.jpg' %}"></a>
+            <a href="https://www.dekringwinkel.be/"><img class="spit-logo"
+                                                         src="{% static 'opengym/img/sponsors/spit.png' %}"></a>
+            <a href="https://www.leuven.be/"><img class="footer-logo mr-5 ml-5"
+                                                  src="{% static 'opengym/img/sponsors/stad.jpg' %}"></a>
+            <a href="http://www.tofsport.be/"><img class="footer-logo"
+                                                   src="{% static 'opengym/img/sponsors/tofsport.jpg' %}"></a>
+        </p>
+    </div>
+    <!-- /.container -->
+</footer>
 {% endblock %}
