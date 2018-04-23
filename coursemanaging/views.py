@@ -55,7 +55,7 @@ class LandingView(generic.TemplateView):
 
             body = ['']
             a = body.append
-            a("Mail verzonden door : "+first_name + " " + last_name+" <br>")
+            a("Mail verzonden door : " + first_name + " " + last_name + " <br>")
             a("tel: " + phone_nr + "<br>")
             a("email : " + email + "<br>")
             a("bericht : " + message + "<br>")
@@ -185,7 +185,9 @@ class CourseDetailView(generic.DetailView):
 
     def post(self, request, *args, **kwargs):
         join_session = request.POST.get("join_session")
+        leave_session = request.POST.get("leave_session")
         join_course = request.POST.get("join_course")
+        leave_course = request.POST.get("leave_course")
         remove_session = request.POST.get("remove_session")
         course = get_object_or_404(Course, pk=self.kwargs['pk'])
 
@@ -194,11 +196,22 @@ class CourseDetailView(generic.DetailView):
                 return redirect('coursemanaging:impossible')
             course.students.add(self.request.user)
             return redirect('coursemanaging:course-detail', pk=course.id)
+        if leave_course:
+            if not course.students.filter(pk=request.user.id).exists():
+                return redirect('coursemanaging:impossible')
+            course.students.remove(self.request.user)
+            return redirect('coursemanaging:course-detail', pk=course.id)
         if join_session:
             session = get_object_or_404(Session, pk=join_session)
             if session.subscribed_users.filter(pk=request.user.id).exists():
                 return redirect('coursemanaging:impossible')
             session.subscribe_user(self.request.user)
+            return redirect('coursemanaging:course-detail', pk=course.id)
+        if leave_session:
+            session = get_object_or_404(Session, pk=leave_session)
+            if not session.subscribed_users.filter(pk=request.user.id).exists():
+                return redirect('coursemanaging:impossible')
+            session.unsubscribe_user(self.request.user)
             return redirect('coursemanaging:course-detail', pk=course.id)
         if remove_session:
             if course.teachers.filter(pk=self.request.user.id).exists():

@@ -46,7 +46,7 @@ urlpatterns = [
     url(r'^impossible/$', views.ImpossibleView.as_view(),
         name='impossible'),
     url(r'^thanks/$', views.ThanksView.as_view(),
-        name='impossible'),
+        name='thanks'),
 
     url(r'^ajax-calendar/$', views.get_calendar,
         name='ajax-calendar'),

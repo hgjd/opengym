@@ -144,6 +144,14 @@ class Course(models.Model):
             )
         self.students.add(user)
 
+    def unsubscribe_user(self, user):
+        if user not in self.students.all():
+            raise ValidationError(
+                "User not in session ",
+                code='not found',
+            )
+        self.students.remove(user)
+
     def clean(self):
         if self.max_students_course and self.students.count() > self.max_students_course:
             raise ValidationError(
@@ -190,6 +198,14 @@ class Session(models.Model):
                 code='full',
             )
         self.subscribed_users.add(user)
+
+    def unsubscribe_user(self, user):
+        if user not in self.subscribed_users.all():
+            raise ValidationError(
+                "User not in session ",
+                code='not found',
+            )
+        self.subscribed_users.remove(user)
 
     def get_location_short(self):
         if self.location_diff_course:

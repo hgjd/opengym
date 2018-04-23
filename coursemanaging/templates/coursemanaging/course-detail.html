@@ -96,7 +96,11 @@
                     {% elif is_teacher%}
                     <button class="btn btn-success disabled">U bent leerkracht</button>
                     {% else %}
-                    <button class="btn btn-success disabled">U bent ingeschreven</button>
+                    <form method="post">
+                        {% csrf_token %}
+                        <input type="hidden" name="leave_course" value="true">
+                        <button type="submit" class="btn btn-primary">Uitschrijven</button>
+                    </form>
                     {% endif %}
                 </td>
             </tr>
@@ -169,7 +173,11 @@
                     <button class="btn btn-primary disabled">Volzet</button>
                     {% endif %}
                     {% else %}
-                    <button class="btn btn-primary disabled">Ingeschreven</button>
+                    <form method="post">
+                        {% csrf_token %}
+                        <input type="hidden" name="leave_session" value="{{session.id}}">
+                        <button type="submit" class="btn btn-primary">Uitschrijven</button>
+                    </form>
                     {% endif %}
                     {% endif %}
                 </td>
