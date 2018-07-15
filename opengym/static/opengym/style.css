@@ -28,6 +28,14 @@ ul {
     padding-bottom: 3rem;
 }
 
+#oefeningen {
+    margin-top: 6rem;
+    padding-top: 3rem;
+    padding-bottom: 3rem;
+    background-color: rgba(55, 89, 38, 0.52);
+
+}
+
 #contact {
     padding-top: 3rem;
 }
