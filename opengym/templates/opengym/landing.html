@@ -48,30 +48,29 @@
     </ul>
     <ul class="nav navbar-nav navbar-right mr-5">
         {% if user.is_authenticated %}
-        <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle btn-lg" id="dropdown01" data-toggle="dropdown"
-               aria-haspopup="true" aria-expanded="false">{{user.first_name}}</a>
-            <div class="dropdown-menu" aria-labelledby="dropdown01">
-                <a class="dropdown-item" href="{% url 'coursemanaging:courses-user' %}">Lessen</a>
-                <a class="dropdown-item" href="{% url 'coursemanaging:user-detail' %}">Uw gegevens</a>
-                <a class="dropdown-item" href="{% url 'coursemanaging:logout' %}">Logout</a>
-            </div>
-        </li>
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle btn-lg" id="dropdown01" data-toggle="dropdown"
+                   aria-haspopup="true" aria-expanded="false">{{ user.first_name }}</a>
+                <div class="dropdown-menu" aria-labelledby="dropdown01">
+                    <a class="dropdown-item" href="{% url 'coursemanaging:courses-user' %}">Lessen</a>
+                    <a class="dropdown-item" href="{% url 'coursemanaging:user-detail' %}">Uw gegevens</a>
+                    <a class="dropdown-item" href="{% url 'coursemanaging:logout' %}">Logout</a>
+                </div>
+            </li>
         {% else %}
-        <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle btn-lg" id="dropdown02" data-toggle="dropdown"
-               aria-haspopup="true" aria-expanded="false">Login</a>
-            <div class="dropdown-menu" aria-labelledby="dropdown02">
-                <a class="dropdown-item" href="{% url 'coursemanaging:login' %}">Login</a>
-                <a class="dropdown-item" href="{% url 'coursemanaging:user-register' %}">Register</a>
-            </div>
-        </li>
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle btn-lg" id="dropdown02" data-toggle="dropdown"
+                   aria-haspopup="true" aria-expanded="false">Login</a>
+                <div class="dropdown-menu" aria-labelledby="dropdown02">
+                    <a class="dropdown-item" href="{% url 'coursemanaging:login' %}">Login</a>
+                    <a class="dropdown-item" href="{% url 'coursemanaging:user-register' %}">Register</a>
+                </div>
+            </li>
         {% endif %}
     </ul>
 
     <div id="modal-lightbox" class="custom-modal">
         <p class="close">CLOSE</p>
-        <h4 id="modal-image-title" class="modal-title">Modal title</h4>
         <img class="modal-content" id="modal_image">
         <div id="caption"></div>
     </div>
@@ -87,42 +86,45 @@
         </ol>
         <div class="carousel-inner">
             {% if bulletins.0 %}
-            <div class="carousel-item active">
-                <img class="first-slide" src="{{ bulletins.0.news_item.image.url }}">
-                <div class="container">
-                    <div class="open-gym-carousel carousel-caption d-none d-md-block text-left">
-                        <h1><a href="{% url 'coursemanaging:news' bulletins.0.news_item.id %}">{{bulletins.0.news_item.title}}</a>
-                        </h1>
-                        <p>{{ bulletins.0.news_item.short_text }}</p>
+                <div class="carousel-item active">
+                    <img class="first-slide" src="{{ bulletins.0.news_item.image.url }}">
+                    <div class="container">
+                        <div class="open-gym-carousel carousel-caption d-none d-md-block text-left">
+                            <h1>
+                                <a href="{% url 'coursemanaging:news' bulletins.0.news_item.id %}">{{ bulletins.0.news_item.title }}</a>
+                            </h1>
+                            <p>{{ bulletins.0.news_item.short_text }}</p>
+                        </div>
                     </div>
                 </div>
-            </div>
             {% endif %}
 
             {% if bulletins.1 %}
-            <div class="carousel-item">
-                <img class="second-slide" src="{{ bulletins.1.news_item.image.url }}">
-                <div class="container">
-                    <div class="open-gym-carousel carousel-caption d-none d-md-block">
-                        <h1><a href="{% url 'coursemanaging:news' bulletins.1.news_item.id %}">{{bulletins.1.news_item.title}}</a>
-                        </h1>
-                        <p>{{ bulletins.1.news_item.short_text }}</p>
+                <div class="carousel-item">
+                    <img class="second-slide" src="{{ bulletins.1.news_item.image.url }}">
+                    <div class="container">
+                        <div class="open-gym-carousel carousel-caption d-none d-md-block">
+                            <h1>
+                                <a href="{% url 'coursemanaging:news' bulletins.1.news_item.id %}">{{ bulletins.1.news_item.title }}</a>
+                            </h1>
+                            <p>{{ bulletins.1.news_item.short_text }}</p>
+                        </div>
                     </div>
                 </div>
-            </div>
             {% endif %}
 
             {% if bulletins.2 %}
-            <div class="carousel-item">
-                <img class="third-slide" src="{{ bulletins.2.news_item.image.url }}">
-                <div class="container">
-                    <div class="open-gym-carousel carousel-caption d-none d-md-block text-right">
-                        <h1><a href="{% url 'coursemanaging:news' bulletins.2.news_item.id %}">{{bulletins.2.news_item.title}}</a>
-                        </h1>
-                        <p>{{ bulletins.2.news_item.short_text }}</p>
+                <div class="carousel-item">
+                    <img class="third-slide" src="{{ bulletins.2.news_item.image.url }}">
+                    <div class="container">
+                        <div class="open-gym-carousel carousel-caption d-none d-md-block text-right">
+                            <h1>
+                                <a href="{% url 'coursemanaging:news' bulletins.2.news_item.id %}">{{ bulletins.2.news_item.title }}</a>
+                            </h1>
+                            <p>{{ bulletins.2.news_item.short_text }}</p>
+                        </div>
                     </div>
                 </div>
-            </div>
             {% endif %}
 
         </div>
@@ -143,7 +145,7 @@
 </section>
 
 <section id="kalender" class="pt-5">
-    <div id="calendar-content">{{calendar}}</div>
+    <div id="calendar-content">{{ calendar }}</div>
     <div class="container">
         <a class="float-right landing-link mt-2" href="{% url 'coursemanaging:course-list' %}">Bekijk hier alle
             lessen <span
@@ -151,61 +153,12 @@
     </div>
 </section>
 
-<section id="beeldmateriaal">
-
-    <div class="album text-muted">
-        <div class="container ">
-            <div class="row open-gym-page">
-                <div class="card">
-                    <p id="url_1" hidden>{% static 'opengym/img/landing_1.JPG' %}</p>
-                    <h4 id="title_1" class="card-title" hidden></h4>
-                    <img data-toggle="modal" data-target="#img-modal" id="thumbnail_1" class="myImg"
-                         src="{% static 'opengym/img/landing_1_thumbs.JPG' %}"
-                         alt="Card image cap" onclick="showImage(this.id)">
-                    <p id="description_1" class="card-text" hidden></p>
-                </div>
-                <div class="card">
-                    <p id="url_2" hidden>{% static 'opengym/img/landing_2.JPG' %}</p>
-                    <h4 id="title_2" class="card-title" hidden></h4>
-                    <img id="thumbnail_2" class="myImg" src="{% static 'opengym/img/landing_2_thumbs.JPG' %}"
-                         alt="Card image cap" onclick="showImage(this.id)">
-                    <p id="description_2" class="card-text" hidden></p>
-                </div>
-                <div class="card">
-                    <p id="url_3" hidden>{% static 'opengym/img/landing_3.JPG' %}</p>
-                    <h4 id="title_3" class="card-title" hidden></h4>
-                    <img id="thumbnail_3" class="myImg" src="{% static 'opengym/img/landing_3_thumbs.JPG' %}"
-                         alt="Card image cap" onclick="showImage(this.id)">
-                    <p id="description_3" class="card-text" hidden></p>
-                </div>
-                <div class="card">
-                    <p id="url_4" hidden>{% static 'opengym/img/landing_4.JPG' %}</p>
-                    <h4 id="title_4" class="card-title" hidden></h4>
-                    <img id="thumbnail_4" class="myImg" src="{% static 'opengym/img/landing_4_thumbs.JPG' %}"
-                         alt="Card image cap" onclick="showImage(this.id)">
-                    <p id="description_4" class="card-text" hidden></p>
-                </div>
-                <div class="card">
-                    <p id="url_5" hidden>{% static 'opengym/img/landing_5.JPG' %}</p>
-                    <h4 id="title_5" class="card-title" hidden></h4>
-                    <img id="thumbnail_5" class="myImg" src="{% static 'opengym/img/landing_5_thumbs.JPG' %}"
-                         alt="Card image cap" onclick="showImage(this.id)">
-                    <p id="description_5" class="card-text" hidden></p>
-                </div>
-                <div class="card">
-                    <p id="url_6" hidden>{% static 'opengym/img/landing_6.JPG' %}</p>
-                    <h4 id="title_6" class="card-title" hidden></h4>
-                    <img id="thumbnail_6" class="myImg" src="{% static 'opengym/img/landing_6_thumbs.JPG' %}"
-                         alt="Card image cap" onclick="showImage(this.id)">
-                    <p id="description_6" class="card-text" hidden></p>
-                </div>
-                <div class="container text-right ">
-                    <a class="landing-link" href="{% url 'coursemanaging:album' %}">Meer beeldmateriaal
-                        <span
-                                class="fa fa-chevron-right ml-2"></span></a>
-                </div>
-            </div>
-        </div>
+<section id="beeldmateriaal" class="logo-bg">
+    {% include "mostaardimgur/album-inner.html" %}
+    <div class="container text-right ">
+        <a class="landing-link" href="{% url 'mostaardimgur:album-list' %}">Meer beeldmateriaal
+            <span
+                    class="fa fa-chevron-right ml-2"></span></a>
     </div>
 </section>
 
@@ -303,6 +256,6 @@
         integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1"
         crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.4.1/jquery.easing.js"></script>
-<script src="{%static 'opengym/landing.js'%}"></script>
+<script src="{% static 'opengym/landing.js' %}"></script>
 </body>
 </html>

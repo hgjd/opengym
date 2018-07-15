@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="nl">
 <head>
     {% load static %}
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css"
@@ -29,7 +29,7 @@
     <meta name="keywords" content="Leuven, open, gym, diy, bouw, sport">
 </head>
 <body onload="{% block onload %}
-    {% endblock %}">
+{% endblock %}">
 <nav class="navbar navbar-expand-md fixed-top">
     <div class="social-media-buttons">
         <a href="https://www.facebook.com/OpenGymLeuven/" class="fa fa-facebook"></a>
@@ -44,68 +44,82 @@
         <ul class="navbar-collapse justify-content-md-center">
             <li>
                 {% if current_page == 'courses' %}
-                <a class="nav-link" href="{% url 'coursemanaging:course-list' %}">
-                    <span class="fa fa-angle-double-right" aria-hidden="true"></span>
-                    Lessen
-                    <span class="fa fa-angle-double-left" aria-hidden="true"></span>
-                </a>
+                    <a class="nav-link" href="{% url 'coursemanaging:course-list' %}">
+                        <span class="fa fa-angle-double-right" aria-hidden="true"></span>
+                        Lessen
+                        <span class="fa fa-angle-double-left" aria-hidden="true"></span>
+                    </a>
                 {% else %}
-                <a class="nav-link" href="{% url 'coursemanaging:course-list' %}">
-                    Lessen
-                </a>
+                    <a class="nav-link" href="{% url 'coursemanaging:course-list' %}">
+                        Lessen
+                    </a>
                 {% endif %}
 
             </li>
             <li>
                 {% if current_page == 'news' %}
-                <a class="nav-link" href="{% url 'coursemanaging:news' %}">
-                    <span class="fa fa-angle-double-right" aria-hidden="true"></span>
-                    Nieuws
-                    <span class="fa fa-angle-double-left" aria-hidden="true"></span>
-                </a>
+                    <a class="nav-link" href="{% url 'coursemanaging:news' %}">
+                        <span class="fa fa-angle-double-right" aria-hidden="true"></span>
+                        Nieuws
+                        <span class="fa fa-angle-double-left" aria-hidden="true"></span>
+                    </a>
 
                 {% else %}
-                <a class="nav-link" href="{% url 'coursemanaging:news' %}">Nieuws</a>
+                    <a class="nav-link" href="{% url 'coursemanaging:news' %}">Nieuws</a>
                 {% endif %}
 
             </li>
             <li>
                 {% if current_page == 'calendar' %}
-                <a class="nav-link" href="{% url 'coursemanaging:calendar' %}">
-                    <span class="fa fa-angle-double-right" aria-hidden="true"></span>
-                    Kalender
-                    <span class="fa fa-angle-double-left" aria-hidden="true"></span>
-                </a>
+                    <a class="nav-link" href="{% url 'coursemanaging:calendar' %}">
+                        <span class="fa fa-angle-double-right" aria-hidden="true"></span>
+                        Kalender
+                        <span class="fa fa-angle-double-left" aria-hidden="true"></span>
+                    </a>
 
                 {% else %}
-                <a class="nav-link" href="{% url 'coursemanaging:calendar' %}">Kalender</a>
+                    <a class="nav-link" href="{% url 'coursemanaging:calendar' %}">Kalender</a>
+                {% endif %}
+            </li>
+            <li>
+                {% if current_page == 'album' %}
+                    <a class="nav-link" href="{% url 'mostaardimgur:album-list' %}">
+                        <span class="fa fa-angle-double-right" aria-hidden="true"></span>
+                        Album
+                        <span class="fa fa-angle-double-left" aria-hidden="true"></span>
+                    </a>
+
+                {% else %}
+                    <a class="nav-link" href="{% url 'mostaardimgur:album-list' %}">Album</a>
                 {% endif %}
             </li>
 
         </ul>
         <ul class="nav navbar-nav navbar-right mr-5">
             {% if user.is_authenticated %}
-            <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle btn-lg" id="dropdown01" data-toggle="dropdown"
-                   aria-haspopup="true" aria-expanded="false">{{user.first_name}}</a>
-                <div class="dropdown-menu" aria-labelledby="dropdown01">
-                    <a class="dropdown-item" href="{% url 'coursemanaging:courses-user' %}">Lessen</a>
-                    <a class="dropdown-item" href="{% url 'coursemanaging:user-detail' %}">Uw gegevens</a>
-                    <a class="dropdown-item" href="{% url 'coursemanaging:logout' %}">Logout</a>
-                </div>
-            </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle btn-lg" id="dropdown01" data-toggle="dropdown"
+                       aria-haspopup="true" aria-expanded="false">{{ user.first_name }}</a>
+                    <div class="dropdown-menu" aria-labelledby="dropdown01">
+                        <a class="dropdown-item" href="{% url 'coursemanaging:courses-user' %}">Lessen</a>
+                        <a class="dropdown-item" href="{% url 'coursemanaging:user-detail' %}">Uw gegevens</a>
+                        <a class="dropdown-item" href="{% url 'coursemanaging:logout' %}">Logout</a>
+                    </div>
+                </li>
             {% else %}
-            <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle btn-lg" id="dropdown02" data-toggle="dropdown"
-                   aria-haspopup="true" aria-expanded="false">Login</a>
-                <div class="dropdown-menu" aria-labelledby="dropdown02">
-                    <a class="dropdown-item" href="{% url 'coursemanaging:login' %}">Login</a>
-                    <a class="dropdown-item" href="{% url 'coursemanaging:user-register' %}">Register</a>
-                </div>
-            </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle btn-lg" id="dropdown02" data-toggle="dropdown"
+                       aria-haspopup="true" aria-expanded="false">Login</a>
+                    <div class="dropdown-menu" aria-labelledby="dropdown02">
+                        <a class="dropdown-item" href="{% url 'coursemanaging:login' %}">Login</a>
+                        <a class="dropdown-item" href="{% url 'coursemanaging:user-register' %}">Register</a>
+                    </div>
+                </li>
             {% endif %}
         </ul>
     </div>
+    {% block extra-nav %}
+    {% endblock %}
 </nav>
 
 <div class="base container">

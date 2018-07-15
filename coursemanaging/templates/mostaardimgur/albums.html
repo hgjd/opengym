@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block extra_head %}
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <script src="{% static 'mostaardimgur/callback.js' %}"></script>
+
+{% endblock %}
+{% block content %}
+    <div class="open-gym-page">
+    <h1 class="text-center">Album</h1>
+
+    <div class="album">
+        <div class="container ">
+            <div class="row">
+                {% for album in albums %}
+                    <div class="card album-card">
+                        {% if user.is_staff %}
+                            <div class="card-header container">
+                                {% if user.is_staff %}
+                                    <div class="row">
+                                        <div class="col-4 text-left">
+                                            <form action="" method="post">
+                                                {% csrf_token %}
+                                                <input type="hidden" name="star" value="{{ album.id }}">
+                                                <button type="submit" class="btn btn-primary admin-img-btn">
+                                                    <span class="fa fa-star-o" aria-hidden="true"></span>
+                                                </button>
+                                            </form>
+                                        </div>
+                                        <div class="col-4"></div>
+                                        <div class="col-4 text-right">
+                                            <form action="" method="post">
+                                                {% csrf_token %}
+                                                <input type="hidden" name="remove" value="{{ album.id }}">
+                                                <button type="submit" class="btn btn-primary admin-img-btn">
+                                                    <span class="fa fa-times" aria-hidden="true"></span>
+                                                </button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                {% endif %}
+                            </div>
+                        {% endif %}
+                        <a href="{{ album.get_absolute_url }}"><img class="card-img-top album-card-img"
+                                                                    src="{{ album.cover_image.thumbs_url }}"></a>
+                        <div class="card-body">
+                            <h3 class="card-title"> {{ album.title }}</h3>
+                            <p class="card-text">{{ album.description }}</p>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    {% if user.is_staff %}
+        <div class="album-upload">
+            <h1>Album upload(enkel staff)</h1>
+            <form method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                {{ images_form|crispy }}
+                <input class="" type="submit" value="save">
+            </form>
+        </div>
+    {% endif %}
+
+{% endblock %}
+
+
+

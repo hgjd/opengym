@@ -4,7 +4,7 @@ import calendar
 
 from django.contrib.auth.mixins import UserPassesTestMixin
 from django.core.exceptions import PermissionDenied
-from django.core.mail import send_mail, EmailMessage
+from django.core.mail import EmailMessage
 from django.http import HttpResponseRedirect
 from django.shortcuts import redirect, render, get_object_or_404, render_to_response
 from django.urls import reverse_lazy
@@ -16,6 +16,7 @@ from django.views import generic
 from coursemanaging.forms import UserRegisterForm, CourseCreateForm, SessionCreateForm, ContactForm
 from coursemanaging.session_calendar import SessionCalendar
 from coursemanaging.tokens import account_activation_token
+from mostaardimgur.models import ImgurSetting, ImgurAlbum
 from .models import Course, Session, User, NewsBulletin, NewsItem
 from django.contrib.auth import login
 
@@ -41,6 +42,11 @@ class LandingView(generic.TemplateView):
         context['calendar'] = mark_safe(cal)
         context['bulletins'] = bulletins
         context['contact_form'] = ContactForm()
+        landing_album_id = ImgurSetting.get_settings_value(ImgurSetting.LANDING_ALBUM)
+        if landing_album_id:
+            context['album'] = get_object_or_404(ImgurAlbum,
+                                                 pk=ImgurSetting.get_settings_value(ImgurSetting.LANDING_ALBUM))
+
         return context
 
     def post(self, request, *args, **kwargs):
@@ -336,10 +342,6 @@ class CalendarView(generic.TemplateView):
         context['current_page'] = 'calendar'
         context['calendar'] = mark_safe(cal)
         return context
-
-
-class AlbumView(generic.TemplateView):
-    template_name = 'coursemanaging/album.html'
 
 
 def get_calendar(request):

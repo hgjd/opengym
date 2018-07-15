@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% block extra-nav %}
+    <div id="modal-lightbox" class="custom-modal">
+        <p class="close">CLOSE</p>
+        <img src="" class="modal-content" id="modal_image">
+        <div id="caption"></div>
+    </div>
+{% endblock %}
+{% block content %}
+    {% include "mostaardimgur/album-inner.html" %}
+{% endblock %}

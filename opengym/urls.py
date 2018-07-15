@@ -23,6 +23,7 @@ from django.conf.urls.static import static
 app_name = "opengym"
 urlpatterns = [
     url(r'^', include('coursemanaging.urls')),
+    url(r'^', include('mostaardimgur.urls')),
     url(r'^admin/', admin.site.urls),
     url(r'^password_reset/$', auth_views.password_reset, name='password_reset'),
     url(r'^password_reset/done/$', auth_views.password_reset_done, name='password_reset_done'),

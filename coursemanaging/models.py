@@ -123,7 +123,7 @@ class Course(models.Model):
 
     def get_next_session(self):
         if Session.objects.filter(course=self, start__gte=timezone.now()).exists():
-            return Session.objects.filter(course=self,start__gte=timezone.now()).order_by('start')[0]
+            return Session.objects.filter(course=self, start__gte=timezone.now()).order_by('start')[0]
         else:
             return None
 
@@ -299,9 +299,7 @@ class NewsBulletin(models.Model):
                 params={'news_item': self.news_item}
             )
 
-        try:
-            self.news_item.image
-        except AttributeError:
+        if not self.news_item.image:
             raise ValidationError(
                 "news item : %(news_item)s needs to have an image in order to become a bulletin",
                 code='missing image',

@@ -36,13 +36,10 @@ urlpatterns = [
         name='account-activation-sent'),
     url(r'^calendar/', views.CalendarView.as_view(),
         name='calendar'),
-    url(r'^album/', views.AlbumView.as_view(),
-        name='album'),
     url(r'^blog/$', views.NewsView.as_view(),
         name='news'),
     url(r'^blog/(?P<pk>[0-9]+)$', views.NewsView.as_view(),
         name='news'),
-
     url(r'^impossible/$', views.ImpossibleView.as_view(),
         name='impossible'),
     url(r'^thanks/$', views.ThanksView.as_view(),
