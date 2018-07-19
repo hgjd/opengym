@@ -59,6 +59,7 @@ class ImgurAlbum(models.Model):
     cover_image = models.ForeignKey('ImgurImage', on_delete=models.SET_NULL, null=True, blank=True)
     title = models.CharField(max_length=50)
     description = models.TextField()
+    is_favourite = models.BooleanField(default=False)
 
     objects = ImgurAlbumManager()
 

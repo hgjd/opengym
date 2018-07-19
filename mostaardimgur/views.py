@@ -62,7 +62,9 @@ class AlbumListView(generic.ListView):
                 return redirect(request.path)
             elif 'star' in request.POST:
                 album_id = request.POST['star']
-                ImgurSetting.set_settings_value(ImgurSetting.LANDING_ALBUM, album_id)
+                album = get_object_or_404(ImgurAlbum, pk=album_id)
+                album.is_favourite = not album.is_favourite
+                album.save()
                 return redirect(request.path)
             elif images_form.is_valid():
                 images = request.FILES.getlist('images')

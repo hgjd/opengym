@@ -29,7 +29,7 @@
     // Activate scrollspy to add active class to navbar items on scroll
     $('body').scrollspy({
         target: '#mainNav',
-        offset: 54
+        offset: 60
     });
 
     $(document).on('click', '.month-prev', function () {

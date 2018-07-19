@@ -163,11 +163,23 @@
 </section>
 
 <section id="beeldmateriaal" class="logo-bg">
-    {% include "mostaardimgur/album-inner.html" %}
-    <div class="container text-right ">
-        <a class="landing-link" href="{% url 'mostaardimgur:album-list' %}">Meer beeldmateriaal
-            <span
-                    class="fa fa-chevron-right ml-2"></span></a>
+    <div class="container-fluid landing-album">
+        <div class="row">
+            {% for album in albums %}
+                <div class="card album-card landing-card">
+                    <a href="{{ album.get_absolute_url }}"><img class="card-img-top album-card-img"
+                                                                src="{{ album.cover_image.thumbs_url }}"></a>
+                    <div class="card-body">
+                        <h3 class="card-title text-center"> {{ album.title }}</h3>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+        <div class="container text-right ">
+            <a class="landing-link" href="{% url 'mostaardimgur:album-list' %}">Meer beeldmateriaal
+                <span
+                        class="fa fa-chevron-right ml-2"></span></a>
+        </div>
     </div>
 </section>
 

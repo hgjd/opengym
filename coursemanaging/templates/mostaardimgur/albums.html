@@ -23,7 +23,8 @@
                                             <form action="" method="post">
                                                 {% csrf_token %}
                                                 <input type="hidden" name="star" value="{{ album.id }}">
-                                                <button type="submit" class="btn btn-primary admin-img-btn">
+                                                <button type="submit" class="btn btn-primary admin-img-btn
+                                                        {% if album.is_favourite %} starred-album {% endif %}">
                                                     <span class="fa fa-star-o" aria-hidden="true"></span>
                                                 </button>
                                             </form>
@@ -55,7 +56,7 @@
     </div>
     {% if user.is_staff %}
         <div class="album-upload">
-            <h1>Album upload(enkel staff)</h1>
+            <h1>Album upload</h1>
             <form method="POST" enctype="multipart/form-data">
                 {% csrf_token %}
                 {{ images_form|crispy }}

@@ -11,7 +11,7 @@ ul {
     border: 2px dashed #3a6826;
     padding: 0.5em 1em 0.5em 0.5em;
     font-family: 'Amatic SC', cursive;
-    background-color: rgba(255, 255, 255, 0.95);
+    background-color: rgba(255, 255, 255, 0.55);
 }
 
 .logo-bg {
@@ -23,7 +23,6 @@ ul {
 }
 
 #beeldmateriaal {
-    background-color: rgba(55, 89, 38, 0.52);
     margin-top: 6rem;
     padding-bottom: 3rem;
 }
@@ -237,6 +236,15 @@ a:hover {
     max-width: 40rem;
 }
 
+.starred-album {
+    color: #609339;
+}
+
+.landing-album {
+    background: rgba(255, 255, 255, 0.9);
+    padding: 5rem;
+}
+
 .album {
     padding-top: 3rem;
     padding-bottom: 0rem;
@@ -256,6 +264,15 @@ a:hover {
     padding: .75rem;
     margin-bottom: 2rem;
     border: 0;
+}
+
+.landing-card {
+    width: 20%;
+    background:none;
+}
+
+.landing-card .card-body{
+    background: rgba(255,255,255,0.9);
 }
 
 .card > img {
@@ -753,7 +770,7 @@ NEWS STYLING
 
 /*Tabs*/
 .tab-title-right {
-    color: red;
+    color: #375926;
     margin-right: 0;
 }
 

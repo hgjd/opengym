@@ -42,10 +42,9 @@ class LandingView(generic.TemplateView):
         context['calendar'] = mark_safe(cal)
         context['bulletins'] = bulletins
         context['contact_form'] = ContactForm()
-        landing_album_id = ImgurSetting.get_settings_value(ImgurSetting.LANDING_ALBUM)
-        if landing_album_id:
-            context['album'] = get_object_or_404(ImgurAlbum,
-                                                 pk=ImgurSetting.get_settings_value(ImgurSetting.LANDING_ALBUM))
+
+        albums = ImgurAlbum.objects.filter(is_favourite=True).all()
+        context['albums'] = albums
 
         return context
 
