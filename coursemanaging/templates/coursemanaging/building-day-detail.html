@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% load coursemanaging_extras %}
+{% block content %}
+    <div class="open-gym-page text-center">
+        {% if user.is_staff %}
+            <div class="row mb-5">
+                <div class="col-6 text-center"><a class="btn btn-warning"
+                                                  href="{% url 'coursemanaging:building-day-update' buildingday.id %}"> <span
+                        class="fa fa-refresh" aria-hidden="true"></span> Update </a>
+                </div>
+                <div class="col-6 text-center"><a class="btn btn-danger"
+                                                  href="{% url 'coursemanaging:building-day-delete' buildingday.id %}"> <span
+                        class="fa fa-times" aria-hidden="true"></span> Verwijder</a>
+                </div>
+            </div>
+        {% endif %}
+        <h1 class=>Open Gym gaat bouwen op {{ buildingday.start|date:'d/m/o' }}</h1>
+        <h2 class=""> meer info bij
+            {% for user in buildingday.responsible_users.all %}{{ user.first_name }} {% endfor %}</h2>
+        {% autoescape off %}
+            <p class="text-center mt-5">{{ buildingday.description }}</p>
+        {% endautoescape %}
+        {% if not user_is_subscribed %}
+            <form method="post">
+                {% csrf_token %}
+                <input type="hidden" name="subscribe" value="true">
+                <button type="submit" class="og-btn btn btn-primary">Mee bouwen!</button>
+            </form>
+        {% else %}
+            <button type="button" class="og-btn btn btn-primary" disabled>Bedankt!</button>
+        {% endif %}
+
+
+    </div>
+{% endblock %}
+

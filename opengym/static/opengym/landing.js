@@ -1,7 +1,9 @@
 (function ($) {
     "use strict"; // Start of use strict
 
-
+    $('.carousel').carousel({
+        interval: 12000
+    })
     $('.close').click(function () {
         $('.custom-modal').hide();
     });

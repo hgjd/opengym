@@ -18,6 +18,26 @@
       window.CALENDAR_YEAR = {% now "o" %};
       window.CALENDAR_MONTH = {% now "n" %};
     </script>
+    <style>
+        {% if bulletins.0 %}
+            .carousel-one {
+                background-image: url("{{ bulletins.0.news_item.image.url }}");
+            }
+        {% endif %}
+
+        {% if bulletins.1 %}
+            .carousel-two {
+                background-image: url("{{ bulletins.1.news_item.image.url }}");
+            }
+        {% endif %}
+
+        {% if bulletins.2 %}
+            .carousel-three {
+                background-image: url("{{ bulletins.2.news_item.image.url }}");
+            }
+        {% endif %}
+
+    </style>
     <meta name="description" content="Open gym is een DIY fitness in Leuven voor iedereen!">
     <meta name="keywords" content="Leuven, open, gym, diy, bouw, sport">
     <meta charset="UTF-8">
@@ -37,7 +57,7 @@
             <a class="nav-link js-scroll-trigger" href="#nieuwigheden">Nieuwigheden</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link js-scroll-trigger" href="#kalender">Kalender</a>
+            <a class="nav-link js-scroll-trigger" href="#kalender">Open Agenda</a>
         </li>
         <li class="nav-item">
             <a class="nav-link js-scroll-trigger" href="#oefeningen">Oefeningen</a>
@@ -55,8 +75,8 @@
                 <a class="nav-link dropdown-toggle btn-lg" id="dropdown01" data-toggle="dropdown"
                    aria-haspopup="true" aria-expanded="false">{{ user.first_name }}</a>
                 <div class="dropdown-menu" aria-labelledby="dropdown01">
-                    <a class="dropdown-item" href="{% url 'coursemanaging:courses-user' %}">Lessen</a>
-                    <a class="dropdown-item" href="{% url 'coursemanaging:user-detail' %}">Uw gegevens</a>
+                    <a class="dropdown-item" href="{% url 'coursemanaging:courses-user' %}">Mijn lessen</a>
+                    <a class="dropdown-item" href="{% url 'coursemanaging:user-detail' %}">Mijn gegevens</a>
                     <a class="dropdown-item" href="{% url 'coursemanaging:logout' %}">Logout</a>
                 </div>
             </li>
@@ -89,22 +109,27 @@
         </ol>
         <div class="carousel-inner">
             {% if bulletins.0 %}
-                <div class="carousel-item active">
-                    <img class="first-slide" src="{{ bulletins.0.news_item.image.url }}">
+                <div class="carousel-item active carousel-one">
+                    <div class="carousel-filter"></div>
                     <div class="container">
-                        <div class="open-gym-carousel carousel-caption d-none d-md-block text-left">
+                        <div class="open-gym-carousel carousel-caption d-none d-md-block text-right">
                             <h1>
                                 <a href="{% url 'coursemanaging:news' bulletins.0.news_item.id %}">{{ bulletins.0.news_item.title }}</a>
                             </h1>
                             <p>{{ bulletins.0.news_item.short_text }}</p>
+                            <a class="carousel-news-link" href="{% url 'coursemanaging:news' %}">Bekijk hier al het nieuws
+                                <span
+                                        class="fa fa-chevron-right ml-2"></span></a>
                         </div>
                     </div>
+
                 </div>
             {% endif %}
 
             {% if bulletins.1 %}
-                <div class="carousel-item">
-                    <img class="second-slide" src="{{ bulletins.1.news_item.image.url }}">
+                <div class="carousel-item carousel-two">
+                    <div class="carousel-filter"></div>
+
                     <div class="container">
                         <div class="open-gym-carousel carousel-caption d-none d-md-block">
                             <h1>
@@ -117,8 +142,9 @@
             {% endif %}
 
             {% if bulletins.2 %}
-                <div class="carousel-item">
-                    <img class="third-slide" src="{{ bulletins.2.news_item.image.url }}">
+                <div class="carousel-item carousel-three">
+                    <div class="carousel-filter"></div>
+
                     <div class="container">
                         <div class="open-gym-carousel carousel-caption d-none d-md-block text-right">
                             <h1>
@@ -141,17 +167,15 @@
         </a>
     </div>
     <div class="container mb-5 text-right">
-        <a class="landing-link" href="{% url 'coursemanaging:news' %}">Bekijk hier al het nieuws
-            <span
-                    class="fa fa-chevron-right ml-2"></span></a>
+
     </div>
 </section>
 
 <section id="kalender" class="pt-5">
     <div id="calendar-content">{{ calendar }}</div>
     <div class="container">
-        <a class="float-right landing-link mt-2" href="{% url 'coursemanaging:course-list' %}">Bekijk hier alle
-            lessen <span
+        <a class="float-right landing-link mt-2" href="{% url 'coursemanaging:activities' %}">Bekijk hier alle
+            activiteiten <span
                     class="fa fa-chevron-right ml-2"></span></a>
     </div>
 </section>
@@ -198,60 +222,6 @@
         </div>
     </div>
 </section>
-
-<div class="modal fade" id="calendar-info-modal" role="dialog">
-    <div class="modal-dialog modal-lg">
-        <!-- Modal content-->
-        <div class="modal-content">
-            <div class="modal-header">
-                <h4 class="modal-title">Legende kalender </h4>
-                <button type="button" class="close" data-dismiss="modal"><span class="fa fa-times"
-                                                                               aria-hidden="true"></span></button>
-            </div>
-
-            <div class="modal-body">
-                <table class="table ">
-                    <tbody>
-                    <tr>
-                        <th>
-                            <span class="fa fa-user-circle-o" aria-hidden="true"></span>
-                        </th>
-                        <td>
-                            U ben leerkracht voor deze les
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>
-                            <span class="fa fa-check" aria-hidden="true"></span>
-                        </th>
-                        <td>
-                            U ben ingeschreven voor deze sessie
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>
-                            <span class="fa fa-thumb-tack" aria-hidden="true"></span>
-                        </th>
-                        <td>
-                            U bent ingeschreven voor deze les, maar nog niet voor deze sessie
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>
-                            <span class="fa fa-bed" aria-hidden="true"></span>
-                        </th>
-                        <td>
-                            U volgt deze les niet
-                        </td>
-                    </tr>
-                    </tbody>
-                </table>
-            </div>
-
-        </div>
-    </div>
-</div>
-
 
 <footer class="py-2 bg-dark">
     <div class="container">

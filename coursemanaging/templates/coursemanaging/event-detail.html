@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% load coursemanaging_extras %}
+{% block content %}
+    <div class="open-gym-page text-center">
+        {% if user.is_staff %}
+            <div class="row mb-5">
+                <div class="col-6 text-center"><a class="btn btn-warning"
+                                                  href="{% url 'coursemanaging:event-update' event.id %}"> <span
+                        class="fa fa-refresh" aria-hidden="true"></span> Update </a>
+                </div>
+                <div class="col-6 text-center"><a class="btn btn-danger"
+                                                  href="{% url 'coursemanaging:event-delete' event.id %}"> <span
+                        class="fa fa-times" aria-hidden="true"></span> Verwijder</a>
+                </div>
+            </div>
+        {% endif %}
+        <h1 class="">{{ event.event_name }}  <small>(<a class="fa fa-facebook" href="{{ event.facebook_event_url }}"></a>)</small></h1>
+        <h2 class=""> {{ event.start|date:'d/m/o H:i' }} tot {{ event.get_end|date:'d/m/o H:i' }} </h2>
+        {% if event.facebook_event_url %}
+        {% endif %}
+        {% if event.facebook_event_url %}
+            <p class="mt-5">
+                {{ event.description|default_if_none:'' }}
+            </p>
+        {% endif %}
+
+    </div>
+{% endblock %}
+

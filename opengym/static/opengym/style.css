@@ -22,6 +22,29 @@ ul {
     background-position: 100% 100%;
 }
 
+.og-btn {
+    background-color: #3a6826;
+    border-color: #3a6826;
+    cursor: pointer;
+    padding: 0.75em;
+}
+
+.og-btn:disabled {
+    background-color: #3a6826;
+    border-color: #3a6826;
+}
+
+.og-btn:hover {
+    background-color: #3a6826;
+    border-color: #3a6826;
+    opacity: 0.5;
+}
+
+
+.base {
+    padding-top: 2rem;
+}
+
 #beeldmateriaal {
     margin-top: 6rem;
     padding-bottom: 3rem;
@@ -163,7 +186,7 @@ body {
     align-items: center;
     margin: 0;
     padding: 0;
-    padding-top: 7rem;
+    padding-top: 6rem;
     background-color: #F4F4F4;
     color: #375926;
     font-family: 'Raleway', sans-serif;
@@ -191,7 +214,6 @@ a:hover {
 }
 
 .landing-body {
-    margin-top: 5em;
     background-image: url('img/bg.jpg');
     background-attachment: fixed;
     background-repeat: no-repeat;
@@ -210,6 +232,7 @@ a:hover {
 
 .navbar {
     padding-left: 0.5rem;
+    height: 6rem;
 }
 
 .navbar-right {
@@ -220,7 +243,6 @@ a:hover {
     padding-top: 6rem;
     padding-bottom: 2rem;
     margin-bottom: 0;
-    background-color: #fff;
     background-color: #F4F4F4;
 }
 
@@ -268,11 +290,11 @@ a:hover {
 
 .landing-card {
     width: 20%;
-    background:none;
+    background: none;
 }
 
-.landing-card .card-body{
-    background: rgba(255,255,255,0.9);
+.landing-card .card-body {
+    background: rgba(255, 255, 255, 0.9);
 }
 
 .card > img {
@@ -618,6 +640,83 @@ CALENDAR STYLING
     cursor: pointer;
 }
 
+.building-icon {
+    display: block;
+    position: absolute;
+    bottom: 0.50rem;
+    right: 0.50rem;
+    background-size: 2em;
+    width: 2em;
+    height: 2em;
+    background: url("wrench-green.svg") no-repeat center;
+
+}
+
+.day-filled .building-icon {
+    background: url("wrench.svg") no-repeat center;
+}
+
+.day-today-filled .building-icon {
+    background: url("wrench.svg") no-repeat center;
+}
+
+.building-icon:hover {
+    opacity: 0.5;
+    cursor: pointer;
+}
+
+.day-content {
+    position: relative;
+    height: 100%;
+}
+
+.event-link-legend {
+    font-weight: bold;
+    font-size: 150%;
+}
+
+.bd-ex {
+    width: 1em;
+    height: 1em;
+    background: url("wrench-green.svg") no-repeat center;
+    display: inline-block;
+}
+
+.event-link {
+    display: block;
+    color: white;
+    font-weight: bold;
+    font-size: 150%;
+}
+
+/* styling for sessions in the calendar */
+.session-teacher {
+    font-weight: bold;
+    font-style: italic;
+
+}
+
+.session-not-subscribed a {
+    font-weight: lighter;
+}
+
+.session-not-subscribed {
+    font-weight: lighter;
+    opacity: 0.5;
+}
+
+.session-course-subscribed a {
+    font-weight: normal;
+}
+
+.session-course-subscribed {
+    font-weight: normal;
+}
+
+.session-subscribed {
+    font-weight: bold;
+}
+
 /*
 ================
 NEWS STYLING
@@ -649,17 +748,14 @@ NEWS STYLING
 }
 
 .news-item {
-    width: 70%;
-    float: left;
+    min-height: 80vh;
 }
 
 .news-item img {
-
     width: 50%;
     height: auto;
     margin-top: 25px;
     margin-bottom: 25px;
-
     margin-left: auto;
     margin-right: auto;
     display: block;
@@ -682,7 +778,6 @@ NEWS STYLING
 .news-history {
     overflow: auto;
     width: 25%;
-    margin-left: 2em;
     background: white;
     padding: 1em;
     padding-bottom: 5em;
@@ -734,6 +829,8 @@ NEWS STYLING
 .carousel {
     margin-bottom: 2rem;
     box-shadow: 2px 2px 2px grey;
+    height: 90vh;
+    background: green;
 }
 
 /* Since positioning the image, we need to help out the caption */
@@ -742,26 +839,48 @@ NEWS STYLING
     bottom: 3rem;
 }
 
-/* Declare heights because of positioning of img element */
-.carousel-item {
-    height: 32rem;
-    background-color: #777;
-}
-
-.carousel-item > img {
+.carousel-filter {
     position: absolute;
     top: 0;
     left: 0;
-    min-width: 100%;
-    height: 32rem;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(36, 77, 15, 0.3);
+
+}
+
+/* Declare heights because of positioning of img element */
+.carousel-item {
+    height: 90vh;
+    background: no-repeat center center fixed;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
 }
 
 .open-gym-carousel {
     background: black;
-    opacity: 0.8;
+    opacity: 0.65;
     padding: 2em;
     border-radius: 10px 30px 10px 30px;
     border: 1px dashed #aabfa0;
+    margin-bottom: 5rem;
+    width: 25%;
+    left: auto;
+}
+
+.carousel-news-link {
+    color: white;
+    font-weight: normal;
+    font-size: 80%;
+
+}
+
+@media only screen and (max-width: 1200px) {
+    .open-gym-carousel {
+        width: 75%;
+    }
 }
 
 .open-gym-carousel h1 {
@@ -815,6 +934,13 @@ NEWS STYLING
 }
 
 .help-cell {
-    text-align: center;
-    font-size: 200%;
+    font-size: 80%;
 }
+
+.legende p {
+    padding: 0;
+    margin: 0;
+
+}
+
+

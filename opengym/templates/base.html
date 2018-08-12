@@ -44,14 +44,14 @@
         <ul class="navbar-collapse justify-content-md-center">
             <li>
                 {% if current_page == 'courses' %}
-                    <a class="nav-link" href="{% url 'coursemanaging:course-list' %}">
+                    <a class="nav-link" href="{% url 'coursemanaging:activities' %}">
                         <span class="fa fa-angle-double-right" aria-hidden="true"></span>
-                        Lessen
+                        Activiteiten
                         <span class="fa fa-angle-double-left" aria-hidden="true"></span>
                     </a>
                 {% else %}
-                    <a class="nav-link" href="{% url 'coursemanaging:course-list' %}">
-                        Lessen
+                    <a class="nav-link" href="{% url 'coursemanaging:activities' %}">
+                        Activiteiten
                     </a>
                 {% endif %}
 
@@ -73,12 +73,12 @@
                 {% if current_page == 'calendar' %}
                     <a class="nav-link" href="{% url 'coursemanaging:calendar' %}">
                         <span class="fa fa-angle-double-right" aria-hidden="true"></span>
-                        Kalender
+                        Open Agenda
                         <span class="fa fa-angle-double-left" aria-hidden="true"></span>
                     </a>
 
                 {% else %}
-                    <a class="nav-link" href="{% url 'coursemanaging:calendar' %}">Kalender</a>
+                    <a class="nav-link" href="{% url 'coursemanaging:calendar' %}">Open Agenda</a>
                 {% endif %}
             </li>
             <li>
@@ -101,8 +101,8 @@
                     <a class="nav-link dropdown-toggle btn-lg" id="dropdown01" data-toggle="dropdown"
                        aria-haspopup="true" aria-expanded="false">{{ user.first_name }}</a>
                     <div class="dropdown-menu" aria-labelledby="dropdown01">
-                        <a class="dropdown-item" href="{% url 'coursemanaging:courses-user' %}">Lessen</a>
-                        <a class="dropdown-item" href="{% url 'coursemanaging:user-detail' %}">Uw gegevens</a>
+                        <a class="dropdown-item" href="{% url 'coursemanaging:courses-user' %}">Mijn lessen</a>
+                        <a class="dropdown-item" href="{% url 'coursemanaging:user-detail' %}">Mijn gegevens</a>
                         <a class="dropdown-item" href="{% url 'coursemanaging:logout' %}">Logout</a>
                     </div>
                 </li>

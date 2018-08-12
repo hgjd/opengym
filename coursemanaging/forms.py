@@ -13,7 +13,7 @@ from django.utils.http import urlsafe_base64_encode
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Div, ButtonHolder, Submit
 
-from coursemanaging.models import User, Course, Session
+from coursemanaging.models import User, Course, Session, Event, BuildingDay
 from coursemanaging.tokens import account_activation_token
 
 Tab.link_template = 'coursemanaging/%s/tab-link.html'
@@ -21,13 +21,6 @@ TabHolder.template = 'coursemanaging/%s/tab.html'
 
 timezone.activate(timezone.get_current_timezone())
 
-
-def validate_subscription_key(value):
-    if value != 'opengymopdendraad':
-        raise ValidationError(
-            '%(value)s is geen correcte registratie sleutel',
-            params={'value': value},
-        )
 
 
 class UserRegisterForm(UserCreationForm):
@@ -66,7 +59,7 @@ class ContactForm(forms.Form):
     first_name = forms.CharField(label='Voornaam', max_length=100, required=False)
     last_name = forms.CharField(label='Familienaam', max_length=100, required=False)
     phone_nr = forms.CharField(label="Telefoon", required=False)
-    email = forms.EmailField(label="email")
+    email = forms.EmailField(label="e-mail")
     message = forms.CharField(widget=forms.Textarea)
 
     def __init__(self, *args, **kwargs):
@@ -151,3 +144,24 @@ class SessionCreateForm(forms.ModelForm):
             else:
                 session.save()
         return session
+
+
+class EventCreateForm(forms.ModelForm):
+    class Meta:
+        model = Event
+        fields = '__all__'
+
+        widgets = {
+            'start': forms.DateTimeInput(attrs={'class': 'datepicker', 'autocomplete': 'off'}),
+        }
+
+
+class BuildingDayCreateForm(forms.ModelForm):
+    class Meta:
+        model = BuildingDay
+        fields = '__all__'
+
+        widgets = {
+            'start': forms.DateTimeInput(attrs={'class': 'datepicker', 'autocomplete': 'off'}),
+        }
+

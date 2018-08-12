@@ -1,29 +1,35 @@
 {% extends "base.html" %}
 {% block content %}
-<div class="open-gym-page">
-    <div class="mt-4">
-        <h3 class="">Uw gegevens</h3>
-    </div>
+    <div class="open-gym-page">
+        <div class="mt-4">
+            <h3 class="">Uw gegevens</h3>
+        </div>
         <table class="table mt-4">
             <tbody>
             <tr>
                 <th scope="row">Naam</th>
-                <td>{{user.last_name}}</td>
+                <td>{{ user.last_name }}</td>
             </tr>
             <tr>
                 <th scope="row">Voornaam</th>
-                <td>{{user.first_name}}</td>
+                <td>{{ user.first_name }}</td>
             </tr>
             <tr>
                 <th scope="row">Geboortedatum</th>
-                <td>{{user.birthdate|date:'d/m/o'}}</td>
+                <td>{{ user.birthdate|date:'d/m/o' }}</td>
             </tr>
             <tr>
                 <th scope="row">Leerkracht</th>
-                <td>{{user.teacher|yesno:"Ja,nee"}}</td>
+                <td>{{ user.teacher|yesno:"Ja,nee" }}</td>
+            </tr>
+            <tr>
+                <th scope="row">Extra gegevens</th>
+                <td scope="row">Om in orde te zijn met ons papierwerk vragen we je <a
+                        href="https://docs.google.com/forms/d/e/1FAIpQLSd-nr0mC0lSHPZJHHNlO8bFUp01ebRum9q549xoWK3IISRdqA/viewform">dit
+                    formulier</a> in te vullen</td>
             </tr>
             </tbody>
         </table>
 
-</div>
+    </div>
 {% endblock %}

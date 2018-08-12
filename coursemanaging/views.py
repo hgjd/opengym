@@ -8,17 +8,20 @@ from django.core.mail import EmailMessage
 from django.http import HttpResponseRedirect
 from django.shortcuts import redirect, render, get_object_or_404, render_to_response
 from django.urls import reverse_lazy
+from django.utils import timezone
 from django.utils.encoding import force_text
 from django.utils.http import urlsafe_base64_decode
 from django.utils.safestring import mark_safe
 from django.views import generic
 
-from coursemanaging.forms import UserRegisterForm, CourseCreateForm, SessionCreateForm, ContactForm
-from coursemanaging.session_calendar import SessionCalendar
+from coursemanaging.forms import UserRegisterForm, CourseCreateForm, SessionCreateForm, ContactForm, EventCreateForm, \
+    BuildingDayCreateForm
+from coursemanaging.open_calendar import OpenCalendar
 from coursemanaging.tokens import account_activation_token
-from mostaardimgur.models import ImgurSetting, ImgurAlbum
-from .models import Course, Session, User, NewsBulletin, NewsItem
+from mostaardimgur.models import ImgurAlbum
+from .models import Course, Session, User, NewsBulletin, NewsItem, Event, BuildingDay
 from django.contrib.auth import login
+from django.utils.translation import gettext as _
 
 utc = pytz.UTC
 
@@ -37,8 +40,14 @@ class LandingView(generic.TemplateView):
 
         sessions = Session.objects.filter(start__lte=end_calendar_period,
                                           start__gte=start_calendar_period, course__is_active=True)
+        events = Event.objects.filter(start__lte=end_calendar_period,
+                                      start__gte=start_calendar_period)
+        building_days = BuildingDay.objects.filter(start__lte=end_calendar_period,
+                                                   start__gte=start_calendar_period)
+
+        cal = OpenCalendar(sessions, events, building_days, self.request.user).formatmonth(today.year, today.month)
+
         bulletins = NewsBulletin.objects.all().order_by('-bulletin_level')
-        cal = SessionCalendar(sessions, self.request.user).formatmonth(today.year, today.month)
         context['calendar'] = mark_safe(cal)
         context['bulletins'] = bulletins
         context['contact_form'] = ContactForm()
@@ -226,18 +235,16 @@ class CourseDetailView(generic.DetailView):
                 return redirect('coursemanaging:impossible')
 
 
-class CourseListView(generic.ListView):
-    """List view of a course"""
-    template_name = 'coursemanaging/course-list.html'
-    context_object_name = 'course_list'
-    model = Course
-
-    def get_queryset(self):
-        return Course.objects.filter(is_active=True)
+class Activities(generic.TemplateView):
+    template_name = 'coursemanaging/activities.html'
 
     def get_context_data(self, **kwargs):
-        context = super(CourseListView, self).get_context_data(**kwargs)
+        context = super(Activities, self).get_context_data(**kwargs)
         context['current_page'] = 'courses'
+        context['courses'] = Course.objects.filter(is_active=True)
+        context['events'] = Event.objects.filter(start__gte=timezone.now()).order_by('start')
+        context['building_days'] = BuildingDay.objects.filter(start__gte=timezone.now()).order_by('start')
+
         return context
 
 
@@ -281,7 +288,6 @@ SESSION VIEWS
 
 
 class SessionCreateView(UserPassesTestMixin, generic.CreateView):
-    """create view for a Session"""
     template_name = 'coursemanaging/session-create.html'
     model = Session
     form_class = SessionCreateForm
@@ -324,6 +330,147 @@ class SessionUpdateView(UserPassesTestMixin, generic.UpdateView):
         return reverse_lazy('coursemanaging:course-detail', kwargs={'pk': self.object.course.id})
 
 
+'''
+
+EVENT VIEWS
+
+'''
+
+
+class EventCreateview(UserPassesTestMixin, generic.CreateView):
+    template_name = 'coursemanaging/event-create.html'
+    model = Event
+    form_class = EventCreateForm
+    permission_denied_message = _('Only staff can create events')
+
+    def test_func(self):
+        return self.request.user.is_staff
+
+    def handle_no_permission(self):
+        if self.raise_exception:
+            raise PermissionDenied(self.get_permission_denied_message())
+        return redirect('coursemanaging:impossible')
+
+    def get_success_url(self):
+        return reverse_lazy('coursemanaging:event-detail', kwargs={'pk': self.object.pk})
+
+
+class EventUpdateView(UserPassesTestMixin, generic.UpdateView):
+    template_name = 'coursemanaging/event-create.html'
+    model = Event
+    fields = '__all__'
+    permission_denied_message = _('Only staff can update events')
+
+    def test_func(self):
+        return self.request.user.is_staff
+
+    def handle_no_permission(self):
+        if self.raise_exception:
+            raise PermissionDenied(self.get_permission_denied_message())
+        return redirect('coursemanaging:impossible')
+
+    def get_success_url(self):
+        return reverse_lazy('coursemanaging:event-detail', kwargs={'pk': self.object.id})
+
+
+class EventDeleteView(UserPassesTestMixin, generic.DeleteView):
+    model = Event
+    permission_denied_message = _('Only staff can delete events')
+    template_name = 'coursemanaging/object-delete.html'
+
+    def test_func(self):
+        return self.request.user.is_staff
+
+    def handle_no_permission(self):
+        if self.raise_exception:
+            raise PermissionDenied(self.get_permission_denied_message())
+        return redirect('coursemanaging:impossible')
+
+    def get_success_url(self):
+        return reverse_lazy('coursemanaging:activities')
+
+
+class EventDetailView(generic.DetailView):
+    template_name = 'coursemanaging/event-detail.html'
+    model = Event
+
+
+'''
+
+BUILDING DAY VIEWS
+
+'''
+
+
+class BuildingDayCreateview(UserPassesTestMixin, generic.CreateView):
+    template_name = 'coursemanaging/building-day-create.html'
+    model = BuildingDay
+    form_class = BuildingDayCreateForm
+    permission_denied_message = _('Only staff can create building days')
+
+    def test_func(self):
+        return self.request.user.is_staff
+
+    def handle_no_permission(self):
+        if self.raise_exception:
+            raise PermissionDenied(self.get_permission_denied_message())
+        return redirect('coursemanaging:impossible')
+
+    def get_success_url(self):
+        return reverse_lazy('coursemanaging:building-day-detail', kwargs={'pk': self.object.pk})
+
+
+class BuildingDayUpdateView(UserPassesTestMixin, generic.UpdateView):
+    template_name = 'coursemanaging/building-day-create.html'
+    model = BuildingDay
+    fields = '__all__'
+    permission_denied_message = _('Only staff can update building days')
+
+    def test_func(self):
+        return self.request.user.is_staff
+
+    def handle_no_permission(self):
+        if self.raise_exception:
+            raise PermissionDenied(self.get_permission_denied_message())
+        return redirect('coursemanaging:impossible')
+
+    def get_success_url(self):
+        return reverse_lazy('coursemanaging:building-day-detail', kwargs={'pk': self.object.id})
+
+
+class BuildingDayDeleteView(UserPassesTestMixin, generic.DeleteView):
+    model = BuildingDay
+    permission_denied_message = _('Only staff can delete building days')
+    template_name = 'coursemanaging/object-delete.html'
+
+    def test_func(self):
+        return self.request.user.is_staff
+
+    def handle_no_permission(self):
+        if self.raise_exception:
+            raise PermissionDenied(self.get_permission_denied_message())
+        return redirect('coursemanaging:impossible')
+
+    def get_success_url(self):
+        return reverse_lazy('coursemanaging:activities')
+
+
+class BuildingDayDetailView(generic.DetailView):
+    template_name = 'coursemanaging/building-day-detail.html'
+    model = BuildingDay
+
+    def get_context_data(self, **kwargs):
+        context = super(BuildingDayDetailView, self).get_context_data()
+        context['user_is_subscribed'] = self.object.user_is_subscribed(self.request.user)
+        return context
+
+    def post(self, request, *args, **kwargs):
+        if request.POST.get('subscribe'):
+            building_day = self.get_object()
+            building_day.subscribe_user(request.user)
+            return redirect('coursemanaging:building-day-detail', pk=building_day.id)
+
+
 class CalendarView(generic.TemplateView):
     template_name = 'coursemanaging/calendar.html'
 
@@ -337,7 +484,12 @@ class CalendarView(generic.TemplateView):
 
         sessions = Session.objects.filter(start__lte=end_calendar_period,
                                           start__gte=start_calendar_period, course__is_active=True)
-        cal = SessionCalendar(sessions, self.request.user).formatmonth(today.year, today.month)
+        events = Event.objects.filter(start__lte=end_calendar_period,
+                                      start__gte=start_calendar_period)
+        building_days = BuildingDay.objects.filter(start__lte=end_calendar_period,
+                                                   start__gte=start_calendar_period)
+
+        cal = OpenCalendar(sessions, events, building_days, self.request.user).formatmonth(today.year, today.month)
         context['current_page'] = 'calendar'
         context['calendar'] = mark_safe(cal)
         return context
@@ -351,10 +503,10 @@ def get_calendar(request):
         start_calendar_period = utc.localize(datetime.datetime(year, month, 1))
         end_calendar_period = utc.localize(datetime.datetime(year, month, monthrange[1], hour=23, minute=59, second=59))
 
-        sessions = Session.objects.filter(start__lte=end_calendar_period,
-                                          start__gte=start_calendar_period, course__is_active=True)
+        entries = Session.objects.filter(start__lte=end_calendar_period,
+                                         start__gte=start_calendar_period)
+        cal = OpenCalendar(entries, request.user).formatmonth(year, month)
 
-        cal = SessionCalendar(sessions, request.user).formatmonth(year, month)
         return render_to_response('coursemanaging/calendar-ajax.html', {'calendar': mark_safe(cal)})
 
 

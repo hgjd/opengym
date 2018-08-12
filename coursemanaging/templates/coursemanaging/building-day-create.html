@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+{% load static %}
+{% block extra_head %}
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script src="{% static 'coursemanaging/datetimepicker-master/build/jquery.datetimepicker.full.min.js' %}"></script>
+    <link rel="stylesheet" type="text/css"
+          href="{% static 'coursemanaging/datetimepicker-master/jquery.datetimepicker.css' %}"/>
+    <script>
+   $(function () {
+       $(".datepicker").datetimepicker({dateFormat: 'yy-mm-dd'});
+   });
+   $(function () {
+       $(".datetimeinput").datetimepicker({dateFormat: 'yy-mm-dd'});
+   });
+</script>
+{% endblock %}
+
+
+{% block content %}
+    {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+    <form class="open-gym-page" action="" method="post">
+        {% csrf_token %}
+        {{ form|crispy }}
+        <input type="submit" value="Save" class="btn btn-primary"/>
+    </form>
+{% endblock %}

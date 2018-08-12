@@ -1,50 +1,53 @@
 {% extends "base.html" %}
 {% load static %}
 {% block extra_head %}
-<script src="{% static 'opengym/news.js' %}"></script>
-<script type="text/javascript">
+    <script src="{% static 'opengym/news.js' %}"></script>
+    <script type="text/javascript">
       window.CSRF_TOKEN = "{{ csrf_token }}";
 </script>
 {% endblock %}
 {% block content %}
-<div class="news-page">
-    <div class="news-item open-gym-page mr-1" role="main">
-        {% if news_item %}
-        {% include "coursemanaging/news-item.html" %}
-        {% else %}
-        <h2>Er is nog geen nieuws</h2>
-        {% endif %}
+    <div class="news-page container">
+        <div class="row">
+            <div class="news-item open-gym-page col-9" role="main">
+                {% if news_item %}
+                    {% include "coursemanaging/news-item.html" %}
+                {% else %}
+                    <h2>Er is nog geen nieuws</h2>
+                {% endif %}
+            </div>
+            <div class="col-1"></div>
+            <div class="news-history col-2">
+                <h4 class="news-title text-center mb-3">Geschiedenis</h4>
+                <ul>
+                    {% for news_item in news_items %}
+                        <li class="">
+                            <div id="{{ news_item.id }}" class="news-link">
+                                <span>{{ news_item.title }}</span>
+                                <time>{{ news_item.publication_date|date:"d-g-o" }}</time>
+                            </div>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
     </div>
-    <div class="news-history">
-        <h4 class="news-title text-center mb-3">Geschiedenis</h4>
-        <ul>
-            {% for news_item in news_items %}
-            <li class="">
-                <div id="{{news_item.id}}" class="news-link">
-                    <span>{{news_item.title}}</span>
-                    <time>{{news_item.publication_date|date:"d-g-o"}}</time>
-                </div>
-            </li>
-            {% endfor %}
-        </ul>
-    </div>
-</div>
 {% endblock %}
 
 {% block content-no-div %}
-<footer class="py-2 news-footer">
-    <div class="container">
-        <p class="m-0 text-center text-white">
-            <a href="http://www.mijnleuven.be/"><img class="mijn-leuven mr-5"
-                                                     src="{% static 'opengym/img/sponsors/mijn_leuven.jpg' %}"></a>
-            <a href="https://www.dekringwinkel.be/"><img class="spit-logo"
-                                                         src="{% static 'opengym/img/sponsors/spit.png' %}"></a>
-            <a href="https://www.leuven.be/"><img class="footer-logo mr-5 ml-5"
-                                                  src="{% static 'opengym/img/sponsors/stad.jpg' %}"></a>
-            <a href="http://www.tofsport.be/"><img class="footer-logo"
-                                                   src="{% static 'opengym/img/sponsors/tofsport.jpg' %}"></a>
-        </p>
-    </div>
-    <!-- /.container -->
-</footer>
+    <footer class="py-2 news-footer">
+        <div class="container">
+            <p class="m-0 text-center text-white">
+                <a href="http://www.mijnleuven.be/"><img class="mijn-leuven mr-5"
+                                                         src="{% static 'opengym/img/sponsors/mijn_leuven.jpg' %}"></a>
+                <a href="https://www.dekringwinkel.be/"><img class="spit-logo"
+                                                             src="{% static 'opengym/img/sponsors/spit.png' %}"></a>
+                <a href="https://www.leuven.be/"><img class="footer-logo mr-5 ml-5"
+                                                      src="{% static 'opengym/img/sponsors/stad.jpg' %}"></a>
+                <a href="http://www.tofsport.be/"><img class="footer-logo"
+                                                       src="{% static 'opengym/img/sponsors/tofsport.jpg' %}"></a>
+            </p>
+        </div>
+        <!-- /.container -->
+    </footer>
 {% endblock %}

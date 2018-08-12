@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+{% load coursemanaging_extras %}
+{% block content %}
+    <form class="open-gym-page"action="" method="post">
+    {% csrf_token %}
+        <p>Bent u zeker dat u {{ object }} wilt verwijderen? </p>
+    <input type="submit" value="confirm" class="btn btn-danger"/>
+</form>
+{% endblock %}
+

@@ -1,92 +1,95 @@
 {% extends "base.html" %}
 {% block content %}
-<h1 class="text-center">Uw lessen</h1>
+    <h1 class="text-center">Mijn lessenreeksen</h1>
+    {% if user.teacher %}
+        <ul class="nav nav-tabs opengym-tabs-head" id="coursesTab" role="tablist">
+            <li class="nav-item">
+                <a class="nav-link tab active" id="teacher-tab" data-toggle="tab" href="#teacher" role="tab"
+                   aria-controls="teacher"
+                   aria-selected="true">Leerkracht</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link tab" id="student-tab" data-toggle="tab" href="#student" role="tab"
+                   aria-controls="student"
+                   aria-selected="true">Student</a>
+            </li>
+        </ul>
+
+
+        <div class="tab-content opengym-tab" id="coursesTabContent">
+        <!-- start teacher tab -->
+        <div class="tab-pane fade active show " id="teacher" role="tabpanel" aria-labelledby="teachers-tab">
+            {% if courses_teacher %}
+
+                <table class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th>Naam</th>
+                        <th>Niveau</th>
+                        <th>Studenten</th>
+                        <th>Inschrijvingen volgende les</th>
+                        <th>Volgende les</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for course in courses_teacher %}
+                        <tr>
+                            <td>
+                                <a href="{% url 'coursemanaging:course-detail' course.id %}"> {{ course.course_name }} </a>
+                            </td>
+                            <td>{{ course.get_course_level_display }}</td>
+                            <td>{{ course.students.count }}</td>
+                            <td>{{ course.get_next_session.subscribed_users.count }}</td>
+                            {% if course.get_next_session %}
+                                <td>{{ course.get_next_session.start }}</td>
+                            {% else %}
+                                <td class="unimportant"></td>
+                            {% endif %}
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+                <a href="{% url 'coursemanaging:course-create' %}"
+                   class="btn btn-outline-warning mt-2">
+                    <span class="fa fa-plus" aria-hidden="true"></span> Lessenreeks aanmaken
+                </a>
+            {% else %}
+                <h3>U bent nog geen leerkracht voor een les klik <a href="{% url 'coursemanaging:course-create' %}">
+                    hier</a>
+                    om één aan te maken</h3>
+
+            {% endif %}
+        </div>
+        <!-- end teacher tab -->
+        <!-- start student tab -->
+        <div class="tab-pane fade" id="student" role="tabpanel" aria-labelledby="students-tab">
+    {% endif %}
+<table class="table table-striped {% if not user.teacher %} courses-student{% endif %}">
+    <thead>
+    <tr>
+        <th>Naam</th>
+        <th>Niveau</th>
+        <th>Volgende les</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for course in courses_student %}
+        <tr>
+            <td><a href="{% url 'coursemanaging:course-detail' course.id %}"> {{ course.course_name }} </a></td>
+            <td>{{ course.get_course_level_display }}</td>
+            {% if course.get_next_session %}
+                <td>{{ course.get_next_session.start }}</td>
+            {% else %}
+                <td></td>
+            {% endif %}
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
 {% if user.teacher %}
-<ul class="nav nav-tabs opengym-tabs-head" id="coursesTab" role="tablist">
-    <li class="nav-item">
-        <a class="nav-link tab active" id="teacher-tab" data-toggle="tab" href="#teacher" role="tab"
-           aria-controls="teacher"
-           aria-selected="true">Leerkracht</a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link tab" id="student-tab" data-toggle="tab" href="#student" role="tab"
-           aria-controls="student"
-           aria-selected="true">Student</a>
-    </li>
-</ul>
-
-
-<div class="tab-content opengym-tab" id="coursesTabContent">
-    <!-- start teacher tab -->
-    <div class="tab-pane fade active show " id="teacher" role="tabpanel" aria-labelledby="teachers-tab">
-        {% if courses_teacher %}
-
-        <table class="table table-striped">
-            <thead>
-            <tr>
-                <th>Naam</th>
-                <th>Niveau</th>
-                <th>Studenten</th>
-                <th>Inschrijvingen volgende sessie</th>
-                <th>Volgende sessie</th>
-            </tr>
-            </thead>
-            <tbody>
-            {% for course in courses_teacher %}
-            <tr>
-                <td><a href="{% url 'coursemanaging:course-detail' course.id %}"> {{course.course_name}} </a></td>
-                <td>{{course.get_course_level_display}}</td>
-                <td>{{course.students.count}}</td>
-                <td>{{course.get_next_session.subscribed_users.count}}</td>
-                {% if course.get_next_session %}
-                <td>{{course.get_next_session.start}}</td>
-                {% else %}
-                <td class="unimportant" >Nog geen geplanned</td>
-                {% endif %}
-            </tr>
-            {% endfor %}
-            </tbody>
-        </table>
-        <a href="{% url 'coursemanaging:course-create' %}"
-           class="btn btn-outline-warning mt-2">
-            <span class="fa fa-plus" aria-hidden="true"></span> Les aanmaken
-        </a>
-        {% else %}
-        <h3>U bent nog geen leerkracht voor een les klik <a href="{% url 'coursemanaging:course-create' %}"> hier</a>
-            om één aan te maken</h3>
-
-        {% endif %}
-    </div>
-    <!-- end teacher tab -->
-    <!-- start student tab -->
-    <div class="tab-pane fade" id="student" role="tabpanel" aria-labelledby="students-tab">
-        {% endif %}
-        <table class="table table-striped {% if not user.teacher %} courses-student{% endif %}">
-            <thead>
-            <tr>
-                <th>Naam</th>
-                <th>Niveau</th>
-                <th>Volgende sessie</th>
-            </tr>
-            </thead>
-            <tbody>
-            {% for course in courses_student %}
-            <tr>
-                <td><a href="{% url 'coursemanaging:course-detail' course.id %}"> {{course.course_name}} </a></td>
-                <td>{{course.get_course_level_display}}</td>
-                {% if course.get_next_session %}
-                <td>{{course.get_next_session.start}}</td>
-                {% else %}
-                <td>Nog geen geplanned</td>
-                {% endif %}
-            </tr>
-            {% endfor %}
-            </tbody>
-        </table>
-        {% if user.teacher %}
     </div>
     <!-- end students tab -->
-</div>
+    </div>
 {% endif %}
 
 

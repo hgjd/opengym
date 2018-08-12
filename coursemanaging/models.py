@@ -1,10 +1,10 @@
 from datetime import date
+from datetime import timedelta
 
 from django.contrib.auth.base_user import BaseUserManager, AbstractBaseUser
 from django.contrib.auth.models import PermissionsMixin
 from django.core.exceptions import ValidationError
 from django.core.mail import send_mail
-from django.core.validators import RegexValidator
 from django.db import models
 from django.urls import reverse_lazy
 from django.utils import timezone
@@ -167,9 +167,57 @@ class Course(models.Model):
         return reverse_lazy('coursemanaging:course-detail', args=[self.id])
 
 
+class Event(models.Model):
+    start = models.DateTimeField(null=False, blank=False)
+    duration = models.DurationField(null=False, blank=False, default=timedelta())
+    facebook_event_url = models.URLField(null=True, blank=True)
+    event_name = models.CharField(max_length=100)
+    description = models.TextField(null=True, blank=True)
+
+    def get_calendar_url(self):
+        return self.get_absolute_url()
+
+    def get_absolute_url(self):
+        return reverse_lazy('coursemanaging:event-detail', args=[self.id])
+
+    def get_entry_title(self):
+        return self.event_name
+
+    def get_end(self):
+        return self.start + self.duration
+
+    def __str__(self):
+        return self.event_name
+
+
+class BuildingDay(models.Model):
+    start = models.DateTimeField(null=False, blank=False)
+    duration = models.DurationField(null=False, blank=False, default=timedelta())
+    description = models.TextField()
+    responsible_users = models.ManyToManyField(User, related_name='building_responsibilitites', blank=True)
+    subscribed_users = models.ManyToManyField(User, related_name='building_days', blank=True)
+
+    def user_is_subscribed(self, user):
+        return self.subscribed_users.filter(id=user.id).exists()
+
+    def subscribe_user(self, user):
+        if not self.user_is_subscribed(user):
+            self.subscribed_users.add(user)
+            self.save()
+
+    def get_absolute_url(self):
+        return reverse_lazy('coursemanaging:building-day-detail', args=[self.id])
+
+    def get_end(self):
+        return self.start + self.duration
+
+    def __str__(self):
+        return 'bouwdag op ' + str(self.start)
+
+
 class Session(models.Model):
     start = models.DateTimeField(null=False, blank=False)
-    duration = models.DurationField(null=False, blank=False)
+    duration = models.DurationField(null=False, blank=False, default=timedelta())
     extra_info = models.TextField(null=True, blank=True)
     max_students_diff_course = models.BooleanField(default=False)
     max_students = models.PositiveSmallIntegerField(null=True, blank=True)
@@ -262,6 +310,9 @@ class Session(models.Model):
 
     def get_absolute_url(self):
         return reverse_lazy('coursemanaging:session-detail', args=[self.id])
+
+    def get_calendar_url(self):
+        return self.course.get_absolute_url()
 
     def __str__(self):
         return str(self.course) + ' ' + str(self.start.date())
