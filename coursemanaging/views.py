@@ -503,9 +503,14 @@ def get_calendar(request):
         start_calendar_period = utc.localize(datetime.datetime(year, month, 1))
         end_calendar_period = utc.localize(datetime.datetime(year, month, monthrange[1], hour=23, minute=59, second=59))
 
-        entries = Session.objects.filter(start__lte=end_calendar_period,
-                                         start__gte=start_calendar_period)
-        cal = OpenCalendar(entries, request.user).formatmonth(year, month)
+        sessions = Session.objects.filter(start__lte=end_calendar_period,
+                                          start__gte=start_calendar_period, course__is_active=True)
+        events = Event.objects.filter(start__lte=end_calendar_period,
+                                      start__gte=start_calendar_period)
+        building_days = BuildingDay.objects.filter(start__lte=end_calendar_period,
+                                                   start__gte=start_calendar_period)
+
+        cal = OpenCalendar(sessions, events, building_days, request.user).formatmonth(year, month)
 
         return render_to_response('coursemanaging/calendar-ajax.html', {'calendar': mark_safe(cal)})
 
