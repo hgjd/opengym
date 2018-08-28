@@ -136,6 +136,9 @@
                                 <a href="{% url 'coursemanaging:news' bulletins.1.news_item.id %}">{{ bulletins.1.news_item.title }}</a>
                             </h1>
                             <p>{{ bulletins.1.news_item.short_text }}</p>
+                             <a class="carousel-news-link" href="{% url 'coursemanaging:news' %}">Bekijk hier al het nieuws
+                                <span
+                                        class="fa fa-chevron-right ml-2"></span></a>
                         </div>
                     </div>
                 </div>
@@ -151,6 +154,9 @@
                                 <a href="{% url 'coursemanaging:news' bulletins.2.news_item.id %}">{{ bulletins.2.news_item.title }}</a>
                             </h1>
                             <p>{{ bulletins.2.news_item.short_text }}</p>
+                             <a class="carousel-news-link" href="{% url 'coursemanaging:news' %}">Bekijk hier al het nieuws
+                                <span
+                                        class="fa fa-chevron-right ml-2"></span></a>
                         </div>
                     </div>
                 </div>
