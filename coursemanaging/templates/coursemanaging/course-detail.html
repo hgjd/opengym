@@ -160,7 +160,7 @@
                             </td>
                             <td>
                                 {% if is_teacher %}
-                                    {{ session.subscribed_users.all.count }} inschrijving(en)
+                                    <a href="{% url 'coursemanaging:session-user-list' session.id %}">{{ session.subscribed_users.all.count }} inschrijving(en)</a>
                                 {% else %}
                                     {% if not sessions_subscribed|get_item:session.id %}
                                         {% if not session.is_full %}

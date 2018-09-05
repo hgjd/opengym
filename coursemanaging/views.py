@@ -220,6 +220,8 @@ class CourseDetailView(generic.DetailView):
             if session.subscribed_users.filter(pk=request.user.id).exists():
                 return redirect('coursemanaging:impossible')
             session.subscribe_user(self.request.user)
+            if request.user not in session.course.students.all():
+                session.course.subscribe_user(self.request.user)
             return redirect('coursemanaging:course-detail', pk=course.id)
         if leave_session:
             session = get_object_or_404(Session, pk=leave_session)
@@ -309,6 +311,21 @@ class SessionCreateView(UserPassesTestMixin, generic.CreateView):
 
     def get_success_url(self):
         return reverse_lazy('coursemanaging:course-detail', kwargs={'pk': self.kwargs['pk']})
+
+
+class SessionUserListView(UserPassesTestMixin, generic.DetailView):
+    template_name = 'coursemanaging/session-user-list.html'
+    model = Session
+
+    def test_func(self):
+        course = self.get_object().course
+        return self.request.user.teacher and self.request.user in course.teachers.all()
+
+    def handle_no_permission(self):
+        if self.raise_exception:
+            raise PermissionDenied(self.get_permission_denied_message())
+        return redirect('coursemanaging:impossible')
+
 
 
 class SessionUpdateView(UserPassesTestMixin, generic.UpdateView):

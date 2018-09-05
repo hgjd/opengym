@@ -20,6 +20,8 @@ urlpatterns = [
         name='courses-user'),
     url(r'^course/(?P<pk>[0-9]+)/session-create$', login_required(views.SessionCreateView.as_view()),
         name='session-create'),
+    url(r'^course/(?P<pk>[0-9]+)/session-user-list', login_required(views.SessionUserListView.as_view()),
+        name='session-user-list'),
     url(r'^session/(?P<pk>[0-9]+)/session-update$', login_required(views.SessionUpdateView.as_view()),
         name='session-update'),
     url(r'^event/create$', login_required(views.EventCreateview.as_view()),
