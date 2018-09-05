@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% load coursemanaging_extras %}
+{% block content %}
+    <div class="open-gym-page">
+        {% for user in  session.subscribed_users.all %}
+            <p>{{ user.first_name }} {{ user.last_name }} - {{ user.email }}</p>
+        {% endfor %}
+
+    </div>
+{% endblock %}
+
