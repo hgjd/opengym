@@ -28,7 +28,13 @@ class OpenCalendar(HTMLCalendar):
                 cssclass += '-filled'
 
             if day in self.session_list:
-                body = ['<div class="day-content"><ul class="calendar-day-events">']
+                body = ['<div class="day-content">']
+                if day in self.event_list:
+                    for event in self.event_list[day]:
+                        body.append(
+                            '<a href="%s" class="event-link">%s</a>' % (event.get_absolute_url(), event.event_name))
+
+                body.append('<ul class="calendar-day-events">')
                 for session in self.session_list[day]:
                     session_class = ""
                     if self.user.is_authenticated():
@@ -63,9 +69,7 @@ class OpenCalendar(HTMLCalendar):
                     body.append('</li>')
                 body.append('</ul>')
 
-            if day in self.event_list:
-                for event in self.event_list[day]:
-                    body.append('<a href="%s" class="event-link">%s</a>' % (event.get_absolute_url(), event.event_name))
+
 
             if day in self.building_day_list:
                 for building_day in self.building_day_list[day]:
@@ -108,7 +112,7 @@ class OpenCalendar(HTMLCalendar):
             s = '%s' % month_name[themonth]
         return '<tr class="month-header"><th></th><th colspan="1"><span class="fa fa-angle-left fa-2x month-nav month-prev"></span></th>' + \
                '<th colspan="3" class="calendar-month-title">%s</th>' % s + \
-               '<th colspan="1"><span class="fa fa-angle-right fa-2x month-nav month-next"></span></th><th class="help-cell"><div class="legende"><h2>legende</h2><p class="event-link-legend">Event</p><p class="event-link-legend"><span class="bd-ex"></span> Bouwdag</p><p class="session-teacher">Je bent leerkracht</p><p class="session-subscribed">Ingeschreven voor les</p><p class="session-course-subscribed">Ingeschreven voor de lessenreeks, nog niet voor deze les</p><p class="session-not-subscribed">Niet ingeschreven</p></div></th></tr>'
+               '<th colspan="1"><span class="fa fa-angle-right fa-2x month-nav month-next"></span></th><th class="help-cell"><div class="legende"><h2>legende</h2><p class="event-link-legend"><span class="bd-ex"></span> Bouwdag</p><p class="session-subscribed">Ingeschreven voor les</p><p class="session-not-subscribed">Niet ingeschreven</p></div></th></tr>'
 
     def group_by_day(self, entry_list):
         result = defaultdict()
