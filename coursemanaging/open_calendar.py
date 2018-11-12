@@ -26,13 +26,14 @@ class OpenCalendar(HTMLCalendar):
 
             if day in self.session_list or day in self.building_day_list or day in self.event_list:
                 cssclass += '-filled'
+                body = ['<div class="day-content">']
+
+            if day in self.event_list:
+                for event in self.event_list[day]:
+                    body.append(
+                        '<a href="%s" class="event-link">%s</a>' % (event.get_absolute_url(), event.event_name))
 
             if day in self.session_list:
-                body = ['<div class="day-content">']
-                if day in self.event_list:
-                    for event in self.event_list[day]:
-                        body.append(
-                            '<a href="%s" class="event-link">%s</a>' % (event.get_absolute_url(), event.event_name))
 
                 body.append('<ul class="calendar-day-events">')
                 for session in self.session_list[day]:
