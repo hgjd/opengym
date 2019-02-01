@@ -45,10 +45,14 @@ class LandingView(generic.TemplateView):
         building_days = BuildingDay.objects.filter(start__lte=end_calendar_period,
                                                    start__gte=start_calendar_period)
 
-        cal = OpenCalendar(sessions, events, building_days, self.request.user).formatmonth(today.year, today.month)
+        calendar_month = OpenCalendar(sessions, events, building_days, self.request.user) \
+            .formatmonth(today.year, today.month)
+        calendar_week = OpenCalendar(sessions, events, building_days, self.request.user) \
+            .bootstrap_week(today.year, today.month, today.day)
 
         bulletins = NewsBulletin.objects.all().order_by('-bulletin_level')
-        context['calendar'] = mark_safe(cal)
+        context['calendar'] = mark_safe(calendar_month)
+        context['calendar_week'] = mark_safe(calendar_week)
         context['bulletins'] = bulletins
         context['contact_form'] = ContactForm()
 

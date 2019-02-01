@@ -70,8 +70,6 @@ class OpenCalendar(HTMLCalendar):
                     body.append('</li>')
                 body.append('</ul>')
 
-
-
             if day in self.building_day_list:
                 for building_day in self.building_day_list[day]:
                     body.append('<a href="%s" class="building-icon"></a>' % building_day.get_absolute_url())
@@ -82,6 +80,88 @@ class OpenCalendar(HTMLCalendar):
 
             return self.day_cell(cssclass, day_html)
         return self.day_cell('noday', '&nbsp;')
+
+    def day_in_session_list(self, day):
+        for day_key in self.session_list.keys():
+            for event in self.session_list.get(day_key):
+                if event.start.date() == day:
+                    return True
+
+    def day_in_building_list(self, day):
+        for day_key in self.building_day_list.keys():
+            for event in self.building_day_list.get(day_key):
+                if event.start.date() == day:
+                    return True
+
+    def day_in_event_list(self, day):
+        for day_key in self.event_list.keys():
+            for event in self.event_list.get(day_key):
+                if event.start.date() == day:
+                    return True
+
+    def formatday_week_view(self, day):
+        day_html = '<div class="week-day-head">' + day_name[day.weekday()] + ' ' + str(day.day) + ' ' + month_name[
+            day.month] + '</div>'
+        cssclass = 'day day'
+        if date.today() == date(day.year, day.month, day.day):
+            cssclass += '-today'
+        body = ['<div class="day-content">']
+        filled = False
+        if self.day_in_session_list(day) or self.day_in_building_list(day) or self.day_in_event_list(day):
+            filled = True
+            cssclass += '-filled'
+            body = ['<div class="day-content">']
+
+        if self.day_in_event_list(day):
+            for event in self.event_list[day.day]:
+                body.append(
+                    '<a href="%s" class="event-link">%s</a>' % (event.get_absolute_url(), event.event_name))
+
+        if self.day_in_session_list(day):
+            body.append('<ul class="calendar-day-events">')
+            for session in self.session_list[day.day]:
+                session_class = ""
+                if self.user.is_authenticated():
+                    if session.course.user_is_teacher(self.user):
+                        session_class = 'session-teacher'
+
+                    elif session.user_is_subscribed(self.user):
+                        session_class = 'session-subscribed'
+
+                    elif session.course.user_is_subscribed(self.user):
+                        session_class = 'session-course-subscribed'
+                    else:
+                        session_class = 'session-not-subscribed'
+                body.append('<li class="%s">' % session_class)
+                body.append('<time>')
+                body.append('%s' % (
+                        str(localtime(session.start).hour) + "h" + "{:02d}".format(
+                    localtime(session.start).minute)))
+
+                end = session.start + session.duration
+                body.append(' - %s</time>' % (
+                        str(localtime(end).hour) + "h" + "{:02d}".format(
+                    localtime(end).minute)))
+
+                body.append('<a href="%s">' % session.course.get_absolute_url())
+                body.append(session.course.course_name)
+                if session.location_diff_course and session.location_short:
+                    body.append(" @ " + session.location_short)
+                elif session.course.location_short:
+                    body.append(" @ " + session.course.location_short)
+                body.append('</a> <div style="clear: both;"></div>')
+                body.append('</li>')
+            body.append('</ul>')
+
+        if self.day_in_building_list(day):
+            for building_day in self.building_day_list[day.day]:
+                body.append('<a href="%s" class="building-icon"></a>' % building_day.get_absolute_url())
+
+        if filled:
+            body.append('</div>')
+            return self.week_day_cell(cssclass, '%s %s' % (day_html, ''.join(body)))
+
+        return self.week_day_cell(cssclass, day_html)
 
     def formatmonth(self, theyear, themonth, withyear=True):
         """
@@ -129,6 +209,9 @@ class OpenCalendar(HTMLCalendar):
     def day_cell(self, cssclass, body):
         return '<td class="%s">%s</td>' % (cssclass, body)
 
+    def week_day_cell(self, cssclass, body):
+        return '<div class="%s">%s</div>' % (cssclass, body)
+
     def formatweekheader(self):
         """
         Return a header for a week as a table row.
@@ -145,3 +228,22 @@ class OpenCalendar(HTMLCalendar):
         """
         s = ''.join(self.formatday(d, wd) for (d, wd) in theweek)
         return '<tr class="week-row">%s</tr>' % s
+
+    def bootstrap_week(self, year, month, day):
+        """
+        return weeken in a bootstrap container
+        """
+        self.year, self.month = year, month
+        result_week = []
+        for week in self.monthdatescalendar(year, month):
+            for w_day in week:
+                if w_day.day == day and w_day.month == month and w_day.year == year:
+                    result_week = week
+
+        result_html = []
+        a = result_html.append
+        a('<div class="calendar">')
+        for result_day in result_week:
+            a('<div>' + self.formatday_week_view(result_day) + '</div>')
+        a('</div>')
+        return ''.join(result_html)

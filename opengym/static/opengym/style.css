@@ -40,7 +40,6 @@ ul {
     opacity: 0.5;
 }
 
-
 .base {
     padding-top: 2rem;
 }
@@ -515,7 +514,7 @@ CALENDAR STYLING
     padding: 0.5em;
     border-collapse: separate;
     border-spacing: 5px 0;
-    height: 85vh;
+    min-height: 85vh;
     width: 96%;
     margin: 0 auto;
     opacity: 0.85;
@@ -546,11 +545,19 @@ CALENDAR STYLING
     height: 120px;
 }
 
+div.day {
+    min-height: 2rem;
+}
+
 .day-filled {
     background: #375926;
     color: white;
     border-left: 1px solid #375926;
     border-right: 1px solid white;
+}
+
+div.day-filled {
+    border-bottom: 1px solid white;
 }
 
 .day-today-filled {
@@ -574,6 +581,10 @@ CALENDAR STYLING
     border-right: 1px solid white;
 }
 
+div.noday {
+    border: none;
+}
+
 .day-today {
     border-top: 1px dashed #375926;
     border-bottom: 1px dashed #375926;
@@ -584,6 +595,12 @@ CALENDAR STYLING
     padding-left: 0.5em;
     text-align: left;
     border-bottom: 1px solid #375926;
+}
+
+.week-day-head {
+    padding-left: 0.5em;
+    text-align: left;
+    border-top: 1px solid #375926;
 }
 
 .day-filled .day-head {
@@ -668,6 +685,10 @@ CALENDAR STYLING
 .day-content {
     position: relative;
     height: 100%;
+}
+
+div.day-content {
+    height: 80%;
 }
 
 .event-link-legend {
