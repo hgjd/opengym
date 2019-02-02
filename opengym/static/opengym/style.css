@@ -827,6 +827,15 @@ NEWS STYLING
     font-weight: bold;
 }
 
+.og-font {
+    font-family: 'Amatic SC', cursive;
+    color: white;
+}
+
+.album-title {
+    font-family: 'Amatic SC', cursive;
+}
+
 .news-link:hover {
     cursor: pointer;
     color: #d3d65e;

@@ -203,7 +203,7 @@
 
 <section id="oefeningen" class="logo-bg">
     <div class="container">
-        <h1>Oefeningenboek v1</h1>
+        <h1 class="text-center og-font display-1 pb-4">Oefeningenboek v1</h1>
         <embed src="{% static 'opengym/oefeningen.pdf' %}" type="application/pdf" width="100%" height="600px"/>
     </div>
 </section>
@@ -216,7 +216,7 @@
                     <a href="{{ album.get_absolute_url }}"><img class="card-img-top album-card-img"
                                                                 src="{{ album.cover_image.thumbs_url }}"></a>
                     <div class="card-body">
-                        <h3 class="card-title text-center"> {{ album.title }}</h3>
+                        <h3 class="album-title card-title text-center"> {{ album.title }}</h3>
                     </div>
                 </div>
             {% endfor %}
