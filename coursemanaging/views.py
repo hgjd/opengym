@@ -2,6 +2,8 @@ import pytz
 import datetime
 import calendar
 
+from datetime import timedelta
+
 from django.contrib.auth.mixins import UserPassesTestMixin
 from django.core.exceptions import PermissionDenied
 from django.core.mail import EmailMessage
@@ -32,8 +34,9 @@ class LandingView(generic.TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super(LandingView, self).get_context_data(**kwargs)
-        today = datetime.datetime.today()
+        today = timezone.now()
         monthrange = calendar.monthrange(today.year, today.month)
+        """ month calendar """
         start_calendar_period = utc.localize(datetime.datetime(today.year, today.month, 1))
         end_calendar_period = utc.localize(
             datetime.datetime(today.year, today.month, monthrange[1], hour=23, minute=59, second=59))
@@ -44,10 +47,21 @@ class LandingView(generic.TemplateView):
                                       start__gte=start_calendar_period)
         building_days = BuildingDay.objects.filter(start__lte=end_calendar_period,
                                                    start__gte=start_calendar_period)
+        """ week calendar """
+        start_week = today - timedelta(days=today.weekday())
+        start_week = start_week.replace(hour=0, minute=0)
+        end_week = today + timedelta(days=7)
+        end_week = end_week.replace(hour=23, minute=59)
+        week_sessions = Session.objects.filter(start__lte=end_week,
+                                               start__gte=start_week, course__is_active=True)
+        week_events = Event.objects.filter(start__lte=end_week,
+                                           start__gte=start_week)
+        week_building_days = BuildingDay.objects.filter(start__lte=end_week,
+                                                        start__gte=start_week)
 
         calendar_month = OpenCalendar(sessions, events, building_days, self.request.user) \
             .formatmonth(today.year, today.month)
-        calendar_week = OpenCalendar(sessions, events, building_days, self.request.user) \
+        calendar_week = OpenCalendar(week_sessions, week_events, week_building_days, self.request.user) \
             .bootstrap_week(today.year, today.month, today.day)
 
         bulletins = NewsBulletin.objects.all().order_by('-bulletin_level')
@@ -82,7 +96,7 @@ class LandingView(generic.TemplateView):
                 'Bericht op de opengym website ',
                 ''.join(body),
                 'opengym.online@gmail.com',
-                ['vandermostenjonas@gmail.com', 'opengymleuven@gmail.com']
+                ['opengymleuven@gmail.com']
             )
             msg.content_subtype = "html"
             msg.send()
@@ -331,7 +345,6 @@ class SessionUserListView(UserPassesTestMixin, generic.DetailView):
         return redirect('coursemanaging:impossible')
 
 
-
 class SessionUpdateView(UserPassesTestMixin, generic.UpdateView):
     template_name = 'coursemanaging/session-create.html'
     model = Session
@@ -499,6 +512,7 @@ class CalendarView(generic.TemplateView):
         context = super(CalendarView, self).get_context_data(**kwargs)
         today = datetime.datetime.today()
         monthrange = calendar.monthrange(today.year, today.month)
+        """ month calendar """
         start_calendar_period = utc.localize(datetime.datetime(today.year, today.month, 1))
         end_calendar_period = utc.localize(
             datetime.datetime(today.year, today.month, monthrange[1], hour=23, minute=59, second=59))
@@ -509,10 +523,26 @@ class CalendarView(generic.TemplateView):
                                       start__gte=start_calendar_period)
         building_days = BuildingDay.objects.filter(start__lte=end_calendar_period,
                                                    start__gte=start_calendar_period)
+        """ week calendar """
+        start_week = today - timedelta(days=today.weekday())
+        start_week = start_week.replace(hour=0, minute=0)
+        end_week = today + timedelta(days=7)
+        end_week = end_week.replace(hour=23, minute=59)
+        week_sessions = Session.objects.filter(start__lte=end_week,
+                                               start__gte=start_week, course__is_active=True)
+        week_events = Event.objects.filter(start__lte=end_week,
+                                           start__gte=start_week)
+        week_building_days = BuildingDay.objects.filter(start__lte=end_week,
+                                                        start__gte=start_week)
 
-        cal = OpenCalendar(sessions, events, building_days, self.request.user).formatmonth(today.year, today.month)
+        calendar_month = OpenCalendar(sessions, events, building_days, self.request.user) \
+            .formatmonth(today.year, today.month)
+        calendar_week = OpenCalendar(week_sessions, week_events, week_building_days, self.request.user) \
+            .bootstrap_week(today.year, today.month, today.day)
+
         context['current_page'] = 'calendar'
-        context['calendar'] = mark_safe(cal)
+        context['calendar'] = mark_safe(calendar_month)
+        context['calendar_week'] = mark_safe(calendar_week)
         return context
 
 
@@ -534,6 +564,31 @@ def get_calendar(request):
         cal = OpenCalendar(sessions, events, building_days, request.user).formatmonth(year, month)
 
         return render_to_response('coursemanaging/calendar-ajax.html', {'calendar': mark_safe(cal)})
+
+
+def get_week_calendar(request):
+    if request.is_ajax():
+        month = int(request.GET.get('month'))
+        year = int(request.GET.get('year'))
+        day = int(request.GET.get('day'))
+        date = timezone.now()
+        date = date.replace(year=year, day=day, month=month)
+
+        start_week = date - timedelta(days=date.weekday())
+        start_week = start_week.replace(hour=0, minute=0)
+        end_week = date + timedelta(days=7)
+        end_week = end_week.replace(hour=23, minute=59)
+        week_sessions = Session.objects.filter(start__lte=end_week,
+                                               start__gte=start_week, course__is_active=True)
+        week_events = Event.objects.filter(start__lte=end_week,
+                                           start__gte=start_week)
+        week_building_days = BuildingDay.objects.filter(start__lte=end_week,
+                                                        start__gte=start_week)
+
+        calendar_week = OpenCalendar(week_sessions, week_events, week_building_days, request.user) \
+            .bootstrap_week(date.year, date.month, date.day)
+
+        return render_to_response('coursemanaging/calendar-ajax.html', {'calendar': mark_safe(calendar_week)})
 
 
 class ImpossibleView(generic.TemplateView):

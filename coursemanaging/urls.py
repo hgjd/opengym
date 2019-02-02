@@ -65,4 +65,6 @@ urlpatterns = [
 
     url(r'^ajax-calendar/$', views.get_calendar,
         name='ajax-calendar'),
+    url(r'^ajax-week-calendar/$', views.get_week_calendar,
+        name='ajax-calendar'),
 ]

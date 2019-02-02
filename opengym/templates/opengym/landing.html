@@ -183,8 +183,17 @@
 </section>
 
 <section id="kalender" class="pt-5">
-    <div id="calendar-content">{{ calendar }}</div>
-    <div id="calendar-week-content" class="container">{{ calendar_week }}</div>
+    <div class="rel">
+        <button class="btn btn-primary og-btn week-btn" id="weekToggle">Week overzicht</button>
+        <div id="calendar-content">
+            {{ calendar }}</div>
+    </div>
+    <div class="rel container">
+        <button class="btn btn-primary og-btn month-btn" id="monthToggle">Maand overzicht</button>
+        <div id="calendar-week-content" class="container">
+
+            {{ calendar_week }}</div>
+    </div>
     <div class="container">
         <a class="float-right landing-link mt-2" href="{% url 'coursemanaging:activities' %}">Bekijk hier alle
             activiteiten <span

@@ -505,12 +505,28 @@ CALENDAR STYLING
     background-position: 100% 100%;
 }
 
+.rel {
+    position: relative;
+}
+
+#weekToggle {
+    position: absolute;
+    top: 2rem;
+    left: 3rem;
+    z-index: 400;
+}
+
+#monthToggle {
+    position: absolute;
+    top: 1rem;
+    left: 4rem;
+    z-index: 400;
+}
+
 /* calendar table */
 .calendar {
     font-family: 'Julius Sans One', sans-serif;
-    width: 100%;
     text-align: center;
-    margin: 0;
     padding: 0.5em;
     border-collapse: separate;
     border-spacing: 5px 0;
@@ -520,6 +536,42 @@ CALENDAR STYLING
     opacity: 0.85;
     border: 1px dashed #aabfa0;
 
+}
+
+@media only screen and (max-width: 800px) {
+    #calendar-week-content {
+        display: block;
+    }
+
+    #monthToggle {
+        display: block;
+    }
+
+    #calendar-content {
+        display: none;
+    }
+
+    #weekToggle {
+        display: none;
+    }
+}
+
+@media only screen and (min-width: 800px) {
+    #calendar-week-content {
+        display: none;
+    }
+
+    #calendar-content {
+        display: block;
+    }
+
+    #monthToggle {
+        display: none;
+    }
+
+    #weekToggle {
+        display: block;
+    }
 }
 
 .calendar td {
@@ -684,7 +736,24 @@ div.noday {
 
 .day-content {
     position: relative;
+    min-height: 20%;
+}
+
+.week-head {
     height: 100%;
+    padding: 0;
+    margin: 0;
+    display: -webkit-box;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.week-head-row {
+    height: 10rem;
 }
 
 div.day-content {

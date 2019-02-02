@@ -191,9 +191,9 @@ class OpenCalendar(HTMLCalendar):
             s = '%s %s' % (month_name[themonth], theyear)
         else:
             s = '%s' % month_name[themonth]
-        return '<tr class="month-header"><th></th><th colspan="1"><span class="fa fa-angle-left fa-2x month-nav month-prev"></span></th>' + \
+        return '<tr class="month-header"><th></th><th colspan="1"><span id="month-prev" class="fa fa-angle-left fa-2x month-nav month-prev"></span></th>' + \
                '<th colspan="3" class="calendar-month-title">%s</th>' % s + \
-               '<th colspan="1"><span class="fa fa-angle-right fa-2x month-nav month-next"></span></th><th class="help-cell"><div class="legende"><h2>legende</h2><p class="event-link-legend"><span class="bd-ex"></span> Bouwdag</p><p class="session-subscribed">Ingeschreven voor les</p><p class="session-not-subscribed">Niet ingeschreven</p></div></th></tr>'
+               '<th colspan="1"><span id="month-next" class="fa fa-angle-right fa-2x month-nav month-next"></span></th><th class="help-cell"><div class="legende"><h2>legende</h2><p class="event-link-legend"><span class="bd-ex"></span> Bouwdag</p><p class="session-subscribed">Ingeschreven voor les</p><p class="session-not-subscribed">Niet ingeschreven</p></div></th></tr>'
 
     def group_by_day(self, entry_list):
         result = defaultdict()
@@ -243,6 +243,14 @@ class OpenCalendar(HTMLCalendar):
         result_html = []
         a = result_html.append
         a('<div class="calendar">')
+        a('<div class="row week-head-row">')
+        a(
+            '<div class="col-2 text-center"><span id="week-prev" class="fa fa-angle-left fa-2x month-nav month-prev"></span></div>')
+        a('<div class="col-8 week-head"><span> Week van '+str(result_week[0].day) + ' ' + month_name[result_week[0].month]+'</span></div>')
+        a(
+            '<div class="col-2 text-center"><span id="week-next" class="fa fa-angle-right fa-2x month-nav month-next"></span></div>')
+        a('</div>')
+
         for result_day in result_week:
             a('<div>' + self.formatday_week_view(result_day) + '</div>')
         a('</div>')

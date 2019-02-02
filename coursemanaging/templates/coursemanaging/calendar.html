@@ -1,15 +1,23 @@
 {% extends "base.html" %}
 {% load static %}
 {% block extra_head %}
-<script src="{% static 'opengym/calendar.js' %}"></script>
-<script type="text/javascript">
+    <script src="{% static 'opengym/calendar.js' %}"></script>
+    <script type="text/javascript">
       window.CSRF_TOKEN = "{{ csrf_token }}";
-      window.CALENDAR_YEAR = {% now "o" %}
-      window.CALENDAR_MONTH = {% now "n" %}
+      window.CALENDAR_YEAR = {% now "o" %};
+      window.CALENDAR_MONTH = {% now "n" %};
 </script>
 {% endblock %}
 {% block content-no-div %}
-<div id="calendar-content">
-    {{calendar}}
-</div>
+    <div class="rel">
+        <button class="btn btn-primary og-btn week-btn" id="weekToggle">Week overzicht</button>
+        <div id="calendar-content">
+            {{ calendar }}</div>
+    </div>
+    <div class="rel container">
+        <button class="btn btn-primary og-btn month-btn" id="monthToggle">Maand overzicht</button>
+        <div id="calendar-week-content" class="container">
+
+            {{ calendar_week }}</div>
+    </div>
 {% endblock %}
