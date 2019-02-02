@@ -42,7 +42,7 @@
     });
 
     $(window).on("resize", function () {
-        if ($(window).width() > 600) {
+        if ($(window).width() > 800) {
             showMonthCalendar();
         } else {
             showWeekCalendar();
