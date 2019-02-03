@@ -538,7 +538,11 @@ CALENDAR STYLING
 
 }
 
-@media only screen and (max-width: 800px) {
+#calendar-week-content {
+    font-size: 200%;
+}
+
+@media only screen and (max-width: 1000px) {
     #calendar-week-content {
         display: block;
     }
@@ -556,7 +560,7 @@ CALENDAR STYLING
     }
 }
 
-@media only screen and (min-width: 800px) {
+@media only screen and (min-width: 1000px) {
     #calendar-week-content {
         display: none;
     }
@@ -597,8 +601,14 @@ CALENDAR STYLING
     height: 120px;
 }
 
+.day > .day-content > .building-icon {
+    top: 0.25rem;
+
+}
+
 div.day {
-    min-height: 2rem;
+    height: auto;
+    min-height: 120px;
 }
 
 .day-filled {
@@ -757,7 +767,6 @@ div.noday {
 }
 
 div.day-content {
-    height: 80%;
 }
 
 .event-link-legend {

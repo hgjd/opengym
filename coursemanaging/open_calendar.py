@@ -245,10 +245,10 @@ class OpenCalendar(HTMLCalendar):
         a('<div class="calendar">')
         a('<div class="row week-head-row">')
         a(
-            '<div class="col-2 text-center"><span id="week-prev" class="fa fa-angle-left fa-2x month-nav month-prev"></span></div>')
+            '<div class="col-2 text-center"><span id="week-prev" class="fa fa-angle-left month-nav month-prev"></span></div>')
         a('<div class="col-8 week-head"><span> Week van '+str(result_week[0].day) + ' ' + month_name[result_week[0].month]+'</span></div>')
         a(
-            '<div class="col-2 text-center"><span id="week-next" class="fa fa-angle-right fa-2x month-nav month-next"></span></div>')
+            '<div class="col-2 text-center"><span id="week-next" class="fa fa-angle-right month-nav month-next"></span></div>')
         a('</div>')
 
         for result_day in result_week:
