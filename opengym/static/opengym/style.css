@@ -26,7 +26,9 @@ ul {
     background-color: #3a6826;
     border-color: #3a6826;
     cursor: pointer;
-    padding: 0.75em;
+    padding: 0.25em;
+    font-family: 'Amatic SC', cursive;
+    font-size: 150%;
 }
 
 .og-btn:disabled {
@@ -531,7 +533,6 @@ CALENDAR STYLING
     border-collapse: separate;
     border-spacing: 5px 0;
     min-height: 85vh;
-    width: 96%;
     margin: 0 auto;
     opacity: 0.85;
     border: 1px dashed #aabfa0;

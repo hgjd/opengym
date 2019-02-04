@@ -1,12 +1,13 @@
 from calendar import HTMLCalendar, day_name, month_name
 from collections import defaultdict
 from datetime import date
+import locale
 
 from django.utils import timezone
 from django.utils.timezone import localtime
 
 timezone.activate(timezone.get_current_timezone())
-
+locale.setlocale(locale.LC_ALL, 'nl-be')
 
 class OpenCalendar(HTMLCalendar):
     def __init__(self, session_list, events, building_days, user):
