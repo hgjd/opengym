@@ -64,7 +64,7 @@ class LandingView(generic.TemplateView):
         calendar_week = OpenCalendar(week_sessions, week_events, week_building_days, self.request.user) \
             .bootstrap_week(today.year, today.month, today.day)
 
-        bulletins = NewsBulletin.objects.all().order_by('-bulletin_level')
+        bulletins = NewsBulletin.objects.all().order_by('bulletin_level')
         context['calendar'] = mark_safe(calendar_month)
         context['calendar_week'] = mark_safe(calendar_week)
         context['bulletins'] = bulletins
