@@ -7,7 +7,7 @@ class CourseAdmin(admin.ModelAdmin):
 
 
 class UserAdmin(admin.ModelAdmin):
-    list_display = ('first_name', 'last_name', 'birthdate', 'teacher')
+    list_display = ('first_name', 'last_name', 'birthdate', 'email', 'teacher')
 
 
 admin.site.register(Course, CourseAdmin)
