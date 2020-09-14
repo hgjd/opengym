@@ -10,7 +10,7 @@ urlpatterns = [
         name='landing'),
     url(r'^course/register$', login_required(views.CourseCreateView.as_view()),
         name='course-create'),
-    url(r'^course/(?P<pk>[0-9]+)/$', login_required(views.CourseDetailView.as_view()),
+    url(r'^course/(?P<pk>[0-9]+)/$', views.CourseDetailView.as_view(),
         name='course-detail'),
     url(r'^activities/$', views.Activities.as_view(),
         name='activities'),
