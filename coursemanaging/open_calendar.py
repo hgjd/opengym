@@ -7,7 +7,8 @@ from django.utils import timezone
 from django.utils.timezone import localtime
 
 timezone.activate(timezone.get_current_timezone())
-locale.setlocale(locale.LC_ALL, 'nl-be')
+locale.setlocale(locale.LC_ALL, 'nl-BE')
+
 
 class OpenCalendar(HTMLCalendar):
     def __init__(self, session_list, events, building_days, user):
