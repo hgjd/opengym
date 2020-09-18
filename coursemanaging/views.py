@@ -8,7 +8,7 @@ from django.contrib.auth.mixins import UserPassesTestMixin
 from django.core.exceptions import PermissionDenied
 from django.core.mail import EmailMessage
 from django.http import HttpResponseRedirect
-from django.shortcuts import redirect, render, get_object_or_404, render_to_response
+from django.shortcuts import redirect, render, get_object_or_404
 from django.urls import reverse_lazy
 from django.utils import timezone
 from django.utils.encoding import force_text
@@ -121,7 +121,7 @@ class NewsView(generic.TemplateView):
     def post(self, request, *args, **kwargs):
         if request.is_ajax():
             news_item = get_object_or_404(NewsItem, pk=request.POST['news_item_id'])
-            return render_to_response('coursemanaging/news-item.html', {'news_item': news_item})
+            return render(request, 'coursemanaging/news-item.html', {'news_item': news_item})
 
 
 """
@@ -562,8 +562,7 @@ def get_calendar(request):
                                                    start__gte=start_calendar_period)
 
         cal = OpenCalendar(sessions, events, building_days, request.user).formatmonth(year, month)
-
-        return render_to_response('coursemanaging/calendar-ajax.html', {'calendar': mark_safe(cal)})
+        return render(request, 'coursemanaging/calendar-ajax.html', {'calendar': mark_safe(cal)})
 
 
 def get_week_calendar(request):
@@ -588,7 +587,7 @@ def get_week_calendar(request):
         calendar_week = OpenCalendar(week_sessions, week_events, week_building_days, request.user) \
             .bootstrap_week(date.year, date.month, date.day)
 
-        return render_to_response('coursemanaging/calendar-ajax.html', {'calendar': mark_safe(calendar_week)})
+        return render(request, 'coursemanaging/calendar-ajax.html', {'calendar': mark_safe(calendar_week)})
 
 
 class ImpossibleView(generic.TemplateView):
