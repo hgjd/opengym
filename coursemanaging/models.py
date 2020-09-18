@@ -228,7 +228,7 @@ class Session(models.Model):
     location_number = models.CharField(max_length=5, null=True, blank=True)
     location_city = models.CharField(max_length=50, null=True, blank=True)
 
-    course = models.ForeignKey(Course, related_name='sessions', default=1, blank=True)
+    course = models.ForeignKey(Course, related_name='sessions', default=1, blank=True, on_delete=models.CASCADE)
     subscribed_users = models.ManyToManyField(User, related_name='sessions', blank=True)
 
     class Meta:
@@ -341,7 +341,7 @@ class NewsBulletin(models.Model):
                         )
 
     bulletin_level = models.SmallIntegerField(choices=BULLETIN_CHOICES)
-    news_item = models.OneToOneField(NewsItem, null=True, blank=True)
+    news_item = models.OneToOneField(NewsItem, null=True, blank=True, on_delete=models.CASCADE)
 
     def clean(self):
         if self.news_item.short_text is None:
