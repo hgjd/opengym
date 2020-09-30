@@ -237,7 +237,6 @@ class CourseDetailView(generic.DetailView):
             session = get_object_or_404(Session, pk=join_session)
             if session.subscribed_users.filter(pk=request.user.id).exists():
                 return redirect('coursemanaging:impossible')
-            session.subscribe_user(self.request.user)
             if request.user not in session.course.students.all():
                 session.course.subscribe_user(self.request.user)
             return redirect('coursemanaging:course-detail', pk=course.id)
