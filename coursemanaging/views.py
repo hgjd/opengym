@@ -1,9 +1,10 @@
-import pytz
-import datetime
 import calendar
-
+import datetime
 from datetime import timedelta
 
+import pytz
+from django.contrib.auth import login
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import UserPassesTestMixin
 from django.core.exceptions import PermissionDenied
 from django.core.mail import EmailMessage
@@ -11,9 +12,11 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import redirect, render, get_object_or_404, render_to_response
 from django.urls import reverse_lazy
 from django.utils import timezone
+from django.utils.decorators import method_decorator
 from django.utils.encoding import force_text
 from django.utils.http import urlsafe_base64_decode
 from django.utils.safestring import mark_safe
+from django.utils.translation import gettext as _
 from django.views import generic
 
 from coursemanaging.forms import UserRegisterForm, CourseCreateForm, SessionCreateForm, ContactForm, EventCreateForm, \
@@ -22,8 +25,6 @@ from coursemanaging.open_calendar import OpenCalendar
 from coursemanaging.tokens import account_activation_token
 from mostaardimgur.models import ImgurAlbum
 from .models import Course, Session, User, NewsBulletin, NewsItem, Event, BuildingDay
-from django.contrib.auth import login
-from django.utils.translation import gettext as _
 
 utc = pytz.UTC
 
@@ -200,6 +201,7 @@ class CourseCreateView(UserPassesTestMixin, generic.CreateView):
         return self.object.get_absolute_url()
 
 
+@method_decorator(login_required, name='post')
 class CourseDetailView(generic.DetailView):
     """Detail view of a course"""
     template_name = 'coursemanaging/course-detail.html'
