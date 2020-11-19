@@ -41,7 +41,7 @@
                 <tr>
                     <th scope="row">Opbouwende sessies <span data-toggle="tooltip" class="click-hover"
                                                              data-placement="top"
-                                                             title="Dit betekend dat elke les verder gaat op vorige sessies, wat het moeilijker maakt lessen te missen">
+                                                             title="Dit betekent dat elke les verder gaat op vorige sessies, wat het moeilijker maakt lessen te missen">
                 (?)
             </span></th>
                     <td>
@@ -139,7 +139,7 @@
                     <tbody>
                     {% for session in course.get_future_sessions %}
                         <tr>
-                            <td id="time-{{ session.id }}">{{ session.start }}</a></td>
+                            <td id="time-{{ session.id }}">{{ session.start }}</td>
                             <td>{{ session.duration }}</td>
                             <td>
                                 {% if session.location_diff_course %}
@@ -203,7 +203,7 @@
                 </table>
             {% else %}
                 <H3 class="ml-4"><span class="fa fa-frown-o mr-3" aria-hidden="true"></span> Er zijn momenteel geen
-                    sessies geplanned</H3>
+                    sessies gepland</H3>
             {% endif %}
             {% if is_teacher %}
                 <a href="{% url 'coursemanaging:session-create' course.id %}"

@@ -22,7 +22,7 @@ checkInvisibles()
 {% endblock %}
 {% block content %}
 {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
-<form class="open-gym-page"action="" method="post">
+<form class="open-gym-page" action="" method="post">
     {% csrf_token %}
     {{form|crispy}}
     <input type="submit" value="Save" class="btn btn-primary"/>

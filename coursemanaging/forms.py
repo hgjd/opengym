@@ -125,7 +125,7 @@ class SessionCreateForm(forms.ModelForm):
                 'Als je meerdere sessies wil aanmaken dien je aan te geven tot wanneer je er wil aanmaken')
         if multiple_sessions and weekly_until < start + timedelta(days=7):
             raise ValidationError(
-                'Als je meerdere seesie wil aanmaken moet de tot-datum minstens een week na de start'
+                'Als je meerdere sessies wil aanmaken moet de tot-datum minstens een week na de start'
                 ' van de eerste sessie liggen'
             )
 
