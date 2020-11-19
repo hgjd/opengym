@@ -68,18 +68,24 @@
                     <th scope="row">Locatie</th>
                     <td>{{ course.location_short|default_if_none:"" }}</td>
                 </tr>
-                <tr>
-                    <th scope="row">Stad</th>
-                    <td>{{ course.location_city|default_if_none:"" }}</td>
-                </tr>
-                <tr>
-                    <th scope="row">Straat</th>
-                    <td>{{ course.location_street|default_if_none:"" }}</td>
-                </tr>
-                <tr>
-                    <th scope="row">Huisnr</th>
-                    <td>{{ course.location_number|default_if_none:"" }}</td>
-                </tr>
+                {% if course.location_city %}
+                    <tr>
+                        <th scope="row">Stad</th>
+                        <td>{{ course.location_city|default_if_none:"" }}</td>
+                    </tr>
+                {% endif %}
+                {% if course.location_street %}
+                    <tr>
+                        <th scope="row">Straat</th>
+                        <td>{{ course.location_street|default_if_none:"" }}</td>
+                    </tr>
+                {% endif %}
+                {% if course.location_number %}
+                    <tr>
+                        <th scope="row">Huisnr</th>
+                        <td>{{ course.location_number|default_if_none:"" }}</td>
+                    </tr>
+                {% endif %}
                 <tr>
                     <th scope="row">Inschrijven</th>
                     <td>
@@ -160,7 +166,8 @@
                             </td>
                             <td>
                                 {% if is_teacher %}
-                                    <a href="{% url 'coursemanaging:session-user-list' session.id %}">{{ session.subscribed_users.all.count }} inschrijving(en)</a>
+                                    <a href="{% url 'coursemanaging:session-user-list' session.id %}">{{ session.subscribed_users.all.count }}
+                                        inschrijving(en)</a>
                                 {% else %}
                                     {% if not sessions_subscribed|get_item:session.id %}
                                         {% if not session.is_full %}
