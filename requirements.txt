@@ -1,0 +1,5 @@
+Django~=1.11.29
+imgurpython~=1.1.7
+pytz~=2018.3
+django-crispy-forms~=1.7.2
+Markdown~=3.3.3

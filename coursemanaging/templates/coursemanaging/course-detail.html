@@ -162,7 +162,7 @@
                                 {{ session.get_max_students|default_if_none:"geen maximum" }}
                             </td>
                             <td>
-                                {{ session.extra_info|default_if_none:"" }}
+                                {{ session.extra_info_rendered|safe|default_if_none:"geen maximum" }}
                             </td>
                             <td>
                                 {% if is_teacher %}

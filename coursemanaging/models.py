@@ -9,6 +9,7 @@ from django.db import models
 from django.urls import reverse_lazy
 from django.utils import timezone
 from django.utils.translation import gettext as _
+from markdown import markdown
 
 
 class MyUserManager(BaseUserManager):
@@ -233,6 +234,9 @@ class Session(models.Model):
 
     class Meta:
         ordering = ["start"]
+
+    def extra_info_rendered(self):
+        return markdown(self.extra_info)
 
     def user_is_subscribed(self, user):
         return self.subscribed_users.filter(id=user.id).exists()
